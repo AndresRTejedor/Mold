@@ -1,0 +1,48 @@
+name: Build the documentation and put it online through github pages
+
+on:
+  workflow_dispatch:
+
+  release:    
+    types: [published]
+
+jobs:
+
+  build-docs:
+    runs-on: ubuntu-20.04
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+          
+      - name: Install the documentation's requirements
+        run: pip install --upgrade -r docs/docs_requirements.txt
+    
+      - name: Build the docs
+        run: |
+          pushd docs
+          make html
+          popd
+        
+      - name: Commit documentation changes
+        run: |
+          git clone https://github.com/demonico85/cleaving.git --branch gh-pages --single-branch gh-pages
+          cp -r docs/build/html/* gh-pages/
+          cd gh-pages
+          touch .nojekyll
+          git config --local user.email "github-actions@github.com"
+          git config --local user.name "CI workflow"
+          git add .
+          git commit -m "Update documentation" -a || true
+          # The above command will fail if no changes were present, so we ignore that.
+        
+      - name: Push changes to the gh-pages branch
+        uses: ad-m/github-push-action@master
+        with:
+          branch: gh-pages
+          directory: gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
