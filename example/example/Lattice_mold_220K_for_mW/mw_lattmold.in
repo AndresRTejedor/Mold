@@ -1,0 +1,70 @@
+units          real   # units of energy kcal/mol, distance angstrom and time if femtosecond
+atom_style     full   # do not change
+boundary       p p p  # periodic boundary conditions in x y z 
+
+# ---------------------------- Define variables --------------------------------
+variable  nts          equal  99000000   # production number of time-steps
+variable  T            equal  220.0      # Temperature of the system in K
+variable  nkT          equal  8          # Well depth in kT
+variable  ts           equal  1          # length of the ts (in fs units)
+variable  width        equal  0.25       # (reduced) width of the square well potential
+variable  alpha        equal  0.017025   # exponent of the square well potential (0.005*3.405)
+variable  seed         equal  23782      # velocity seed
+variable  NtsTdamp     equal  100        # Number of ts to damp temperature
+variable  thermoSteps  equal  1000       # Number of ts to write properties on screen
+variable  restartSteps equal  1000000    # Number of ts before write restart file
+variable  dumpSteps    equal  250000     # Number of ts before write dump file
+
+
+# --------------------- Derivate variables -------------------------------------
+variable D           equal ${nkT}*8.314*$T/4184    # Depth of well (real units)
+variable rw          equal ${width}*3.405          # Width of the well (real units)
+variable cutoff_well equal  ${rw}*4.0              # Well potential cutoff (real units)
+
+
+####   Define Mold   ####
+read_data      39mold.xyz  # contains the positions and masses and other information
+group freeze type 2 
+group unfrozen subtract all freeze
+
+
+# ----------------------------- Interactions -----------------------------------
+pair_style     hybrid sw square/well 4.0
+newton         on               # do not change
+pair_coeff     *  *  sw mW.sw Si NULL           # reading the parameters potential 
+pair_coeff     1  2  square/well ${rw} ${D} ${alpha} ${cutoff_well}
+pair_coeff     2  2  none 
+
+neighbor       2.0 bin          # neighbor list skin width
+neigh_modify   every 2 delay 4 check yes # frequency to update neighor list
+
+
+# ------------------------- initialize velocity -------------------------------
+velocity        unfrozen create ${T} ${seed} rot yes mom yes dist gaussian # assign initial velocities to the particles
+
+
+# ------------- Output thermo information and averaged variables ---------------
+compute 1 all pair square/well
+compute 2 all pair sw
+compute mytemp unfrozen temp
+thermo_style   custom step c_mytemp pe etotal press vol enthalpy c_1 c_2 spcpu  # energy and thermo properties printed to output
+thermo_modify  flush yes  # flush the buffer and write the output in real time
+thermo         ${thermoSteps}      # how often (in steps) will write the properties of thermo_style to the output
+timestep       ${ts}     # time step for the integration of the equations of motion, in femtoseconds 
+
+
+# --------------- Dumping trajectories and restart file ------------------------
+dump            1 unfrozen custom ${dumpSteps}      water.lammpstrj id type  xs ys zs ix iy iz # dump configuration into a trajectory file
+restart         ${restartSteps}  restart   # write a binary restart file every XXX steps  
+
+
+#--------------------------- Running simulation --------------------------------
+fix 		1 unfrozen nvt  temp ${T} ${T} ${NtsTdamp} 
+reset_timestep 0
+
+
+# Production Run
+run             ${nts}
+unfix           1        # undo the fix 1, need to do this if it will be followed by another run
+undump          1        # undo the dump of the trajectory
+write_restart   restart.end  # write a binary restart file at the end of the simulation
