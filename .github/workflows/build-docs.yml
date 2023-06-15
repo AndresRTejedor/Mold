@@ -30,7 +30,7 @@ jobs:
         
       - name: Commit documentation changes
         run: |
-          git clone https://github.com/demonico85/cleaving.git --branch gh-pages --single-branch gh-pages
+          git clone https://github.com/AndresRTejedor/Mold_integration_and_lattice_mold.git --branch gh-pages --single-branch gh-pages
           cp -r docs/build/html/* gh-pages/
           cd gh-pages
           touch .nojekyll
