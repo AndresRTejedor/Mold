@@ -23,6 +23,16 @@ The configuration (step 1) can be created easily using the liquid and crystal co
 
 ## Optimal radius calculation 
 
+The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:
+
+1. Create a directory sweeping different radii ($r_w=0.27,\ 0.28,\ \ldots,0.33,0.34\sigma$).
+2. For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.
+3. Copy the LAMMPS script file (`lj_mold.in`) in each subdirectory along with the configuration file (`mold_100.lmp`).
+4. The LAMMPS script contains several variables that it is important to know to properly perform the simulations:
+
+
+
+
 ```{footbibliography}
 
 ```
