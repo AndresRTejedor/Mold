@@ -17,9 +17,9 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'MOLD'
-copyright = '2022, NAMES'  
-author = 'NAMES '
+project = 'SurFEC'
+copyright = '2022, Nicodemo Di Pasquale and Lorenzo Rovigatti'
+author = 'Nicodemo Di Pasquale and Lorenzo Rovigatti'
 
 
 # -- General configuration ---------------------------------------------------
