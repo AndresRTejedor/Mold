@@ -12,7 +12,8 @@ The mold integration technique consists of different steps and here we only disc
 
 1. Preparation of the configuration by embedding the mold coordinates (from a crystal configuration) into the fluid at coexistence conditions.
 2. Choice of the [optimal well radius](#optimal-radius-calculation) $r_{0w}$ to extrapolate the interfacial energy.
-3. Calculation of the interfacial energy for different well radii above the optimal radius  $\gamma(r_{0w}>r_w)$. 
+3. Calculation of the interfacial energy for different well radii above the optimal radius
+  $\gamma(r_{0w}>r_w)$. 
 4. Extrapolation of the interfacial energy to the optimal radius $r_{0w}$.
 
 The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding $(p,T)$ conditions. In this example, we provide the system data file for the plane 100 of a LJ particles at $T^\ast=0.617$ and $p^\ast=-0.02$:
@@ -28,8 +29,51 @@ The calculation of the optimal radius for extrapolation of the interfacial energ
 2. For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.
 3. Copy the LAMMPS script file (`lj_mold.in`) in each subdirectory along with the configuration file (`mold_100.lmp`).
 4. The LAMMPS script contains several variables that it is important to know to properly perform the simulations:
+```
+# ---------------------------- Define variables --------------------------------
+variable  nts          equal  400000     # production number of time-steps
+variable  ts           equal  0.001      # length of the ts (in lj units)
+variable  siglj        equal  1.0        # sigma coefficient for BG pair-style
+variable  epslj        equal  1.0        # epsilon coefficient for BG pair-style
+variable  cut1         equal  2.3        # internal cut-off for BG pair-style
+variable  cut2         equal  2.5        # external cut-off for BG pair-style
+variable  rw           equal  0.33       # (reduced) width of the square well potential
+variable  alpha        equal  0.005      # exponent of the square well potential
+variable  nkT          equal  8.0        # well depth (reduced units) 
+variable  seed         equal  23782      # velocity seed
+variable  Tsyst        equal  0.617      # (reduced) temperature of the system
+variable  Psyst        equal  -0.02      # (reduced) press of the system
+variable  NtsTdamp     equal  100        # Number of ts to damp temperature
+variable  NtsPdamp     equal  100        # Number of ts to damp pressure
+variable  thermoSteps  equal  1000       # Number of ts to write properties on screen
+variable  restartSteps equal  30000      # Number of ts before write restart file
+variable  dumpSteps    equal  5000       # Number of ts before write dump file
+
+# --------------------- Derivate variables -------------------------------------
+variable cutoff1     equal  ${siglj}*${cut1}
+variable cutoff2     equal  ${siglj}*${cut2}
+variable cutoff_well equal  ${rw}*4.0
+variable D           equal  ${nkT}*${Tsyst} # Depth of well
+variable Tdamp       equal  ${NtsTdamp}*${ts}
+variable Pdamp       equal  ${NtsPdamp}*${ts}
 
 
+####  Define mold  ####
+read_data       mold_100.lmp
+group melt type 1
+group mold type 2
+
+```
+For this step, the typical run must be approximately 200000 time-steps (with dt=1e-3), and that can be controlled by the parameter `nts`. 
+Regarding the interaction potential, the parameter `rw` stands for the well radius so this must be changed for the different studies radii during this step `rw`=$0.27,\ 0.28,\ \ldots,0.33,0.34\sigma$. 
+The parameter `nkT` gives the well depth in $k_{B}T$ units and for this step must be kept to 8 or bigger. 
+Regarding the velocity seed, the variable `seed` controls this aspect and thus, it must be changed with a random integer number for each simulation. 
+Also, there are some variables that might be interesting to know:
+- `thermoSteps` gives the number of timesteps to print the thermo
+- `restartSteps` indicates the frequency of saving the restart files
+- `dumpSteps` is the number of steps to save the trajectory in the dump file and for this step it is recommended to be set to 2000.
+
+5. Launch the simulation for each radius and seed. That means a total of 80 simulations, but they are quite short. 
 
 
 ```{footbibliography}
