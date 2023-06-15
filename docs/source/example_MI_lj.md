@@ -1,16 +1,16 @@
-# Solid-Liquid interface of a Lennard-Jones crystal in contact with a Lennard-Jones liquid with walls
-
-````{note}
-This example requires few hours of computation time on 16 cores to generate a sensible output. However, you can run shorter simulations to acquaintance yourself with the code. To do this, change the input file variables `eqnts` and `nts` (equilibration and production number of time steps) to smaller values and/or reduce the number of points to move the walls ([Step 1](#step-1), [Step 2](#step-2) or [Step 4](#step-4)) or switch off the interactions ([Step 3](#step-3)).
-````
+# Mold integration for 100 plane of Lennard-Jones crystal
 
 ````{note}
 In this section `/` is the package's root folder.
 ````
 
-In this example we will set up the cleaving calculation for the calculation of the SFE of a Lennard-Jones crystal in contact with its liquid at a temperature $T = 0.617$.
+Here we provide a detailed instructions to reproduce the crystal fluid interfacial free energy using the BG and `square/well pair_style` available in LAMMPS. 
 
-The input files for the whole calculations can be found in the directory `/examples/lj_SL` but in this tutorial we will go through the writing of such files from scratch.
+The data file (`mold_100.lmp`) and LAMMPS script (`lj_moldint.in`) is provided in the directory `/examples/lj_mold/`, but in this work example we will navigate through those files to explain them in detail.
+
+
+
+
 
 First of all, create a new folder and step in it.
 

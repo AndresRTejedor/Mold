@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'SurFEC'
-copyright = '2022, Nicodemo Di Pasquale and Lorenzo Rovigatti'
-author = 'Nicodemo Di Pasquale and Lorenzo Rovigatti'
+copyright = '2023, Andres R. Tejedor, Jorge Ramírez, Nicodemo Di Pasquale, and Jorge R. Espinosa'
+author = 'Andres R. Tejedor'
 
 
 # -- General configuration ---------------------------------------------------
