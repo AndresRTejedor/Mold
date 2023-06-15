@@ -71,7 +71,7 @@ restart   ${restartSteps} restart1.tmp restart2.tmp
 
 
 #--------------------------- Running simulation --------------------------------
-fix  fnpt  melt npt temp ${T0} ${T0} ${Tdamp} z ${Psyst} ${Psyst} ${Pdamp}
+fix  fnpt  melt npt temp ${T0} ${T0} ${Tdamp} z ${Psyst} ${Psyst} ${Pdamp} dilate all
 reset_timestep 0
 
 # Production Run
