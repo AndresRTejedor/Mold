@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pair_style coul/dsf[cleav] &mdash; SurFEC  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Fix style wall" href="fix_wall.html" />
+    <link rel="prev" title="pair_style square/well" href="pairsquare.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> SurFEC
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="lammps.html">LAMMPS commands</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pairsquare.html">pair_style square/well</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pairsquare.html#syntax">Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pairsquare.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pairsquare.html#description">Description</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pair_style coul/dsf[cleav]</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fix_wall.html">Fix style wall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fix_well.html">Fix style well</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fix_move_duplicate.html">Fix move duplicate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compute_pcleav.html">Compute cleavpairs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SurFEC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="lammps.html">LAMMPS commands</a> &raquo;</li>
+        
+      <li>pair_style coul/dsf[cleav]</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pair_coul_cleav.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="tex2jax_ignore mathjax_ignore section" id="pair-style-coul-dsf-cleav">
+<h1>pair_style coul/dsf[cleav]<a class="headerlink" href="#pair-style-coul-dsf-cleav" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pair_style</span> <span class="n">coul</span><span class="o">/</span><span class="n">dsfsql</span>  <span class="n">args</span>
+<span class="n">pair_style</span> <span class="n">coul</span><span class="o">/</span><span class="n">dsfcubl</span> <span class="n">args</span>
+<span class="n">pair_style</span> <span class="n">coul</span><span class="o">/</span><span class="n">dsfNl</span>   <span class="n">args</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>args=list of the possible arguments</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>&lt;name pair style&gt; args = alpha cut-off lambda i_IDflag orientation N
+    alpha       = damping parameter (inverse distance units)
+    cutoff      = global internal cut-off
+    lambda      = global scaling of the potential
+    i_IDflag    = new (integer) property to be added to the atoms
+    orientation = direction perpendicular to the cleaving plane
+    N           = only for &lt;coul/dsfNl&gt; only, power of the polynomial for $\lambda$
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pair_coeff</span></code> accepts only the following arguments</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pair_coeff</span> <span class="n">a</span> <span class="n">b</span> <span class="k">lambda</span> 
+</pre></div>
+</div>
+<p>where</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">a</span>       <span class="o">=</span> <span class="n">atom</span> <span class="n">of</span> <span class="nb">type</span> <span class="n">a</span> <span class="p">[</span><span class="n">mandatory</span><span class="p">]</span>
+    <span class="n">b</span>       <span class="o">=</span> <span class="n">atom</span> <span class="n">of</span> <span class="nb">type</span> <span class="n">b</span> <span class="p">[</span><span class="n">mandatory</span><span class="p">]</span>
+    <span class="k">lambda</span>  <span class="o">=</span> <span class="k">global</span> <span class="n">scaling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">potential</span>
+</pre></div>
+</div>
+<p>This pair style is derived from the <code class="docutils literal notranslate"><span class="pre">coul/dsf</span></code> in LAMMPS and we refer to the <a class="reference external" href="https://docs.lammps.org/pair_coul.html">LAMMPS documentation</a> for the
+description of its main features. Here, only the modifications needed for the cleaving calculations
+will be considered.</p>
+<p>The cleaving of a molecular system (e.g., the mannitol) requires some modifications with respect an
+atomistic system due to the fact that molecules have a finite extension which can cross the cleaving
+plane. In the calculation of the SFE, the internal bonds of a molecule cannot be broken and
+therefore we cannot use the implicit rule that any atoms on one side of the cleaving plane are
+“different” from the atoms on the other side. This property must be added to the atoms as an additional property
+using the LAMMPS command <a class="reference external" href="https://docs.lammps.org/fix_property_atom.html">fix property/atom</a></p>
+<p>The cleaving plane are chosen to be the boundary of the box in one of the three orthogonal directions.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>At the moment, the cleaving plane can not be placed arbitrarily within the box, but must always coincide with one of the periodic boundary (either on the <span class="math notranslate nohighlight">\(x\)</span>, <span class="math notranslate nohighlight">\(y\)</span>, or <span class="math notranslate nohighlight">\(z\)</span> direction)</p>
+</div>
+<p>Each atom receives a molecule type based on the position, with respect the center of the box, of the Center of Mass (COM) of the molecule to which belongs. This is shown in the next figure</p>
+<p><img alt="Example Cleaving molecular crystal" src="../figs/cmol.png" /></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In this procedure, it is assumed that the molecules near the cleaving  plane (e.g., molecules A and C in the previous figure) interacts with molecules on the other side  of it (e.g., molecule B) only
+through the cleaving plane. That is to say that the cut-off of the pair interactions is smaller than the separation between (e.g.,) A and B measured within the box.</p>
+</div>
+<p>The pair_style is able to tell, based on the atom position and i_flag if an interaction between a couple of atoms needs to be rescaled by <span class="math notranslate nohighlight">\(\lambda\)</span>.
+An application of this procedure can be found in Di Pasquale and Davidchack<a class="footnote-reference brackets" href="#footcite-dipasquale2022" id="id1">1</a>.</p>
+<p>The DFS potential is multiplied by a polynomial function of <span class="math notranslate nohighlight">\(\lambda\)</span>: <span class="math notranslate nohighlight">\(\lambda^N\)</span> where the value <span class="math notranslate nohighlight">\(N\)</span> must be specified in the inputs.</p>
+<div class="docutils container" id="id2">
+<dl class="footnote brackets">
+<dt class="label" id="footcite-dipasquale2022"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Nicodemo Di Pasquale and Ruslan L Davidchack. Cleaving method for molecular crystals and its application to calculation of the surface free energy of crystalline β-d-mannitol at room temperature. <em>The Journal of Physical Chemistry A</em>, 126(13):2134–2141, 2022.</p>
+</dd>
+</dl>
+</div>
+<hr class="footnotes docutils" />
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fix_wall.html" class="btn btn-neutral float-right" title="Fix style wall" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pairsquare.html" class="btn btn-neutral float-left" title="pair_style square/well" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2022, Nicodemo Di Pasquale and Lorenzo Rovigatti
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

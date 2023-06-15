@@ -1,6 +1,8 @@
-Lammps Package for Mold calculations USER-CLEAVING
+# Mold
 
-The package contains all the fixes needed by the Mold model to calculate the Surface Free Energy in a system using Thermodynamic Integration.
+Lammps Package for Mold calculations USER-MOLD
+
+The package contains the square-like well potential and examples to calculate the Surface Free Energy using Mold Integration and the Nucleation Rate using Lattice Mold.
 
 
 ```{eval-rst}

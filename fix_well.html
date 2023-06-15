@@ -1,0 +1,283 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Fix style well &mdash; SurFEC  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Fix move duplicate" href="fix_move_duplicate.html" />
+    <link rel="prev" title="Fix style wall" href="fix_wall.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> SurFEC
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="lammps.html">LAMMPS commands</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pairsquare.html">pair_style square/well</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pairsquare.html#syntax">Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pairsquare.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pairsquare.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pair_coul_cleav.html">pair_style coul/dsf[cleav]</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fix_wall.html">Fix style wall</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Fix style well</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fix_move_duplicate.html">Fix move duplicate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compute_pcleav.html">Compute cleavpairs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SurFEC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="lammps.html">LAMMPS commands</a> &raquo;</li>
+        
+      <li>Fix style well</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/fix_well.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="tex2jax_ignore mathjax_ignore section" id="fix-style-well">
+<h1>Fix style well<a class="headerlink" href="#fix-style-well" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fix_style</span> <span class="n">wellPforce</span> <span class="n">args</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>args=list of the possible arguments</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">wellPforce</span> <span class="n">args</span> <span class="o">=</span> <span class="n">dw</span> <span class="n">rw</span> <span class="n">P</span> <span class="k">lambda</span> <span class="n">file</span> <span class="o">&lt;</span><span class="n">name</span> <span class="n">file</span><span class="o">&gt;</span> 
+    <span class="n">dw</span> <span class="o">=</span> <span class="n">depth</span> <span class="n">of</span> <span class="n">the</span> <span class="n">well</span> 
+    <span class="n">rw</span> <span class="o">=</span> <span class="n">interaction</span> <span class="nb">range</span>
+    <span class="n">P</span> <span class="o">=</span> <span class="n">power</span> <span class="n">law</span> <span class="n">of</span> <span class="n">the</span> <span class="n">wells</span>
+    <span class="k">lambda</span> <span class="o">=</span> <span class="n">strength</span> <span class="n">of</span> <span class="n">the</span> <span class="n">interactions</span> <span class="n">between</span> <span class="n">wells</span> <span class="ow">and</span> <span class="n">atoms</span>
+    <span class="o">&lt;</span> <span class="n">name</span> <span class="n">file</span> <span class="o">&gt;</span> <span class="o">=</span> <span class="n">external</span> <span class="n">file</span> <span class="n">which</span> <span class="n">contains</span> <span class="n">the</span> <span class="n">position</span> <span class="n">of</span> <span class="n">the</span> <span class="n">wells</span>
+</pre></div>
+</div>
+<p>On each side of the cleaving plane we place two planes with fixed interaction sites. Each site interacts with surrounding atoms through a wells shaped potential. The main difference with the walls (see <a class="reference internal" href="fix_wall.html"><span class="doc std std-doc">walls</span></a>) version is that the two planes are now fixed, and the strength of the potential is the quantity which is varied within the simulation.</p>
+<p>The well potential we use in this work is  defined as Handel <em>et al.</em><a class="footnote-reference brackets" href="#footcite-handel2008direct" id="id1">1</a>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+	\psi(r;\lambda) = 
+		\begin{cases}
+			\lambda dw\left[\left(\frac{r}{rw}\right)^2-1\right]^{P} \:\:\: r &lt; rw \\
+			0  \:\:\: r \geq rw
+		\end{cases} 
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(r=|\mathbf{r}_{atoms}-\mathbf{r}_{wells}|\)</span> for each couple atom-well.</p>
+<p>In the cleaving procedure, the strength of the interactions sites is varied during the simulation using the parameter <span class="math notranslate nohighlight">\(\lambda\)</span> from 0 (no interactions among the wells and the atoms) and 1 (full interactions between the wells and the atoms).</p>
+<p>In the wells version each atom interacts with wells on <em>both</em> side of the cleaving plane, therefore the external fine containing the position of the wells include a single list of positions (the interaction points).
+The format of the file is</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">N</span>
+<span class="n">x1</span> <span class="n">y1</span> <span class="n">z1</span> 
+<span class="n">x2</span> <span class="n">y2</span> <span class="n">z2</span>
+<span class="o">...</span>
+<span class="n">xN</span> <span class="n">yN</span> <span class="n">zN</span>
+</pre></div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(N\)</span> is the total number of wells.</p>
+<p>E.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">264</span>
+  <span class="mf">0.28595722359534864</span>       <span class="mf">0.16509748001949254</span>        <span class="mf">16.343816675003122</span>
+  <span class="mf">0.85787167078604587</span>        <span class="mf">1.1556823601364479</span>        <span class="mf">16.343816675003122</span>
+   <span class="mf">1.4297861179767433</span>       <span class="mf">0.16509748001949254</span>        <span class="mf">16.3438166750031</span>
+<span class="o">...</span>
+   <span class="mf">12.296160614599994</span>        <span class="mf">10.401141241228032</span>        <span class="mf">17.277749056431873</span>
+   <span class="mf">11.724246167409296</span>        <span class="mf">11.391726121344988</span>        <span class="mf">17.277749056431873</span>
+</pre></div>
+</div>
+<div class="docutils container" id="id2">
+<dl class="footnote brackets">
+<dt class="label" id="footcite-handel2008direct"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Richard Handel, Ruslan L Davidchack, Jamshed Anwar, and Andrey Brukhno. Direct calculation of solid-liquid interfacial free energy for molecular systems: tip4p ice-water interface. <em>Physical review letters</em>, 100(3):036104, 2008.</p>
+</dd>
+</dl>
+</div>
+<hr class="footnotes docutils" />
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fix_move_duplicate.html" class="btn btn-neutral float-right" title="Fix move duplicate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="fix_wall.html" class="btn btn-neutral float-left" title="Fix style wall" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2022, Nicodemo Di Pasquale and Lorenzo Rovigatti
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

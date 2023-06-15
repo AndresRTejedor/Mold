@@ -1,0 +1,304 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Fix style wall &mdash; SurFEC  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Fix style well" href="fix_well.html" />
+    <link rel="prev" title="pair_style coul/dsf[cleav]" href="pair_coul_cleav.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> SurFEC
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="lammps.html">LAMMPS commands</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="pairsquare.html">pair_style square/well</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pairsquare.html#syntax">Syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pairsquare.html#examples">Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pairsquare.html#description">Description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pair_coul_cleav.html">pair_style coul/dsf[cleav]</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Fix style wall</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fix_well.html">Fix style well</a></li>
+<li class="toctree-l2"><a class="reference internal" href="fix_move_duplicate.html">Fix move duplicate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compute_pcleav.html">Compute cleavpairs</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SurFEC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="lammps.html">LAMMPS commands</a> &raquo;</li>
+        
+      <li>Fix style wall</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/fix_wall.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="tex2jax_ignore mathjax_ignore section" id="fix-style-wall">
+<h1>Fix style wall<a class="headerlink" href="#fix-style-wall" title="Permalink to this headline">¶</a></h1>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fix_style</span> <span class="n">wallforce</span> <span class="n">args</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>args=list of the possible arguments</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">wallforce</span> <span class="n">args</span> <span class="o">=</span> <span class="n">eps</span> <span class="n">sigma</span> <span class="n">zw</span> <span class="n">delta</span> <span class="n">rw</span> <span class="n">file</span> <span class="o">&lt;</span><span class="n">name</span> <span class="n">file</span><span class="o">&gt;</span> 
+    <span class="n">eps</span>   <span class="o">=</span> <span class="p">(</span><span class="n">energy</span> <span class="n">units</span><span class="p">)</span>
+    <span class="n">sigma</span> <span class="o">=</span> <span class="p">(</span><span class="n">distance</span> <span class="n">units</span><span class="p">)</span>
+    <span class="n">zw</span>    <span class="o">=</span> <span class="n">position</span> <span class="n">of</span> <span class="n">the</span> <span class="n">walls</span> <span class="n">respect</span> <span class="n">to</span> <span class="n">the</span> <span class="n">cleaving</span> <span class="n">plane</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">width</span> <span class="n">of</span> <span class="n">the</span> <span class="n">interpolation</span> <span class="n">region</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">m</span> <span class="n">function</span>
+    <span class="n">rw</span>    <span class="o">=</span> <span class="n">cut</span><span class="o">-</span><span class="n">off</span> <span class="n">of</span> <span class="n">the</span> <span class="n">LJ</span> <span class="n">potential</span>
+    <span class="o">&lt;</span> <span class="n">name</span> <span class="n">file</span> <span class="o">&gt;</span> <span class="o">=</span> <span class="n">external</span> <span class="n">file</span> <span class="n">which</span> <span class="n">contains</span> <span class="n">the</span> <span class="n">position</span> <span class="n">of</span> <span class="n">the</span> <span class="n">walls</span>
+</pre></div>
+</div>
+<p>On each side of the cleaving plane we place two planes with fixed interaction sites. Each site interacts with surrounding atoms through a wall shaped potential which is constructed from the repulsive core of the LJ potential, defined using a standard Weeks–Chandler–Anderson splitting Hansen and McDonald<a class="footnote-reference brackets" href="#footcite-hansen2013theory" id="id1">1</a>:</p>
+<div class="math notranslate nohighlight">
+\[
+\begin{equation}
+	\phi(r) = 4\epsilon \cip{ \frac{\sigma^{12}}{r^{12}} - \frac{\sigma^{6}}{r^{6}}} + \epsilon
+\end{equation}
+\]</div>
+<p>Interactions of the atom with the walls are given by</p>
+<div class="math notranslate nohighlight">
+\[
+\Phi(\mathbf{r};z_w)=m(\Phi_1, \Phi_2)
+\]</div>
+<p>where <span class="math notranslate nohighlight">\(m\)</span> is a modified minimum function defined in <a class="footnote-reference brackets" href="#footcite-davidchack2003direct" id="id2">2</a> and <span class="math notranslate nohighlight">\(\Phi_1\)</span>, <span class="math notranslate nohighlight">\(\Phi_2\)</span> are given by:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+	\Phi_1(\mathbf{r};z_w) &amp; = \sum_{j} \phi\cip{\abs{\mathbf{r} - \cip{\mathbf{r}_j^{(1)} - z_w\bfn} }} = \sum_{j} \phi\cip{\abs{\mathbf{r} - \mathbf{r}_j^{(1)} + z_w\bfn }} \\
+	\Phi_2(\mathbf{r};z_w)  &amp; = \sum_{j} \phi\cip{\abs{\mathbf{r} - \cip{\mathbf{r}_j^{(2)} + z_w\bfn} }}  =  \sum_{j} \phi\cip{\abs{\mathbf{r} - \mathbf{r}_j^{(2)} - z_w\bfn }} \.
+\end{align}
+\end{split}\]</div>
+<p>In the cleaving procedure, the strength of the interactions sites is varied during the simulation using the parameter <span class="math notranslate nohighlight">\(z_w\)</span> which varies from an initial value <span class="math notranslate nohighlight">\(z_{w,i}\)</span> to a final value <span class="math notranslate nohighlight">\(z_{w,f}\)</span>. There is no <em>a priori</em> prescription for these two values except that the initial value  <span class="math notranslate nohighlight">\(z_{w,i}\)</span> must be such that the walls do not interact with the atoms in the system.</p>
+<p>Note that the way the wall potential is defined the atoms interacts with only one of the two walls (the one that gives the lowest interactions).</p>
+<p>The format of the file is:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">N1</span>
+<span class="n">x1</span> <span class="n">y1</span> <span class="n">z1</span> 
+<span class="n">x2</span> <span class="n">y2</span> <span class="n">z2</span>
+<span class="o">...</span>
+<span class="n">xN1</span> <span class="n">yN1</span> <span class="n">zN1</span>
+<span class="n">N2</span>
+<span class="n">x1</span> <span class="n">y1</span> <span class="n">z1</span> 
+<span class="n">x2</span> <span class="n">y2</span> <span class="n">z2</span>
+<span class="o">...</span>
+<span class="n">xN1</span> <span class="n">yN1</span> <span class="n">zN1</span>
+</pre></div>
+</div>
+<p>where <span class="math notranslate nohighlight">\(N_1\)</span> is the total number of walls on one side of the cleaving plane, whereas  <span class="math notranslate nohighlight">\(N_2\)</span> is the total number of walls on opposite side of the cleaving plane.</p>
+<p>E.g.:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">132</span>
+  <span class="mf">0.28595722359534864</span>       <span class="mf">0.16509748001949254</span>        <span class="mf">16.343816675003122</span>
+  <span class="mf">0.85787167078604587</span>        <span class="mf">1.1556823601364479</span>        <span class="mf">16.343816675003122</span>
+   <span class="mf">1.4297861179767433</span>       <span class="mf">0.16509748001949254</span>        <span class="mf">16.3438166750031</span>
+<span class="o">...</span>
+   <span class="mf">12.296160614599994</span>        <span class="mf">10.401141241228032</span>        <span class="mf">17.277749056431873</span>
+   <span class="mf">11.724246167409296</span>        <span class="mf">11.391726121344988</span>        <span class="mf">17.277749056431873</span>
+<span class="mi">132</span>
+  <span class="mf">0.28595722359534864</span>       <span class="mf">0.16509748001949254</span>        <span class="mf">16.343816675003122</span>
+  <span class="mf">0.85787167078604587</span>        <span class="mf">1.1556823601364479</span>        <span class="mf">16.343816675003122</span>
+   <span class="mf">1.4297861179767433</span>       <span class="mf">0.16509748001949254</span>        <span class="mf">16.3438166750031</span>
+<span class="o">...</span>
+   <span class="mf">12.296160614599994</span>        <span class="mf">10.401141241228032</span>        <span class="mf">17.277749056431873</span>
+   <span class="mf">11.724246167409296</span>        <span class="mf">11.391726121344988</span>        <span class="mf">17.277749056431873</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>
+
+```{footbibliography}
+
+</pre></div>
+</div>
+<hr class="footnotes docutils" />
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="fix_well.html" class="btn btn-neutral float-right" title="Fix style well" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="pair_coul_cleav.html" class="btn btn-neutral float-left" title="pair_style coul/dsf[cleav]" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2022, Nicodemo Di Pasquale and Lorenzo Rovigatti
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

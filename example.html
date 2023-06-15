@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Mold &mdash; SurFEC  documentation</title>
+  <title>Examples &mdash; SurFEC  documentation</title>
   
 
   
@@ -37,7 +37,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installation" href="install.html" /> 
+    <link rel="next" title="Solid-Liquid interface of a Lennard-Jones crystal in contact with a Lennard-Jones liquid with walls" href="example_MI_lj.html" />
+    <link rel="prev" title="Compute cleavpairs" href="compute_pcleav.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -51,7 +52,7 @@
           
 
           
-            <a href="#" class="icon icon-home" alt="Documentation Home"> SurFEC
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> SurFEC
           
 
           
@@ -83,10 +84,14 @@
             
             
               <p class="caption"><span class="caption-text">Table of Contents</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lammps.html">LAMMPS commands</a></li>
-<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_MI_lj.html">Solid-Liquid interface of a Lennard-Jones crystal in contact with a Lennard-Jones liquid with walls</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_LM_mw.html">Solid-Vacuum interface of a Lennard-Jones crystal with wells</a></li>
+</ul>
+</li>
 </ul>
 
             
@@ -102,7 +107,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">SurFEC</a>
+          <a href="index.html">SurFEC</a>
         
       </nav>
 
@@ -131,15 +136,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>Mold</li>
+      <li>Examples</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/example.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -152,34 +157,24 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="tex2jax_ignore mathjax_ignore section" id="mold">
-<h1>Mold<a class="headerlink" href="#mold" title="Permalink to this headline">¶</a></h1>
-<p>Lammps Package for Mold calculations USER-MOLD</p>
-<p>The package contains the square-like well potential and examples to calculate the Surface Free Energy using Mold Integration and the Nucleation Rate using Lattice Mold.</p>
+  <div class="tex2jax_ignore mathjax_ignore section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
-<p class="caption"><span class="caption-text">Table of Contents</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="install.html#requirements">Requirements</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#compilation">Compilation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="install.html#testing">Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_MI_lj.html">Solid-Liquid interface of a Lennard-Jones crystal in contact with a Lennard-Jones liquid with walls</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_MI_lj.html#step-1">Step 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_MI_lj.html#step-2">Step 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_MI_lj.html#step-3">Step 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_MI_lj.html#step-4">Step 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_MI_lj.html#calculation-of-the-sfe">Calculation of the SFE</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="lammps.html">LAMMPS commands</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pairsquare.html">pair_style square/well</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pairsquare.html#syntax">Syntax</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pairsquare.html#examples">Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pairsquare.html#description">Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pair_coul_cleav.html">pair_style coul/dsf[cleav]</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fix_wall.html">Fix style wall</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fix_well.html">Fix style well</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fix_move_duplicate.html">Fix move duplicate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="compute_pcleav.html">Compute cleavpairs</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="example_MI_lj.html">Solid-Liquid interface of a Lennard-Jones crystal in contact with a Lennard-Jones liquid with walls</a></li>
-<li class="toctree-l2"><a class="reference internal" href="example_LM_mw.html">Solid-Vacuum interface of a Lennard-Jones crystal with wells</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example_LM_mw.html">Solid-Vacuum interface of a Lennard-Jones crystal with wells</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_LM_mw.html#step-1">Step 1</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_LM_mw.html#step-2">Step 2</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_LM_mw.html#step-3">Step 3</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_LM_mw.html#step-4">Step 4</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_LM_mw.html#calculation-of-the-sfe">Calculation of the SFE</a></li>
 </ul>
 </li>
 </ul>
@@ -194,8 +189,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="install.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="example_MI_lj.html" class="btn btn-neutral float-right" title="Solid-Liquid interface of a Lennard-Jones crystal in contact with a Lennard-Jones liquid with walls" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="compute_pcleav.html" class="btn btn-neutral float-left" title="Compute cleavpairs" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

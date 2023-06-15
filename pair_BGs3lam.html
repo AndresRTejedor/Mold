@@ -1,0 +1,378 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>pair_style lj/BGcleavs3 &mdash; SurFEC  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> SurFEC
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lammps.html">LAMMPS commands</a></li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SurFEC</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>pair_style lj/BGcleavs3</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/pair_BGs3lam.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="tex2jax_ignore mathjax_ignore section" id="pair-style-lj-bgcleavs3">
+<h1>pair_style lj/BGcleavs3<a class="headerlink" href="#pair-style-lj-bgcleavs3" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pair_style</span> <span class="n">lj</span><span class="o">/</span><span class="n">BGcleavs3</span> <span class="n">args</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>args=list of the possible arguments</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lj</span><span class="o">/</span><span class="n">BGNlcleavs3</span> <span class="n">args</span> <span class="o">=</span> <span class="n">cutoff1</span> <span class="n">cutoff2</span> <span class="k">lambda</span> <span class="n">Dfac</span> 
+    <span class="n">cutoff1</span> <span class="o">=</span> <span class="k">global</span> <span class="n">internal</span> <span class="n">cut</span><span class="o">-</span><span class="n">off</span>
+    <span class="n">cutoff2</span> <span class="o">=</span> <span class="k">global</span> <span class="n">external</span> <span class="n">cut</span><span class="o">-</span><span class="n">off</span>
+    <span class="k">lambda</span>  <span class="o">=</span> <span class="k">global</span> <span class="n">scaling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">potential</span>
+    <span class="n">Dfac</span>    <span class="o">=</span> <span class="n">multiplicative</span> <span class="n">factor</span> <span class="k">for</span> <span class="n">the</span> <span class="n">derivative</span> <span class="n">of</span> <span class="n">the</span> <span class="n">interaction</span> <span class="k">with</span> <span class="n">respect</span> <span class="n">to</span> <span class="k">lambda</span> 
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">pair_coeff</span></code> accept the same arguments of the pair_style. However, keep in mind that parameters in pair coeff have a specific order</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pair_coeff</span> <span class="n">a</span> <span class="n">b</span> <span class="k">lambda</span> <span class="n">Dfac</span> <span class="n">cutoff1</span> <span class="n">cutoff2</span>
+</pre></div>
+</div>
+<p>where</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>    <span class="n">a</span>       <span class="o">=</span> <span class="n">atom</span> <span class="n">of</span> <span class="nb">type</span> <span class="n">a</span> <span class="p">[</span><span class="n">mandatory</span><span class="p">]</span>
+    <span class="n">b</span>       <span class="o">=</span> <span class="n">atom</span> <span class="n">of</span> <span class="nb">type</span> <span class="n">b</span> <span class="p">[</span><span class="n">mandatory</span><span class="p">]</span>
+    <span class="k">lambda</span>  <span class="o">=</span> <span class="n">scaling</span> <span class="n">of</span> <span class="n">the</span> <span class="n">potential</span>
+    <span class="n">Dfac</span>    <span class="o">=</span> <span class="n">multiplicative</span> <span class="n">factor</span> <span class="k">for</span> <span class="n">the</span> <span class="n">derivative</span> <span class="n">of</span> <span class="n">the</span> <span class="n">interaction</span> <span class="k">with</span> <span class="n">respect</span> <span class="n">to</span> <span class="k">lambda</span>     
+    <span class="n">cutoff1</span> <span class="o">=</span> <span class="k">global</span> <span class="n">internal</span> <span class="n">cut</span><span class="o">-</span><span class="n">off</span>
+    <span class="n">cutoff2</span> <span class="o">=</span> <span class="k">global</span> <span class="n">external</span> <span class="n">cut</span><span class="o">-</span><span class="n">off</span>
+</pre></div>
+</div>
+<p>the arguments in the <code class="docutils literal notranslate"><span class="pre">pair_coeff</span></code> are all optional except for the atom types. Note that the order is important. If we want to specify a new lambda for a different pair of types we can just write</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pair_coeff</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mf">1.0</span>
+</pre></div>
+</div>
+<p>However, in order to specify a new (e.g., external) cutoff we need to rewrite all the preceeding arguments:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pair_coeff</span> <span class="mi">1</span> <span class="mi">1</span> <span class="k">lambda</span> <span class="n">Dfac</span> <span class="n">cutoff1</span> <span class="n">cutoff2</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pair_style</span> <span class="n">lj</span><span class="o">/</span><span class="n">BGNlcleavs3</span> <span class="mf">2.3</span> <span class="mf">2.5</span> 
+<span class="n">pair_coeff</span> <span class="mi">1</span> <span class="mi">1</span> <span class="mf">1.0</span>
+<span class="n">pair_coeff</span> <span class="mi">1</span> <span class="mi">2</span> <span class="mf">1.0</span>
+<span class="n">pair_coeff</span> <span class="mi">1</span> <span class="mi">3</span> <span class="o">-</span><span class="mf">1.0</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>This pair style implements the Broughton and Gilmer modification to Lennard-Jones potential Broughton and Gilmer<a class="footnote-reference brackets" href="#footcite-broughton1983" id="id1">1</a> (see [pair lj/BG]{pairBG.md}) to be used in the step3 of the cleaving algorithm. This pair style returns also an array with all the calculated interactions which are needed to calculate the work in the step3. This array can be accessed using the new compute [compute paircleav]}{compute_pcleav.md}.</p>
+<p>The potential implemented in this pair style is</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+	U(r_{ln},\lambda) =
+		\begin{cases}
+			\lambda\left[ 4\epsilon \left(\left(\frac{\sigma}{r_{ln}}\right)^{12} -\left(\frac{\sigma}{r_{ln}}\right)^{6}  \right)+C_1 \right],\;\mbox{if}\; r_{ln} \leq 2.3\sigma \\
+			\lambda\left[ C_2\left(\frac{\sigma}{r_{ln}}\right)^{12} + C_3\left(\frac{\sigma}{r_{ln}}\right)^{6} + C_4\left(\frac{r_{ln}}{\sigma}\right)^2 + C_5\right],\;\mbox{if}\; r_{ln} \leq 2.5\sigma \\
+				0, 		\; r_{ln} \geq 2.5\sigma		
+		\end{cases}
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(r_{ln}=|\mathbf{r}_l-\mathbf{r}_n|\)</span> for each couple of atoms <span class="math notranslate nohighlight">\(l,n\)</span> in the system, and <span class="math notranslate nohighlight">\(C_1, C_2, C_3, C_4, C_5\)</span> are constants we used the values reported in Davidchack and Laird<a class="footnote-reference brackets" href="#footcite-davidchack2003direct" id="id2">2</a>.
+The constants are hardcorded within the pair style and they not need to be defined.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(lambda\)</span> must vary in the (closed) interval [0,1]</p></li>
+<li><p>There is no internal check that <span class="math notranslate nohighlight">\(\lambda\)</span> is changing consistently (i.e., always decreasing or increasing)</p></li>
+</ul>
+</div>
+<p>The work performed on the system to switch from <span class="math notranslate nohighlight">\(\lambda=1\)</span> to <span class="math notranslate nohighlight">\(\lambda=0\)</span> is then given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+	\frac{\partial U(r_{ln},\lambda)}{\partial \lambda} =
+		\begin{cases}
+			\left[ 4\epsilon \left(\left(\frac{\sigma}{r_{ln}}\right)^{12} -\left(\frac{\sigma}{r_{ln}}\right)^{6}  \right)+C_1 \right],\;\mbox{if}\; r_{ln} \leq 2.3\sigma \\
+			\left[ C_2\left(\frac{\sigma}{r_{ln}}\right)^{12} + C_3\left(\frac{\sigma}{r_{ln}}\right)^{6} + C_4\left(\frac{r_{ln}}{\sigma}\right)^2 + C_5\right],\;\mbox{if}\; r_{ln} \leq 2.5\sigma \\
+				0, 		\; r_{ln} \geq 2.5\sigma		
+		\end{cases}
+\end{split}\]</div>
+<p>In this case the the expression of the potential is multiplied by the derivatibe of <span class="math notranslate nohighlight">\(\lambda\)</span> with respect itself which is equal to 1 (i.e., <span class="math notranslate nohighlight">\(\partial \lambda / \partial \lambda=1\)</span>), and therefore the value of Dfrac must be set equal to 1.</p>
+<p>Using this style we can represent different switches between different states of the system:</p>
+<ul class="simple">
+<li><p>We want to describe the switching between two different states of the system, e.g., <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(a+b\)</span>.
+Let us assume the total Hamiltonian of the system, <span class="math notranslate nohighlight">\(H^{T}(\lambda)\)</span>, is defined as</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+	H^{T}(\lambda)= \lambda H_{a} + H_{b} 
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(\lambda \in [0,1]\)</span>, where we dropped the dependence on <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{q}\)</span> for simplicity.</p>
+<p>Let’s consider this example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>variable lambda file lambda.dat
+
+pair_style lj/BGNlcleavs3  2.3 2.5 1.0 1.0
+pair_coeff 1 1 1.0 1.0
+pair_coeff 2 2 1.0 1.0
+
+pair_coeff 1 2 ${lambda} 1.0
+</pre></div>
+</div>
+<p>The “self” interactions between atoms of the same type remains, but the mixed interactions between atoms of different types are <code class="docutils literal notranslate"><span class="pre">switched-on</span></code> (if <span class="math notranslate nohighlight">\(\lambda\)</span> goes from 0 to 1) or <code class="docutils literal notranslate"><span class="pre">switched-off</span></code> (if <span class="math notranslate nohighlight">\(\lambda\)</span> goes from 1 to 0).</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If the switching required is from state <span class="math notranslate nohighlight">\(a\)</span> to state <span class="math notranslate nohighlight">\(a+b\)</span>, then we can use this pair style with a polynomial function of <span class="math notranslate nohighlight">\(\lambda\)</span>. In this case we need to pass <span class="math notranslate nohighlight">\(\lambda^N\)</span> as an argument to the pair style, e.g., with <span class="math notranslate nohighlight">\(N=3\)</span>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>variable lam file lambda.dat
+variable lambda equal ${lam}*${lam}*${lam}
+
+pair_style lj/BGlcleavs3  2.3 2.5 1.0 1.0
+pair_coeff 1 1 1.0 1.0
+pair_coeff 2 2 1.0 1.0
+
+pair_coeff 1 2 ${lambda} 1.0
+</pre></div>
+</div>
+<p>However, the work calculated  by using the compute <a class="reference internal" href="compute_pcleav.html"><span class="doc std std-doc">paircleav</span></a> needs to be adjusted by the correct derivative with respect to <span class="math notranslate nohighlight">\(\lambda\)</span>. E.g., in the case just showed we need to multiply the work by <span class="math notranslate nohighlight">\(N \lambda^{N-1}\)</span>. For this reason, even if it possible in principle to use this pair style with a polynomial function of <span class="math notranslate nohighlight">\(\lambda\)</span> with <span class="math notranslate nohighlight">\(N&gt;1\)</span>, we suggest for <span class="math notranslate nohighlight">\(N&gt;1\)</span> to use the pair_style <a class="reference internal" href="pair_BGs3Nlam.html"><span class="doc std std-doc">lj/BGNlcleavs3</span></a>.</p>
+</div>
+<ul class="simple">
+<li><p>We want to describe the simultaneous switch between two different states of the system, e.g., <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span>.
+Let us assume the total Hamiltonian of the system, <span class="math notranslate nohighlight">\(H^{T}(\lambda)\)</span>, is defined as</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[
+	H^{T}(\lambda)= \lambda H_{a} + (1-\lambda) H_{b} 
+\]</div>
+<p>for <span class="math notranslate nohighlight">\(\lambda \in [0,1]\)</span>, where we dropped the dependence on <span class="math notranslate nohighlight">\(\mathbf{p}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{q}\)</span> for simplicity.
+In this latter case, the command Dfrac needs to be used when we are passing to the pair_style an expression like <span class="math notranslate nohighlight">\((1-\lambda)\)</span>. Here, we need to set Dfrac=-1.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>variable lambda file lambda.dat
+variable minl   equal 1-lambda
+
+pair_style lj/BGlcleavs3  2.3 2.5 1.0 1.0
+pair_coeff 1 1 1.0 1.0
+pair_coeff 2 2 1.0 1.0
+pair_coeff 3 3 1.0 1.0
+
+pair_coeff 1 2 ${lambda} 1.0
+pair_coeff 1 3 ${minl} -1.0
+pair_coeff 2 3 1.0 1.0
+</pre></div>
+</div>
+<p>The “self” interactions are not modified during the run, as well as the interactions between atoms of type 2 and 3. However, interactions between atoms of type 1 and 2 are <code class="docutils literal notranslate"><span class="pre">switched-on</span></code> (<code class="docutils literal notranslate"><span class="pre">switched-off</span></code>) and interactions between atoms of type 1 and 3 are  <code class="docutils literal notranslate"><span class="pre">switched-off</span></code> (<code class="docutils literal notranslate"><span class="pre">switched-on</span></code>) if <span class="math notranslate nohighlight">\(\lambda\)</span> goes from 0 to 1 (from 1 to 0).</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If this pair style is used to simulate a polynomial switching from state <span class="math notranslate nohighlight">\(a\)</span> to state <span class="math notranslate nohighlight">\(b\)</span>, e.g.:</p>
+<div class="math notranslate nohighlight">
+\[
+	H^{T}(\lambda)= \lambda^N H_{a} + (1-\lambda^N) H_{b} 
+\]</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>variable lambda file lambda.dat
+variable minl   equal 1-lambda
+
+pair_style lj/BGlcleavs3  2.3 2.5 1.0 1.0
+pair_coeff 1 1 1.0 1.0
+pair_coeff 2 2 1.0 1.0
+pair_coeff 3 3 1.0 1.0
+
+pair_coeff 1 2 ${lambda} 1.0
+pair_coeff 1 3 ${minl} -1.0
+pair_coeff 2 3 1.0 1.0
+</pre></div>
+</div>
+<p>then the compute <a class="reference internal" href="compute_pcleav.html"><span class="doc std std-doc">paircleav</span></a> must be used with the vector option. That means that each specific interactions is written in the output file. This is needed to be able to obtain the correct work due to the switching.  Otherwise the work will be accumulated as the sum of all the interactions and it is not possible to know what is the contribution coming from <span class="math notranslate nohighlight">\(H_{a}\)</span> (which should be multiplied by <span class="math notranslate nohighlight">\(N\lambda^{N-1}\)</span>) and which is the contribution coming from <span class="math notranslate nohighlight">\(H_{a}\)</span> (which should be multiplied by <span class="math notranslate nohighlight">\(-N\lambda^{N-1}\)</span>). For this reason, even if it possible in principle to use this pair style with a polynomial function of <span class="math notranslate nohighlight">\(\lambda\)</span> with <span class="math notranslate nohighlight">\(N&gt;1\)</span>, we suggest for <span class="math notranslate nohighlight">\(N&gt;1\)</span> to use the pair_style <a class="reference internal" href="pair_BGs3Nlam.html"><span class="doc std std-doc">lj/BGNlcleavs3</span></a>.</p>
+</div>
+<div class="docutils container" id="id3">
+<dl class="footnote brackets">
+<dt class="label" id="footcite-broughton1983"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>J. Q. Broughton and G. H. Gilmer. Molecular dynamics investigation of the crystal–fluid interface. i. bulk properties. <em>Journal of Chemical Physics</em>, 79(10):5095–5104, 1983.</p>
+</dd>
+<dt class="label" id="footcite-davidchack2003direct"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
+<dd><p>Ruslan L Davidchack and Brian B Laird. Direct calculation of the crystal–melt interfacial free energies for continuous potentials: application to the lennard-jones system. <em>The Journal of chemical physics</em>, 118(16):7651–7657, 2003.</p>
+</dd>
+</dl>
+</div>
+<hr class="footnotes docutils" />
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2022, Nicodemo Di Pasquale and Lorenzo Rovigatti
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

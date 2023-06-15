@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>LAMMPS commands &mdash; SurFEC  documentation</title>
+  <title>Fix move duplicate &mdash; SurFEC  documentation</title>
   
 
   
@@ -37,8 +37,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pair_style square/well" href="pairsquare.html" />
-    <link rel="prev" title="Installation" href="install.html" /> 
+    <link rel="next" title="Compute cleavpairs" href="compute_pcleav.html" />
+    <link rel="prev" title="Fix style well" href="fix_well.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -86,7 +86,7 @@
               <p class="caption"><span class="caption-text">Table of Contents</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">LAMMPS commands</a><ul>
+<li class="toctree-l1 current"><a class="reference internal" href="lammps.html">LAMMPS commands</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="pairsquare.html">pair_style square/well</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pairsquare.html#syntax">Syntax</a></li>
 <li class="toctree-l2"><a class="reference internal" href="pairsquare.html#examples">Examples</a></li>
@@ -94,7 +94,10 @@
 <li class="toctree-l2"><a class="reference internal" href="pair_coul_cleav.html">pair_style coul/dsf[cleav]</a></li>
 <li class="toctree-l2"><a class="reference internal" href="fix_wall.html">Fix style wall</a></li>
 <li class="toctree-l2"><a class="reference internal" href="fix_well.html">Fix style well</a></li>
-<li class="toctree-l2"><a class="reference internal" href="fix_move_duplicate.html">Fix move duplicate</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Fix move duplicate</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#syntax">Syntax</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="compute_pcleav.html">Compute cleavpairs</a></li>
 </ul>
 </li>
@@ -145,13 +148,15 @@
     
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>LAMMPS commands</li>
+          <li><a href="lammps.html">LAMMPS commands</a> &raquo;</li>
+        
+      <li>Fix move duplicate</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/lammps.md.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/fix_move_duplicate.md.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -164,23 +169,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="tex2jax_ignore mathjax_ignore section" id="lammps-commands">
-<h1>LAMMPS commands<a class="headerlink" href="#lammps-commands" title="Permalink to this headline">¶</a></h1>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="pairsquare.html">pair_style square/well</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pairsquare.html#syntax">Syntax</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pairsquare.html#examples">Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pairsquare.html#description">Description</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pair_coul_cleav.html">pair_style coul/dsf[cleav]</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fix_wall.html">Fix style wall</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fix_well.html">Fix style well</a></li>
-<li class="toctree-l1"><a class="reference internal" href="fix_move_duplicate.html">Fix move duplicate</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="fix_move_duplicate.html#syntax">Syntax</a></li>
+  <div class="tex2jax_ignore mathjax_ignore section" id="fix-move-duplicate">
+<h1>Fix move duplicate<a class="headerlink" href="#fix-move-duplicate" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fix_style</span> <span class="n">ID</span> <span class="n">group</span><span class="o">-</span><span class="n">ID</span> <span class="n">move</span><span class="o">/</span><span class="n">dupl</span> <span class="n">args</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>args=list of the possible arguments</p></li>
 </ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="compute_pcleav.html">Compute cleavpairs</a></li>
-</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="n">C_ID</span> <span class="o">=</span> <span class="n">ID</span> <span class="n">of</span> <span class="n">the</span> <span class="n">compute</span> <span class="n">displace</span><span class="o">/</span><span class="n">atom</span>
+</pre></div>
+</div>
+<p>This fix allows to translate the duplicate atoms of the same distance crossed by the corresponding real atoms. In step3 of the cleaving methodology the duplicate atoms allow to calculate the cross-cleaving plane interactions but they need to “follow” the real atoms when they move in a new position each time step.</p>
+<p>In the step3 the system (solid+liquid) is duplicated and <code class="docutils literal notranslate"><span class="pre">real</span></code> and <code class="docutils literal notranslate"><span class="pre">duplicate</span></code> atom types are defined (see <span class="xref myst">example LJ-SL</span> for more details).</p>
+<p><img alt="definition" src="../figs/dupl1.png" /></p>
+<p>The atoms interacts with one another. The duplicate atoms are used to keep track of the interactions crossing the cleaving planes, which are the ones to be calculated in order to find the total work in step3.</p>
+<p>The equation of motion must be integrated <em>only</em> for the real atoms. The atoms then move by a distance <span class="math notranslate nohighlight">\(\Delta \mathbf{x}\)</span>.</p>
+<p><img alt="move" src="../figs/dupl1.png" /></p>
+<p>This fix allows the duplicated atoms to follow the movement of the real atoms. By specifying this fix we are moving the atoms of the same quantity as the real atoms.</p>
+<p>The equation of motion must be integrated <em>only</em> for the real atoms. The atoms then move by a distance <span class="math notranslate nohighlight">\(\Delta \mathbf{x}\)</span>.</p>
+<p><img alt="move" src="../figs/dupl1.png" /></p>
 </div>
 </div>
 
@@ -192,10 +202,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="pairsquare.html" class="btn btn-neutral float-right" title="pair_style square/well" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="compute_pcleav.html" class="btn btn-neutral float-right" title="Compute cleavpairs" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="fix_well.html" class="btn btn-neutral float-left" title="Fix style well" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
