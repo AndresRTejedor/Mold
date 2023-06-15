@@ -11,7 +11,7 @@ The data file (`mold_100.lmp`) and LAMMPS script (`lj_moldint.in`) is provided i
 The mold integration technique consists of different steps and here we only discuss the last two steps to obtain the interfacial energy of the 100 plane for the LJ particles at $T^\ast=0.617$ and $p^\ast=-0.02$. All the steps can be found in {footcite:t}`espinosa2014mold`, and they can be summarized as: 
 
 1. Preparation of the configuration by embedding the mold coordinates (from a crystal configuration) into the fluid at coexistence conditions.
-2. Choice of the optimal well radius $r_{0w}$ to extrapolate the interfacial energy.
+2. Choice of the [optimal well radius](#optimal-radius-calculation) $r_{0w}$ to extrapolate the interfacial energy.
 3. Calculation of the interfacial energy for different well radii above the optimal radius  $\gamma(r_{0w}>r_w)$. 
 4. Extrapolation of the interfacial energy to the optimal radius $r_{0w}$.
 
@@ -19,7 +19,6 @@ The configuration (step 1) can be created easily using the liquid and crystal co
 
 ![Step-1](../figs/Fig1.png "Conf_MI")
 
-[Optimal radius calculation](#step-1)
 
 ## Optimal radius calculation 
 
