@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Solid-Liquid interface of a Lennard-Jones crystal in contact with a Lennard-Jones liquid with walls &mdash; SurFEC  documentation</title>
+  <title>Mold integration for 100 plane of Lennard-Jones crystal &mdash; SurFEC  documentation</title>
   
 
   
@@ -88,7 +88,7 @@
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lammps.html">LAMMPS commands</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="example.html">Examples</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Solid-Liquid interface of a Lennard-Jones crystal in contact with a Lennard-Jones liquid with walls</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Mold integration for 100 plane of Lennard-Jones crystal</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#step-1">Step 1</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#step-2">Step 2</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#step-3">Step 3</a></li>
@@ -147,7 +147,7 @@
         
           <li><a href="example.html">Examples</a> &raquo;</li>
         
-      <li>Solid-Liquid interface of a Lennard-Jones crystal in contact with a Lennard-Jones liquid with walls</li>
+      <li>Mold integration for 100 plane of Lennard-Jones crystal</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -166,18 +166,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="tex2jax_ignore mathjax_ignore section" id="solid-liquid-interface-of-a-lennard-jones-crystal-in-contact-with-a-lennard-jones-liquid-with-walls">
-<h1>Solid-Liquid interface of a Lennard-Jones crystal in contact with a Lennard-Jones liquid with walls<a class="headerlink" href="#solid-liquid-interface-of-a-lennard-jones-crystal-in-contact-with-a-lennard-jones-liquid-with-walls" title="Permalink to this headline">¶</a></h1>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This example requires few hours of computation time on 16 cores to generate a sensible output. However, you can run shorter simulations to acquaintance yourself with the code. To do this, change the input file variables <code class="docutils literal notranslate"><span class="pre">eqnts</span></code> and <code class="docutils literal notranslate"><span class="pre">nts</span></code> (equilibration and production number of time steps) to smaller values and/or reduce the number of points to move the walls (<a class="reference internal" href="#step-1"><span class="std std-doc">Step 1</span></a>, <a class="reference internal" href="#step-2"><span class="std std-doc">Step 2</span></a> or <a class="reference internal" href="#step-4"><span class="std std-doc">Step 4</span></a>) or switch off the interactions (<a class="reference internal" href="#step-3"><span class="std std-doc">Step 3</span></a>).</p>
-</div>
+  <div class="tex2jax_ignore mathjax_ignore section" id="mold-integration-for-100-plane-of-lennard-jones-crystal">
+<h1>Mold integration for 100 plane of Lennard-Jones crystal<a class="headerlink" href="#mold-integration-for-100-plane-of-lennard-jones-crystal" title="Permalink to this headline">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In this section <code class="docutils literal notranslate"><span class="pre">/</span></code> is the package’s root folder.</p>
 </div>
-<p>In this example we will set up the cleaving calculation for the calculation of the SFE of a Lennard-Jones crystal in contact with its liquid at a temperature <span class="math notranslate nohighlight">\(T = 0.617\)</span>.</p>
-<p>The input files for the whole calculations can be found in the directory <code class="docutils literal notranslate"><span class="pre">/examples/lj_SL</span></code> but in this tutorial we will go through the writing of such files from scratch.</p>
+<p>Here we provide a detailed instructions to reproduce the crystal fluid interfacial free energy using the BG and <code class="docutils literal notranslate"><span class="pre">square/well</span> <span class="pre">pair_style</span></code> available in LAMMPS.</p>
+<p>The data file (<code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>) and LAMMPS script (<code class="docutils literal notranslate"><span class="pre">lj_moldint.in</span></code>) is provided in the directory <code class="docutils literal notranslate"><span class="pre">/examples/lj_mold/</span></code>, but in this work example we will navigate through those files to explain them in detail.</p>
 <p>First of all, create a new folder and step in it.</p>
 <div class="section" id="step-1">
 <h2>Step 1<a class="headerlink" href="#step-1" title="Permalink to this headline">¶</a></h2>
@@ -642,7 +638,7 @@ jump SELF here
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2022, Nicodemo Di Pasquale and Lorenzo Rovigatti
+        &copy; Copyright 2023, Andres R. Tejedor, Jorge Ramírez, Nicodemo Di Pasquale, and Jorge R. Espinosa
 
     </p>
   </div>
