@@ -4,7 +4,7 @@
 .. toctree::
    :maxdepth: 2
    
-   pairsquare.md
+   pair_square.md
    pairBGs3lam.md
    pairBGs3Nlam.md
    pair_coul_cleav.md

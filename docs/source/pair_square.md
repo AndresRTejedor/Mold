@@ -29,7 +29,7 @@ The following coefficients must be defined for each pair of atoms types via the 
 -  $\alpha$
 -  $r_{c}$ (distance units)
 
-This continuous square-well potential can be used to calculate liquid-crystal interfacial energies through the mold integration1 or the lattice mold techniques {footcite:t}`espinosa2016lattice`,3. Also, it can simulate attractive patches distributed along the surface of a sphere, known as “patchy particles” ({footcite:t}`davidchack2003direct`).
+This continuous square-well potential can be used to calculate liquid-crystal interfacial energies through the mold integration ({footcite:t}`espinosa2014mold`) or the lattice mold techniques ({footcite:t}`espinosa2016lattice` and {footcite:t}`sanchez2022homogeneous`). Also, it can simulate attractive patches distributed along the surface of a sphere, known as “patchy particles” ({footcite:t}`espinosa2019breakdown`).
 
 
 The constants are hardcorded within the pair style and they not need to be defined.
