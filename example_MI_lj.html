@@ -182,6 +182,13 @@
 <p><span class="xref myst">Optimal radius calculation</span></p>
 <div class="section" id="optimal-radius-calculation">
 <h2>Optimal radius calculation<a class="headerlink" href="#optimal-radius-calculation" title="Permalink to this headline">¶</a></h2>
+<p>The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:</p>
+<ol class="arabic simple">
+<li><p>Create a directory sweeping different radii (<span class="math notranslate nohighlight">\(r_w=0.27,\ 0.28,\ \ldots,0.33,0.34\sigma\)</span>).</p></li>
+<li><p>For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.</p></li>
+<li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>).</p></li>
+<li><p>The LAMMPS script contains several variables that it is important to know to properly perform the simulations:</p></li>
+</ol>
 <div class="docutils container" id="id2">
 <dl class="footnote brackets">
 <dt class="label" id="footcite-espinosa2014mold"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
