@@ -1,19 +1,19 @@
 # pair_style square/well
 
-# Syntax
+## Syntax
 ```
 pair_style square/well cutoff
 ```
 
 - cutoff = cutoff for square/well interactions (distance units)
 
-# Examples
+## Examples
 ```
 pair_style    square/well 2.0 
 pair_coeff    1 2 square/well 5.0 0.33 0.005 1.32
 ```
 
-# Description
+## Description
 
 The square/well style computes continuous version of the square-well potential given by:
 
@@ -40,7 +40,7 @@ The value of $\alpha$ cannot be too large to avoid strong forces acting on the p
 In case $\epsilon$ is set to a negative value, the well potential would become fully repulsive.
 ````
 
-# Restrictions
+## Restrictions
 
 This pair style can only be used if LAMMPS was built with the EXTRA-MOLD package. See the Build package doc page for more info.
 

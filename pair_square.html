@@ -87,11 +87,13 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="lammps.html">LAMMPS commands</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pair_style square/well</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#syntax">Syntax</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#description">Description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#restrictions">Restrictions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pair_style square/well</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#examples">Examples</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#description">Description</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#restrictions">Restrictions</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
@@ -164,9 +166,8 @@
             
   <div class="tex2jax_ignore mathjax_ignore section" id="pair-style-square-well">
 <h1>pair_style square/well<a class="headerlink" href="#pair-style-square-well" title="Permalink to this headline">¶</a></h1>
-</div>
-<div class="tex2jax_ignore mathjax_ignore section" id="syntax">
-<h1>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pair_style</span> <span class="n">square</span><span class="o">/</span><span class="n">well</span> <span class="n">cutoff</span>
 </pre></div>
 </div>
@@ -174,15 +175,15 @@
 <li><p>cutoff = cutoff for square/well interactions (distance units)</p></li>
 </ul>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="examples">
-<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="examples">
+<h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pair_style</span>    <span class="n">square</span><span class="o">/</span><span class="n">well</span> <span class="mf">2.0</span> 
 <span class="n">pair_coeff</span>    <span class="mi">1</span> <span class="mi">2</span> <span class="n">square</span><span class="o">/</span><span class="n">well</span> <span class="mf">5.0</span> <span class="mf">0.33</span> <span class="mf">0.005</span> <span class="mf">1.32</span>
 </pre></div>
 </div>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="description">
-<h1>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
 <p>The square/well style computes continuous version of the square-well potential given by:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -206,8 +207,8 @@
 <p>In case <span class="math notranslate nohighlight">\(\epsilon\)</span> is set to a negative value, the well potential would become fully repulsive.</p>
 </div>
 </div>
-<div class="tex2jax_ignore mathjax_ignore section" id="restrictions">
-<h1>Restrictions<a class="headerlink" href="#restrictions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="restrictions">
+<h2>Restrictions<a class="headerlink" href="#restrictions" title="Permalink to this headline">¶</a></h2>
 <p>This pair style can only be used if LAMMPS was built with the EXTRA-MOLD package. See the Build package doc page for more info.</p>
 <div class="docutils container" id="id5">
 <dl class="footnote brackets">
@@ -226,6 +227,7 @@
 </dl>
 </div>
 <hr class="footnotes docutils" />
+</div>
 </div>
 
 
