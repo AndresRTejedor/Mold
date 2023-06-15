@@ -32,7 +32,18 @@ The following coefficients must be defined for each pair of atoms types via the 
 This continuous square-well potential can be used to calculate liquid-crystal interfacial energies through the mold integration ({footcite:t}`espinosa2014mold`) or the lattice mold techniques ({footcite:t}`espinosa2016lattice` and {footcite:t}`sanchez2022homogeneous`). Also, it can simulate attractive patches distributed along the surface of a sphere, known as “patchy particles” ({footcite:t}`espinosa2019breakdown`).
 
 
-The constants are hardcorded within the pair style and they not need to be defined.
+````{warning}
+The value of $\alpha$ cannot be too large to avoid strong forces acting on the particles trapped inside the wells.
+````
+
+````{note}
+In case $\epsilon$ is set to a negative value, the well potential would become fully repulsive.
+````
+
+# Restrictions
+
+This pair style can only be used if LAMMPS was built with the EXTRA-MOLD package. See the Build package doc page for more info.
+
 
 ```{footbibliography}
 
