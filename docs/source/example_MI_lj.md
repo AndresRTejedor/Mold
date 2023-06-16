@@ -80,9 +80,6 @@ The recommended values for such analysis is a threshold of ${\bar{q}}_6=0.34$, a
 
 ![Step-1\label{kk}](../figs/Fig2.png "q6_time")
 
-This is a testlk
-<img src="https://ibb.co/88kMY0B" width="50%" height="50%"/>
-
 A system can be considered to be integrated if the order parameter remains close to the total number of molds within the system (98 wells for this example). Therefore, in this case we can consider $r_w=0.32\sigma$ as the greatest radius with not sufficiently long induction time so it is chosen as our optimal radius to extrapolate.
 
 ## Thermodynamic integration 
@@ -90,7 +87,7 @@ A system can be considered to be integrated if the order parameter remains close
 Once the optimal radius is estimated, the next step consists in thermodynamic integration of different radii above the optimal value of $r_w$. The calculation of the interfacial energy for the different well radii includes the following steps:
 
 1. Create a directory for each radius to be integrated ($r_w=0.33,0.34,0.35\sigma$) and in each directory, create a for each well depth considered for the calculation.
-
+```
 \frac{\epsilon}{k_BT}=
 0.00001
 0.1
@@ -108,7 +105,7 @@ Once the optimal radius is estimated, the next step consists in thermodynamic in
 6
 7
 8
-
+```
 
 ```{footbibliography}
 
