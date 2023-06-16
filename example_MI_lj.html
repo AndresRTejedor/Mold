@@ -90,6 +90,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="example.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Mold integration for 100 plane of Lennard-Jones crystal</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#optimal-radius-calculation">Optimal radius calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#thermodynamic-integration">Thermodynamic integration</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="example_LM_mw.html">Solid-Vacuum interface of a Lennard-Jones crystal with wells</a></li>
@@ -239,8 +240,11 @@ Also, there are some variables that might be interesting to know:</p>
 <li><p>The analysis of this step consists in determining if there is induction time, <em>i.e.</em> if that radius can be thermodynamically integrated. To do so, the resulting trajectory must be analyzed using the order parameter <span class="math notranslate nohighlight">\({\bar{q}}_6\)</span> to determine the number of particles on the cluster.
 The recommended values for such analysis is a threshold of <span class="math notranslate nohighlight">\({\bar{q}}_6=0.34\)</span>, and a cutoff of <span class="math notranslate nohighlight">\(1.35\sigma\)</span>. As a result, one obtains different curves for the order parameter as a function of time for the different well radii:</p></li>
 </ol>
-<p><img alt="Step-1" src="_images/Fig2.png" /></p>
+<p><img alt="Step-1" src="_images/Fig2.png" />{ width=130% }</p>
 <p>A system can be considered to be integrated if the order parameter remains close to the total number of molds within the system (98 wells for this example). Therefore, in this case we can consider <span class="math notranslate nohighlight">\(r_w=0.32\sigma\)</span> as the greatest radius with not sufficiently long induction time so it is chosen as our optimal radius to extrapolate.</p>
+</div>
+<div class="section" id="thermodynamic-integration">
+<h2>Thermodynamic integration<a class="headerlink" href="#thermodynamic-integration" title="Permalink to this headline">¶</a></h2>
 <div class="docutils container" id="id2">
 <dl class="footnote brackets">
 <dt class="label" id="footcite-espinosa2014mold"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
