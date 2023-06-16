@@ -78,9 +78,11 @@ Also, there are some variables that might be interesting to know:
 6. The analysis of this step consists in determining if there is induction time, *i.e.* if that radius can be thermodynamically integrated. To do so, the resulting trajectory must be analyzed using the order parameter ${\bar{q}}_6$ to determine the number of particles on the cluster. 
 The recommended values for such analysis is a threshold of ${\bar{q}}_6=0.34$, and a cutoff of $1.35\sigma$. As a result, one obtains different curves for the order parameter as a function of time for the different well radii:
 
-![Step-1](../figs/Fig2.png "q6_time")
+![Step-1](../figs/Fig2.png "q6_time"){ width=130% }
 
 A system can be considered to be integrated if the order parameter remains close to the total number of molds within the system (98 wells for this example). Therefore, in this case we can consider $r_w=0.32\sigma$ as the greatest radius with not sufficiently long induction time so it is chosen as our optimal radius to extrapolate.
+
+## Thermodynamic integration 
 
 ```{footbibliography}
 
