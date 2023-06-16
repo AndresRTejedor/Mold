@@ -12,7 +12,7 @@ The mold integration technique consists of different steps and here we only disc
 
 1. Preparation of the configuration by embedding the mold coordinates (from a crystal configuration) into the fluid at coexistence conditions.
 2. Choice of the [optimal well radius](#optimal-radius-calculation) $r_{0w}$ to extrapolate the interfacial energy.
-3. Calculation of the interfacial energy for different well radii above the optimal radius
+3. [Thermodynamic integration](#thermodynamic-integration) to calculate the interfacial energy for different well radii above the optimal radius
   $\gamma(r_{0w}>r_w)$. 
 4. Extrapolation of the interfacial energy to the optimal radius $r_{0w}$.
 
@@ -86,7 +86,7 @@ A system can be considered to be integrated if the order parameter remains close
 
 Once the optimal radius is estimated, the next step consists in thermodynamic integration of different radii above the optimal value of $r_w$. The calculation of the interfacial energy for the different well radii includes the following steps:
 
-1. Create a directory for each radius to be integrated ($r_w=0.33,0.34,0.35\sigma$) and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of $\epsilon$ in $k_{B}T$
+1. Create a directory for each radius to be integrated ($r_w=0.33,0.34,0.35\sigma$) and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of $\epsilon$ in $k_{B}T$:
 
 ```
 0.00001
@@ -106,6 +106,9 @@ Once the optimal radius is estimated, the next step consists in thermodynamic in
 7
 8
 ```
+
+
+
 
 ```{footbibliography}
 
