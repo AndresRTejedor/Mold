@@ -91,6 +91,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Mold integration for 100 plane of Lennard-Jones crystal</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#optimal-radius-calculation">Optimal radius calculation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#thermodynamic-integration">Thermodynamic integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extrapolation-and-interfacial-energy-calculation">Extrapolation and interfacial energy calculation</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="example_LM_mw.html">Solid-Vacuum interface of a Lennard-Jones crystal with wells</a></li>
@@ -295,6 +296,13 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 </div>
 <p>In the following figure the curves of well occupancy vs. well depth for the different radii are presented.</p>
 <p><img alt="Step-2\label{Occupancy}" src="_images/Fig3.png" /><em>Caption</em></p>
+</div>
+<div class="section" id="extrapolation-and-interfacial-energy-calculation">
+<h2>Extrapolation and interfacial energy calculation<a class="headerlink" href="#extrapolation-and-interfacial-energy-calculation" title="Permalink to this headline">¶</a></h2>
+<p>After the analysis in the previous step, one obtain a curve of well occupancy vs well depth for each radius so that the interfacial energy is calculated as</p>
+<div class="math notranslate nohighlight">
+\[\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_max-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, N_w(\epsilon) \right],\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_w\)</span> is the total number of wells and l is the short side of the box that can be obtained from the thermos (lx, ly, columns 7 and 8). The resulting integrals are provided in the following table:</p>
 <div class="docutils container" id="id2">
 <dl class="footnote brackets">
 <dt class="label" id="footcite-espinosa2014mold"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
