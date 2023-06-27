@@ -157,9 +157,11 @@ where $N_w$ is the total number of wells and $l$ is the short side of the box th
 
 To obtain the interfacial energy, you now shall extrapolate the value of the interfacial energy to the optimal radius ($r_{0w}=0.32\sigma$) using a linear fit. According to the interfacial energy provided in the table the interfacial energy is
 
-$$\gamma=0.370(8) \epsilon\sigma^(−2)$$
+$$\gamma=0.370(8) \epsilon\sigma^{−2}$$
 
-This mold integration reported for the same system an interfacial energy of $\gamma=0.372(8) \epsilon\sigma^(−2)$ extrapolating to an optimal radius of $r_{0w}=0.315\sigma$ (please see the work by Espinosa *et al*{footcite:t}`espinosa2014mold`). Additionally, another work using the cleaving technique{footcite:t}(`davidchack2003direct`) reported a value of \gamma=0.371(3) \epsilon\sigma^(−2) for the same system.
+![Step-3](../figs/Fig4.png "Extrapolation")
+
+This mold integration reported for the same system an interfacial energy of $\gamma=0.372(8) \epsilon\sigma^{−2}$ extrapolating to an optimal radius of $r_{0w}=0.315\sigma$ (please see the work by Espinosa *et al*{footcite:t}`espinosa2014mold`). Additionally, another work using the cleaving technique{footcite:t}`davidchack2003direct` reported a value of \gamma=0.371(3) \epsilon\sigma^{−2} for the same system.
 
 
 

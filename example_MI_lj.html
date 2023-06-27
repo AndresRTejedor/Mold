@@ -37,7 +37,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Solid-Vacuum interface of a Lennard-Jones crystal with wells" href="example_LM_mw.html" />
+    <link rel="next" title="Lattice Mold calculations for calculation of nucleation rates for mW at T=220K" href="example_LM_mw.html" />
     <link rel="prev" title="Examples" href="example.html" /> 
 </head>
 
@@ -94,7 +94,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#extrapolation-and-interfacial-energy-calculation">Extrapolation and interfacial energy calculation</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="example_LM_mw.html">Solid-Vacuum interface of a Lennard-Jones crystal with wells</a></li>
+<li class="toctree-l2"><a class="reference internal" href="example_LM_mw.html">Lattice Mold calculations for calculation of nucleation rates for mW at T=220K</a></li>
 </ul>
 </li>
 </ul>
@@ -321,12 +321,16 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 </table>
 <p>To obtain the interfacial energy, you now shall extrapolate the value of the interfacial energy to the optimal radius (<span class="math notranslate nohighlight">\(r_{0w}=0.32\sigma\)</span>) using a linear fit. According to the interfacial energy provided in the table the interfacial energy is</p>
 <div class="math notranslate nohighlight">
-\[\gamma=0.370(8) \epsilon\sigma^(−2)\]</div>
-<p>This mold integration reported for the same system an interfacial energy of <span class="math notranslate nohighlight">\(\gamma=0.372(8) \epsilon\sigma^(−2)\)</span> extrapolating to an optimal radius of <span class="math notranslate nohighlight">\(r_{0w}=0.315\sigma\)</span> (please see the work by Espinosa <em>et al</em>Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id2">1</a>). Additionally, another work using the cleaving technique{footcite:t}(<code class="docutils literal notranslate"><span class="pre">davidchack2003direct</span></code>) reported a value of \gamma=0.371(3) \epsilon\sigma^(−2) for the same system.</p>
-<div class="docutils container" id="id3">
+\[\gamma=0.370(8) \epsilon\sigma^{−2}\]</div>
+<p><img alt="Step-3" src="_images/Fig4.png" /></p>
+<p>This mold integration reported for the same system an interfacial energy of <span class="math notranslate nohighlight">\(\gamma=0.372(8) \epsilon\sigma^{−2}\)</span> extrapolating to an optimal radius of <span class="math notranslate nohighlight">\(r_{0w}=0.315\sigma\)</span> (please see the work by Espinosa <em>et al</em>Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id2">1</a>). Additionally, another work using the cleaving techniqueDavidchack and Laird<a class="footnote-reference brackets" href="#footcite-davidchack2003direct" id="id3">2</a> reported a value of \gamma=0.371(3) \epsilon\sigma^{−2} for the same system.</p>
+<div class="docutils container" id="id4">
 <dl class="footnote brackets">
 <dt class="label" id="footcite-espinosa2014mold"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
 <dd><p>JR Espinosa, C Vega, and E Sanz. The mold integration method for the calculation of the crystal-fluid interfacial free energy from simulations. <em>The Journal of chemical physics</em>, 141(13):134709, 2014.</p>
+</dd>
+<dt class="label" id="footcite-davidchack2003direct"><span class="brackets"><a class="fn-backref" href="#id3">2</a></span></dt>
+<dd><p>Ruslan L Davidchack and Brian B Laird. Direct calculation of the crystal–melt interfacial free energies for continuous potentials: application to the lennard-jones system. <em>The Journal of chemical physics</em>, 118(16):7651–7657, 2003.</p>
 </dd>
 </dl>
 </div>
@@ -342,7 +346,7 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="example_LM_mw.html" class="btn btn-neutral float-right" title="Solid-Vacuum interface of a Lennard-Jones crystal with wells" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="example_LM_mw.html" class="btn btn-neutral float-right" title="Lattice Mold calculations for calculation of nucleation rates for mW at T=220K" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="example.html" class="btn btn-neutral float-left" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

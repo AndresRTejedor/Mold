@@ -1,4 +1,4 @@
-# Solid-Vacuum interface of a Lennard-Jones crystal with wells
+# Lattice Mold calculations for calculation of nucleation rates for mW at T=220K
 
 ````{note}
 This example requires few hours of computation time on 16 cores to generate a sensible output. However, you can run shorter simulations to acquaintance yourself with the code. To do this, change the input file variables `eqnts` and `nts` (equilibration and production number of time steps) to smaller values and/or reduce the number of points to move the walls ([Step 1](#step-1), [Step 2](#step-2) or [Step 4](#step-4)) or switch off the interactions ([Step 3](#step-3)).
