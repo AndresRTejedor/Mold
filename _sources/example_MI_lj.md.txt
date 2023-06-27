@@ -161,7 +161,7 @@ $$\gamma=0.370(8) \epsilon\sigma^{−2}$$
 
 ![Step-3](../figs/Fig4.png "Extrapolation")
 
-This mold integration reported for the same system an interfacial energy of $\gamma=0.372(8) \epsilon\sigma^{−2}$ extrapolating to an optimal radius of $r_{0w}=0.315\sigma$ (please see the work by Espinosa *et al*{footcite:t}`espinosa2014mold`). Additionally, another work using the cleaving technique{footcite:t}`davidchack2003direct` reported a value of \gamma=0.371(3) \epsilon\sigma^{−2} for the same system.
+This mold integration reported for the same system an interfacial energy of $\gamma=0.372(8) \epsilon\sigma^{−2}$ extrapolating to an optimal radius of $r_{0w}=0.315\sigma$ (please see the work by Espinosa *et al*{footcite:t}`espinosa2014mold`). Additionally, another work using the cleaving technique{footcite:t}`davidchack2003direct` reported a value of $\gamma=0.371(3) \epsilon\sigma^{−2}$ for the same system.
 
 
 

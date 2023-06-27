@@ -89,11 +89,9 @@
 <li class="toctree-l1 current"><a class="reference internal" href="example.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="example_MI_lj.html">Mold integration for 100 plane of Lennard-Jones crystal</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Lattice Mold calculations for calculation of nucleation rates for mW at T=220K</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#step-1">Step 1</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#step-2">Step 2</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#step-3">Step 3</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#step-4">Step 4</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#calculation-of-the-sfe">Calculation of the SFE</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#optimal-radius-calculation">Optimal radius calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#thermodynamic-integration">Thermodynamic integration</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extrapolation-and-interfacial-energy-calculation">Extrapolation and interfacial energy calculation</a></li>
 </ul>
 </li>
 </ul>
@@ -169,294 +167,173 @@
 <h1>Lattice Mold calculations for calculation of nucleation rates for mW at T=220K<a class="headerlink" href="#lattice-mold-calculations-for-calculation-of-nucleation-rates-for-mw-at-t-220k" title="Permalink to this headline">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>This example requires few hours of computation time on 16 cores to generate a sensible output. However, you can run shorter simulations to acquaintance yourself with the code. To do this, change the input file variables <code class="docutils literal notranslate"><span class="pre">eqnts</span></code> and <code class="docutils literal notranslate"><span class="pre">nts</span></code> (equilibration and production number of time steps) to smaller values and/or reduce the number of points to move the walls (<a class="reference internal" href="#step-1"><span class="std std-doc">Step 1</span></a>, <a class="reference internal" href="#step-2"><span class="std std-doc">Step 2</span></a> or <a class="reference internal" href="#step-4"><span class="std std-doc">Step 4</span></a>) or switch off the interactions (<a class="reference internal" href="#step-3"><span class="std std-doc">Step 3</span></a>).</p>
+<p>In this section <code class="docutils literal notranslate"><span class="pre">/</span></code> is the package’s root folder.</p>
+</div>
+<p>Here we provide a detailed instructions to reproduce the crystal fluid interfacial free energy using the BG and <code class="docutils literal notranslate"><span class="pre">square/well</span> <span class="pre">pair_style</span></code> available in LAMMPS.</p>
+<p>The data file (<code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>) and LAMMPS script (<code class="docutils literal notranslate"><span class="pre">lj_moldint.in</span></code>) is provided in the directory <code class="docutils literal notranslate"><span class="pre">/examples/lj_mold/</span></code>, but in this work example we will navigate through those files to explain them in detail.</p>
+<p>The mold integration technique consists of different steps and here we only discuss the last two steps to obtain the interfacial energy of the 100 plane for the LJ particles at <span class="math notranslate nohighlight">\(T^\ast=0.617\)</span> and <span class="math notranslate nohighlight">\(p^\ast=-0.02\)</span>. All the steps can be found in Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id1">1</a>, and they can be summarized as:</p>
+<ol class="arabic simple">
+<li><p>Preparation of the configuration by embedding the mold coordinates (from a crystal configuration) into the fluid at coexistence conditions.</p></li>
+<li><p>Choice of the <a class="reference internal" href="#optimal-radius-calculation"><span class="std std-doc">optimal well radius</span></a> <span class="math notranslate nohighlight">\(r_{0w}\)</span> to extrapolate the interfacial energy.</p></li>
+<li><p><a class="reference internal" href="#thermodynamic-integration"><span class="std std-doc">Thermodynamic integration</span></a> to calculate the interfacial energy for different well radii above the optimal radius
+<span class="math notranslate nohighlight">\(\gamma(r_{0w}&gt;r_w)\)</span>.</p></li>
+<li><p>Extrapolation of the interfacial energy to the optimal radius <span class="math notranslate nohighlight">\(r_{0w}\)</span>.</p></li>
+</ol>
+<p>The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding <span class="math notranslate nohighlight">\((p,T)\)</span> conditions. In this example, we provide the system data file for the plane 100 of a LJ particles at <span class="math notranslate nohighlight">\(T^\ast=0.617\)</span> and <span class="math notranslate nohighlight">\(p^\ast=-0.02\)</span>:</p>
+<p><img alt="Step-1" src="_images/Fig1.png" /></p>
+<div class="section" id="optimal-radius-calculation">
+<h2>Optimal radius calculation<a class="headerlink" href="#optimal-radius-calculation" title="Permalink to this headline">¶</a></h2>
+<p>The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:</p>
+<ol class="arabic simple">
+<li><p>Create a directory sweeping different radii (<span class="math notranslate nohighlight">\(r_w=0.27,\ 0.28,\ \ldots,0.33,0.34\sigma\)</span>).</p></li>
+<li><p>For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.</p></li>
+<li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>).</p></li>
+<li><p>The LAMMPS script contains several variables that it is important to know to properly perform the simulations:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># ---------------------------- Define variables --------------------------------
+variable  nts          equal  400000     # production number of time-steps
+variable  ts           equal  0.001      # length of the ts (in lj units)
+variable  siglj        equal  1.0        # sigma coefficient for BG pair-style
+variable  epslj        equal  1.0        # epsilon coefficient for BG pair-style
+variable  cut1         equal  2.3        # internal cut-off for BG pair-style
+variable  cut2         equal  2.5        # external cut-off for BG pair-style
+variable  rw           equal  0.33       # (reduced) width of the square well potential
+variable  alpha        equal  0.005      # exponent of the square well potential
+variable  nkT          equal  8.0        # well depth (reduced units) 
+variable  seed         equal  23782      # velocity seed
+variable  Tsyst        equal  0.617      # (reduced) temperature of the system
+variable  Psyst        equal  -0.02      # (reduced) press of the system
+variable  NtsTdamp     equal  100        # Number of ts to damp temperature
+variable  NtsPdamp     equal  100        # Number of ts to damp pressure
+variable  thermoSteps  equal  1000       # Number of ts to write properties on screen
+variable  restartSteps equal  30000      # Number of ts before write restart file
+variable  dumpSteps    equal  5000       # Number of ts before write dump file
+
+# --------------------- Derivate variables -------------------------------------
+variable cutoff1     equal  ${siglj}*${cut1}
+variable cutoff2     equal  ${siglj}*${cut2}
+variable cutoff_well equal  ${rw}*4.0
+variable D           equal  ${nkT}*${Tsyst} # Depth of well
+variable Tdamp       equal  ${NtsTdamp}*${ts}
+variable Pdamp       equal  ${NtsPdamp}*${ts}
+
+
+####  Define mold  ####
+read_data       mold_100.lmp
+group melt type 1
+group mold type 2
+
+</pre></div>
+</div>
+<p>For this step, the typical run must be approximately 200000 time-steps (with dt=1e-3), and that can be controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code>.
+Regarding the interaction potential, the parameter <code class="docutils literal notranslate"><span class="pre">rw</span></code> stands for the well radius so this must be changed for the different studies radii during this step <code class="docutils literal notranslate"><span class="pre">rw</span></code>=<span class="math notranslate nohighlight">\(0.27,\ 0.28,\ \ldots,0.33,0.34\sigma\)</span>.
+The parameter <code class="docutils literal notranslate"><span class="pre">nkT</span></code> gives the well depth in <span class="math notranslate nohighlight">\(k_{B}T\)</span> units and for this step must be kept to 8 or bigger.
+Regarding the velocity seed, the variable <code class="docutils literal notranslate"><span class="pre">seed</span></code> controls this aspect and thus, it must be changed with a random integer number for each simulation.
+Also, there are some variables that might be interesting to know:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thermoSteps</span></code> gives the number of timesteps to print the thermo</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">restartSteps</span></code> indicates the frequency of saving the restart files</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dumpSteps</span></code> is the number of steps to save the trajectory in the dump file and for this step it is recommended to be set to 2000.</p></li>
+</ul>
+<ol class="arabic simple" start="5">
+<li><p>Launch the simulation for each radius and seed. That means a total of 80 simulations, but they are quite short.</p></li>
+<li><p>The analysis of this step consists in determining if there is induction time, <em>i.e.</em> if that radius can be thermodynamically integrated. To do so, the resulting trajectory must be analyzed using the order parameter <span class="math notranslate nohighlight">\({\bar{q}}_6\)</span> to determine the number of particles on the cluster.
+The recommended values for such analysis is a threshold of <span class="math notranslate nohighlight">\({\bar{q}}_6=0.34\)</span>, and a cutoff of <span class="math notranslate nohighlight">\(1.35\sigma\)</span>. As a result, one obtains different curves for the order parameter as a function of time for the different well radii:</p></li>
+</ol>
+<p><img alt="Step-1\label{kk}" src="_images/Fig2.png" /></p>
+<p>A system can be considered to be integrated if the order parameter remains close to the total number of molds within the system (98 wells for this example). Therefore, in this case we can consider <span class="math notranslate nohighlight">\(r_w=0.32\sigma\)</span> as the greatest radius with not sufficiently long induction time so it is chosen as our optimal radius to extrapolate.</p>
+</div>
+<div class="section" id="thermodynamic-integration">
+<h2>Thermodynamic integration<a class="headerlink" href="#thermodynamic-integration" title="Permalink to this headline">¶</a></h2>
+<p>Once the optimal radius is estimated, the next step consists in thermodynamic integration of different radii above the optimal value of <span class="math notranslate nohighlight">\(r_w\)</span>. The calculation of the interfacial energy for the different well radii includes the following steps:</p>
+<ol class="arabic simple">
+<li><p>Create a directory for each radius to be integrated (<span class="math notranslate nohighlight">\(r_w=0.33,0.34,0.35\sigma\)</span>) and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of <span class="math notranslate nohighlight">\(\epsilon\)</span> in <span class="math notranslate nohighlight">\(k_{B}T\)</span>:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.00001</span>
+<span class="mf">0.1</span>
+<span class="mf">0.2</span>
+<span class="o">...</span>
+<span class="mf">1.9</span>
+<span class="mf">2.0</span>
+<span class="mf">2.3</span>
+<span class="mf">2.6</span>
+<span class="mi">3</span>
+<span class="mf">3.5</span>
+<span class="mi">4</span>
+<span class="mf">4.5</span>
+<span class="mi">5</span>
+<span class="mi">6</span>
+<span class="mi">7</span>
+<span class="mi">8</span>
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>).</p></li>
+<li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of hundred of thousands time-steps (with <code class="docutils literal notranslate"><span class="pre">dt=1e-3</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code>. Regarding the interaction potential, the parameter <code class="docutils literal notranslate"><span class="pre">rw</span></code> that controls the well radius must be changed for the different radii <code class="docutils literal notranslate"><span class="pre">rw=0.33,0.34,0.35</span></code> (in <span class="math notranslate nohighlight">\(\sigma\)</span>). The parameter <code class="docutils literal notranslate"><span class="pre">nkT</span></code> (well depth) must change it for each simulation with the corresponding value. Also, the <code class="docutils literal notranslate"><span class="pre">thermoSteps</span></code> should have a reasonable value (1000 is recommended), and <code class="docutils literal notranslate"><span class="pre">dumpSteps</span></code> can be set above 50000 timesteps as the trajectory is not needed for this step</p></li>
+<li><p>Launch the simulation for each radius and well depth.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the thermodynamic integration. We need to get the average number of well occupancy for each value of <code class="docutils literal notranslate"><span class="pre">nkT</span></code> so that we print the potential contribution due to LJ particle-well interaction (<code class="docutils literal notranslate"><span class="pre">c_1</span></code>, column 13), but also the number of particles in the system (<code class="docutils literal notranslate"><span class="pre">v_nall</span></code>, column 15) since the energy is expressed in reduced LJ units, <em>i.e.</em> energy per particle instead of energy of the total system:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># ------------- Output thermo information and averaged variables ---------------
+variable well equal c_1*count(all)
+variable nall equal count(all)
+compute mytemp melt temp
+compute 1 all pair square/well
+thermo    ${thermoSteps}
+thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_well v_nall spcpu density
+</pre></div>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>In this section <code class="docutils literal notranslate"><span class="pre">/</span></code> is the package’s root folder.</p>
+<p>For real units the multiplication by the number of particles in the system is not necessary.</p>
 </div>
-<p>In this example we will set up the cleaving calculation for the calculation of the SFE of a Lennard-Jones crystal in contact with vacuum.</p>
-<p>The input files for the whole calculations are already given in the directory <code class="docutils literal notranslate"><span class="pre">/examples/lj_SV</span></code> but in this tutorial we will go through the writing of such files from scratch.</p>
-<p>First of all, create a new folder and step in it.</p>
-<div class="section" id="step-1">
-<h2>Step 1<a class="headerlink" href="#step-1" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
-<li><p>Create a <code class="docutils literal notranslate"><span class="pre">step1</span></code> folder and enter it. Create the <code class="docutils literal notranslate"><span class="pre">out/</span></code>, <code class="docutils literal notranslate"><span class="pre">data/</span></code>, <code class="docutils literal notranslate"><span class="pre">restart/</span></code>, and <code class="docutils literal notranslate"><span class="pre">dump/</span></code> subfolders. Note that you can safely comment out the <code class="docutils literal notranslate"><span class="pre">dump</span></code> and <code class="docutils literal notranslate"><span class="pre">restart</span></code> lines of the input, since dump and restart files are not needed for the cleaving computation. In this case you don’t need to create the <code class="docutils literal notranslate"><span class="pre">restart/</span></code> and <code class="docutils literal notranslate"><span class="pre">dump/</span></code> folders.</p></li>
-<li><p>Prepare the LAMMPS input file. Here we use <code class="docutils literal notranslate"><span class="pre">/examples/lj_S/bulk.in</span></code> file as a starting point. Copy it to the current folder, delete all the lines after the <code class="docutils literal notranslate"><span class="pre">f3</span></code> fix and change the temperature to 0.1 <code class="docutils literal notranslate"><span class="pre">variable</span> <span class="pre">Tsyst</span> <span class="pre">equal</span> <span class="pre">0.1</span></code>.</p></li>
-<li><p>Prepare the starting configuration. Here we copy the <code class="docutils literal notranslate"><span class="pre">/examples/lj_systems/fcc111-T01.lmp</span></code> data file to the current folder. The file contains the starting configuration, a Lennard-Jones fcc crystal oriented along the direction (111) at the (reduced) temperature of 0.1. Edit the <code class="docutils literal notranslate"><span class="pre">bulk.in</span></code> input file so that the correct data file is read (<em>i.e.</em> change the <code class="docutils literal notranslate"><span class="pre">read_data</span> <span class="pre">fcc111-T1.lmp</span></code> line to <code class="docutils literal notranslate"><span class="pre">read_data</span> <span class="pre">fcc111-T01.lmp</span></code>).</p></li>
-<li><p>Prepare a wells file. Here we will use the <code class="docutils literal notranslate"><span class="pre">/examples/lj_systems/fcc111-T01-wells.lmp</span></code> file, which should be copied to the current folder. The exact format of this file is given in the description of the appropriate fix.</p></li>
-<li><p>Prepare a file containing the variation of the strength of the wells. This file contains a sequence of increasing consecutive numbers in the interval <span class="math notranslate nohighlight">\([0,1]\)</span> (extremes included). Here is a (truncated) example:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.0</span>
-<span class="mf">0.001</span>
-<span class="mf">0.002</span>
-<span class="mf">0.05</span>
-<span class="mf">0.1</span>
-<span class="o">...</span>
-<span class="mf">0.998</span>
-<span class="mf">0.999</span>
-<span class="mf">1.0</span>
-</pre></div>
+<p>The calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:</p>
+<div class="math notranslate nohighlight">
+\[\langle Nw \rangle=c_1\cdot n_all/(nkT\cdot T)\]</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please note that the system requires a time to reach the steady state so that the analysis must be performed discarding after <span class="math notranslate nohighlight">\(t\approx10\tau\)</span>. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…)</p>
 </div>
-<p>Note:</p>
-<ul class="simple">
-<li><p>The file must start at 0 and end at 1.</p></li>
-<li><p>There is no internal control in the code that checks that the boundaries are correct</p></li>
-</ul>
-<p>Here we will be using the <code class="docutils literal notranslate"><span class="pre">/examples/lj_SV/step1/lambda_wells.dat</span></code> file, so make sure to copy it to the current folder.</p>
-<p><img alt="Step-1" src="../figs/wells-S1.png" /></p>
-<ol class="arabic simple" start="6">
-<li><p>The wells in the system are introduced using the new fix <code class="docutils literal notranslate"><span class="pre">wellPforce</span></code>:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>fix f2 all wellPforce ${dw} ${rw} ${expp} ${lambda} file fcc111-T01-wells.lmp 
-</pre></div>
+<p>In the following figure the curves of well occupancy vs. well depth for the different radii are presented.</p>
+<p><img alt="Step-2\label{Occupancy}" src="_images/Fig3.png" /></p>
 </div>
-<p>where the explanation of the different parameters is given in the <span class="xref myst">description</span> of the fix. In the wells version of the cleaving model, the wells are introduced by switching the parameter lambda from 0 (no interactions between atoms and wells) and 1 (full interactions between atoms and wells). LAMMPS allows the creation of an input file which can perform several runs in a row by changing the parameter between the different runs. The relevant code that should be added to <code class="docutils literal notranslate"><span class="pre">bulk.in</span></code> is</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>variable Nevery  equal 100
-variable Nrepeat equal 5
-variable Nfreq   equal 500
-
-variable lam file lambda_wells.dat
-variable i     equal 1
-variable dw    equal 6.0
-variable a0    equal exp(1/3*ln(4/1.05604))
-variable rw    equal sqrt(2)*${a0}/4.0*1.2
-variable expp  equal 3.0
-
-label here
-variable    lambda equal ${lam}
-
-fix f2 all wellPforce ${dw} ${rw} ${expp} ${lambda} file fcc111-T01-wells.lmp 
-
-print       &quot;Well depth ${lambda}&quot;
-run ${eqnts}
-
-fix  f5 all ave/time ${Nevery} ${Nrepeat} ${Nfreq} c_thermo_temp c_thermo_pe f_f2 v_lambda file  out/ave.F.${i}.out
-
-run ${nts}
-
-unfix f5
-unfix f2 
-
-write_data data/Fstep1.${i}.data nocoeff
-variable    ii equal ${i}+1
-variable    i  equal ${ii}
-next lam
-jump SELF here
-</pre></div>
+<div class="section" id="extrapolation-and-interfacial-energy-calculation">
+<h2>Extrapolation and interfacial energy calculation<a class="headerlink" href="#extrapolation-and-interfacial-energy-calculation" title="Permalink to this headline">¶</a></h2>
+<p>After the analysis in the previous step, one obtain a curve of well occupancy vs well depth for each radius so that the interfacial energy is calculated as</p>
+<div class="math notranslate nohighlight">
+\[\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, N_w(\epsilon) \right],\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_w\)</span> is the total number of wells and <span class="math notranslate nohighlight">\(l\)</span> is the short side of the box that can be obtained from the thermo (<code class="docutils literal notranslate"><span class="pre">lx</span></code>, <code class="docutils literal notranslate"><span class="pre">ly</span></code>, columns 7 and 8 int the <code class="docutils literal notranslate"><span class="pre">thermo</span></code>). The resulting integrals are provided in the following table:</p>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="text-center head"><p><span class="math notranslate nohighlight">\(r_w/\sigma\)</span>)</p></th>
+<th class="text-center head"><p>0.33</p></th>
+<th class="text-center head"><p>0.34</p></th>
+<th class="text-center head"><p>0.35</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(\gamma/\sigma^{-2}\epsilon\)</span></p></td>
+<td class="text-center"><p>0.363</p></td>
+<td class="text-center"><p>0.357</p></td>
+<td class="text-center"><p>0.348</p></td>
+</tr>
+</tbody>
+</table>
+<p>To obtain the interfacial energy, you now shall extrapolate the value of the interfacial energy to the optimal radius (<span class="math notranslate nohighlight">\(r_{0w}=0.32\sigma\)</span>) using a linear fit. According to the interfacial energy provided in the table the interfacial energy is</p>
+<div class="math notranslate nohighlight">
+\[\gamma=0.370(8) \epsilon\sigma^{−2}\]</div>
+<p><img alt="Step-3" src="_images/Fig4.png" /></p>
+<p>This mold integration reported for the same system an interfacial energy of <span class="math notranslate nohighlight">\(\gamma=0.372(8) \epsilon\sigma^{−2}\)</span> extrapolating to an optimal radius of <span class="math notranslate nohighlight">\(r_{0w}=0.315\sigma\)</span> (please see the work by Espinosa <em>et al</em>Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id2">1</a>). Additionally, another work using the cleaving techniqueDavidchack and Laird<a class="footnote-reference brackets" href="#footcite-davidchack2003direct" id="id3">2</a> reported a value of <span class="math notranslate nohighlight">\(\gamma=0.371(3) \epsilon\sigma^{−2}\)</span> for the same system.</p>
+<div class="docutils container" id="id4">
+<dl class="footnote brackets">
+<dt class="label" id="footcite-espinosa2014mold"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
+<dd><p>JR Espinosa, C Vega, and E Sanz. The mold integration method for the calculation of the crystal-fluid interfacial free energy from simulations. <em>The Journal of chemical physics</em>, 141(13):134709, 2014.</p>
+</dd>
+<dt class="label" id="footcite-davidchack2003direct"><span class="brackets"><a class="fn-backref" href="#id3">2</a></span></dt>
+<dd><p>Ruslan L Davidchack and Brian B Laird. Direct calculation of the crystal–melt interfacial free energies for continuous potentials: application to the lennard-jones system. <em>The Journal of chemical physics</em>, 118(16):7651–7657, 2003.</p>
+</dd>
+</dl>
 </div>
-<p>To keep the main directory clean from all the output files generated during the run, we print those files in the <code class="docutils literal notranslate"><span class="pre">out</span></code> and <code class="docutils literal notranslate"><span class="pre">data</span></code> folders.</p>
-<p>We refer to the <a class="reference external" href="https://docs.lammps.org/jump.html">LAMMPS documentation</a> for the use of the <code class="docutils literal notranslate"><span class="pre">jump</span></code> command to create a loop. Each iteration of the loop produces the following files:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Fstep1.${i}.data</span></code>: data file containing the last configuration of the i-th iteration</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">ave.F.${i}.out</span></code>: File which contains a summary of the properties of the system, including the work (<code class="docutils literal notranslate"><span class="pre">f_f2</span></code>)</p></li>
-</ul>
-<ol class="arabic simple" start="7">
-<li><p>Launch the simulation.</p></li>
-</ol>
-</div>
-<div class="section" id="step-2">
-<h2>Step 2<a class="headerlink" href="#step-2" title="Permalink to this headline">¶</a></h2>
-<p>This step for this particular system (a crystal in coexistence with vacuum) is empty, so we can directly go to <a class="reference internal" href="#step-3"><span class="std std-doc">Step 3</span></a>.</p>
-</div>
-<div class="section" id="step-3">
-<h2>Step 3<a class="headerlink" href="#step-3" title="Permalink to this headline">¶</a></h2>
-<p><img alt="Step-3" src="../figs/wells-S3.png" /></p>
-<p>In the third step we switch off the interactions between the two sides of the cleaving wall.</p>
-<ol class="arabic simple">
-<li><p>Create the <code class="docutils literal notranslate"><span class="pre">step3</span></code> folder and enter it. Create the <code class="docutils literal notranslate"><span class="pre">out/</span></code>, <code class="docutils literal notranslate"><span class="pre">data/</span></code>, <code class="docutils literal notranslate"><span class="pre">dat/</span></code>, <code class="docutils literal notranslate"><span class="pre">restart/</span></code>, and <code class="docutils literal notranslate"><span class="pre">dump/</span></code> subfolders (where the latter two can be omitted if the related commands in the LAMMPS script file are commented). The <code class="docutils literal notranslate"><span class="pre">dat/</span></code> folder will contain the output of this step.</p></li>
-<li><p>Copy <code class="docutils literal notranslate"><span class="pre">fcc111-T01-wells.lmp</span></code> and the last <code class="docutils literal notranslate"><span class="pre">data/Fstep1.*.data</span></code> file from the <a class="reference internal" href="#step-1"><span class="std std-doc">Step 1</span></a> folder.</p></li>
-<li><p>Prepare a new LAMMPS input file. We again use the <code class="docutils literal notranslate"><span class="pre">/examples/lj_S/bulk.in</span></code> file as a starting point. Copy it to the current folder, delete all the lines after the <code class="docutils literal notranslate"><span class="pre">f3</span></code> fix and change the temperature to 0.1 <code class="docutils literal notranslate"><span class="pre">variable</span> <span class="pre">Tsyst</span> <span class="pre">equal</span> <span class="pre">0.1</span></code> and change the name of the data file to match the file copied in sub-step 2.</p></li>
-<li><p>The switching off is implemented directly in the definition of the pair interactions. We therefore need to change the pair interaction in the LAMMPS script file (section <em>Interactions</em>) to the new defined type</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>pair_style lj/BGcleavpbc ${cutoff1} ${cutoff2} z
-</pre></div>
-</div>
-<p>All the parameters (<code class="docutils literal notranslate"><span class="pre">cutoff1</span></code>, <code class="docutils literal notranslate"><span class="pre">cutoff2</span></code>, <code class="docutils literal notranslate"><span class="pre">epsilon</span></code>, <code class="docutils literal notranslate"><span class="pre">sigma</span></code>) are identical to those used in <a class="reference internal" href="#step-1"><span class="std std-doc">Step 1</span></a>. Note that there is a third parameter in this <code class="docutils literal notranslate"><span class="pre">pair_style</span></code>, the direction normal to the cleaving plane, which is <code class="docutils literal notranslate"><span class="pre">z</span></code> in this case.</p>
-<ol class="arabic simple" start="5">
-<li><p>Add the command for the wells, together with the definition of the variables that sets the parameters specifying the wells characteristics:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>variable dw    equal 6.0
-variable a0    equal exp(1/3*ln(4/1.05604))
-variable rw    equal sqrt(2)*${a0}/4.0*1.2
-variable expp  equal 3.0
-
-fix f2 all wellPforce ${dw} ${rw} ${expp} 1.0 file fcc111-T01-wells.lmp
-</pre></div>
-</div>
-<p>In this step the strenght of the wells remains constant, therefore we replace <code class="docutils literal notranslate"><span class="pre">${lambda}</span></code> with 1.</p>
-<ol class="arabic simple" start="6">
-<li><p>Create a file (called <code class="docutils literal notranslate"><span class="pre">zdir.dat</span></code>) for the switching off of the interactions across the cleaving plane (or copy <code class="docutils literal notranslate"><span class="pre">/examples/LJ_SV/step3/zdir.dat</span></code>). The file should contain a list of values that specify how much the box will be moved away from its periodic images along the normal to the cleaving plane (<code class="docutils literal notranslate"><span class="pre">z</span></code> in our case). The file must start with zero, which is the first point of the switching. Here is an example:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.0</span>
-<span class="mf">0.001</span>
-<span class="mf">0.002</span>
-<span class="mf">0.05</span>
-<span class="mf">0.1</span>
-<span class="o">...</span>
-<span class="mf">2.0</span>
-<span class="mf">2.2</span>
-<span class="mf">2.4</span>
-<span class="mf">2.8</span>
-<span class="mf">3.2</span>
-<span class="o">...</span>
-</pre></div>
-</div>
-<p>Note: the upper boundary should be large enough so that, when the box has moved this much, there are no more interactions between the box and its periodic images. A value of 2.6 is usually enough.</p>
-<ol class="arabic simple" start="7">
-<li><p>The work needed to switch off the interactions (described in the next point) is calculated by adding the line <code class="docutils literal notranslate"><span class="pre">compute</span> <span class="pre">1</span> <span class="pre">all</span> <span class="pre">cleavpairs</span> <span class="pre">lj/BGcleavpbc</span> <span class="pre">norm</span> <span class="pre">2</span> <span class="pre">z</span></code> to end of the LAMMPS script file. The meaning of the parameters is reported in the <span class="xref myst">description</span> of this compute style.</p></li>
-<li><p>The actual switching off is obtained through another loop which increases the size of the box. Since the atoms are kept in place by the cleaving potential, increasing the size of the box creates a vacuum space. When the vacuum space is larger than <code class="docutils literal notranslate"><span class="pre">cutoff2</span></code> than the box and its image across the cleaving wall do not interact anymore. Add the following loop to the end of the LAMMPS script file:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>variable Nevery  equal 100
-variable Nrepeat equal 5
-variable Nfreq   equal 500
-
-variable initzhi equal $(zhi)
-variable initzlo equal $(zlo)
-variable zc file zdir.dat
-variable i equal 1
-
-label here
-variable dhi equal ${zc}
-variable newzhi equal ${dhi}+${initzhi}
-variable newzlo equal ${initzlo}
-
-print       &quot;Forward Interaction ${i}: ${zc} &quot;
-print       &quot; ${initzhi} ${dhi} zhi &quot;
-
-change_box all z final ${newzlo}  ${newzhi}
-
-print       &quot;B ${initzhi} ${dhi} zhi &quot;
-
-run   ${eqnts}
-
-fix   f6 all ave/time ${Nevery} ${Nrepeat} ${Nfreq}  c_1[*] file dat/inters3.${i}.dat mode vector
-fix   f7 all ave/time ${Nevery} ${Nrepeat} ${Nfreq} c_thermo_temp c_thermo_pe f_f2 v_dhi file  out/ave.F.${i}.out
-
-run   ${nts}
-
-unfix f6
-unfix f7
-
-write_data  data/Fstep3.${i}.data  nocoeff
-variable    ii equal ${i}+1
-variable    i  equal ${ii}
-next zc
-jump SELF here
-</pre></div>
-</div>
-<p>We refer to the <a class="reference external" href="https://docs.lammps.org/change_box.html">LAMMPS documentation</a> for the exact explanation of the <code class="docutils literal notranslate"><span class="pre">change_box</span></code> command.</p>
-<ol class="arabic simple" start="9">
-<li><p>Launch the simulation.</p></li>
-</ol>
-</div>
-<div class="section" id="step-4">
-<h2>Step 4<a class="headerlink" href="#step-4" title="Permalink to this headline">¶</a></h2>
-<p><img alt="Step-4" src="../figs/wells-S4.png" /></p>
-<p>In the last step we remove the wells leaving free the newly created interfaces.</p>
-<ol class="arabic simple">
-<li><p>Create the <code class="docutils literal notranslate"><span class="pre">step4</span></code> folder and enter it. Create the <code class="docutils literal notranslate"><span class="pre">out/</span></code>, <code class="docutils literal notranslate"><span class="pre">data/</span></code>, <code class="docutils literal notranslate"><span class="pre">restart/</span></code>, and <code class="docutils literal notranslate"><span class="pre">dump/</span></code> subfolders (where the latter two can be omitted if the related commands in the LAMMPS script file are commented). The <code class="docutils literal notranslate"><span class="pre">out/</span></code> folder will contain the output of this step.</p></li>
-<li><p>Copy <code class="docutils literal notranslate"><span class="pre">fcc111-T01-wells.lmp</span></code> and the last <code class="docutils literal notranslate"><span class="pre">data/Fstep3.*.data</span></code> file from the <a class="reference internal" href="#step-3"><span class="std std-doc">Step 3</span></a> folder.</p></li>
-<li><p>Prepare a new LAMMPS input file. We again use the <code class="docutils literal notranslate"><span class="pre">/examples/lj_S/bulk.in</span></code> file as a starting point. Copy it to the current folder, delete all the lines after the <code class="docutils literal notranslate"><span class="pre">f3</span></code> fix and change the temperature to 0.1 <code class="docutils literal notranslate"><span class="pre">variable</span> <span class="pre">Tsyst</span> <span class="pre">equal</span> <span class="pre">0.1</span></code> and change the name of the data file to match the file copied in sub-step 2.</p></li>
-<li><p>Prepare a file containing the variation of the strength of the wells. This file contains a sequence of increasing consecutive numbers in the interval <span class="math notranslate nohighlight">\([0,1]\)</span> (extremes included). Here is a (truncated) example:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">1.0</span>
-<span class="mf">0.99</span>
-<span class="mf">0.98</span>
-<span class="o">...</span>
-<span class="mf">0.02</span>
-<span class="mf">0.01</span>
-<span class="mf">0.0</span>
-</pre></div>
-</div>
-<p>Note:</p>
-<ul class="simple">
-<li><p>The file must start at 1 and end at 0.</p></li>
-<li><p>There is no internal control in the code that checks that the boundaries are correct.</p></li>
-<li><p>The values does not need to be the same (in reverse order) of those used in <a class="reference internal" href="#step-1"><span class="std std-doc">Step 1</span></a>.</p></li>
-</ul>
-<p>Here we will be using the <code class="docutils literal notranslate"><span class="pre">/examples/lj_SV/step4/rev_lambda_wells.dat</span></code> file, so make sure to copy it to the current folder.</p>
-<ol class="arabic simple" start="5">
-<li><p>The loop in <a class="reference internal" href="#step-4"><span class="std std-doc">Step 4</span></a> in analogous to the loop in <a class="reference internal" href="#step-1"><span class="std std-doc">Step 1</span></a> run backwards</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>variable Nevery  equal 100
-variable Nrepeat equal 5
-variable Nfreq   equal 500
-
-variable lam   file rev_lambda_wells.dat
-variable dw    equal 6.0
-variable a0    equal exp(1/3*ln(4/1.05604))
-variable rw    equal sqrt(2)*${a0}/4.0*1.2
-variable expp  equal 3.0
-variable i     equal 1
-
-label here
-variable    lambda equal ${lam}
-
-fix f2 all wellPforce ${dw} ${rw} ${expp} ${lambda} file fcc111-T01-wells.lmp
-variable totW   equal &quot;f_f2&quot;
-
-print       &quot;Well depth ${lambda}&quot;
-
-run   ${eqnts}
-
-fix  f6 all ave/time  ${Nevery} ${Nrepeat} ${Nfreq}  c_thermo_temp c_thermo_pe v_totW v_lambda f_f2   file out/ave.F.$i.out
-
-run  ${nts}
-
-unfix f2
-unfix f6
-write_data data/Fstep4.$i.data nocoeff
-variable    ii equal $i+1
-variable    i  equal ${ii}
-next lam
-jump SELF here
-</pre></div>
-</div>
-<ol class="arabic simple" start="6">
-<li><p>Launch the simulation.</p></li>
-</ol>
-</div>
-<div class="section" id="calculation-of-the-sfe">
-<h2>Calculation of the SFE<a class="headerlink" href="#calculation-of-the-sfe" title="Permalink to this headline">¶</a></h2>
-<p>The SFE is obtained by summing the work performed in the <a class="reference internal" href="#step-1"><span class="std std-doc">Step 1</span></a>, <a class="reference internal" href="#step-3"><span class="std std-doc">Step 3</span></a>, <a class="reference internal" href="#step-4"><span class="std std-doc">Step 4</span></a>. The work is calculated by using the results produced in each step. The folder <code class="docutils literal notranslate"><span class="pre">/utils/</span></code> contains some small programs for the post-processing.</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">work.sh</span></code>: bash script to calculate the average of the relevant properties for each step of the thermodynamic integration</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">c3cryst.f90</span></code>: fortran program to extract the value of the interactions calculated in  Step 3. It must be compiled by running the command <code class="docutils literal notranslate"><span class="pre">gfortran</span> <span class="pre">c3cryst.f90</span></code> from within the <code class="docutils literal notranslate"><span class="pre">/utils/</span></code> folder</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">calcSFE.m</span></code>: Matlab script to perform the integration of each curve</p></li>
-</ul>
-<p>Before analyzing the calculations, let’s create a folder ‘/results/’ at the same level of the folders <code class="docutils literal notranslate"><span class="pre">./step1/</span></code>, <code class="docutils literal notranslate"><span class="pre">./step3</span></code>, <code class="docutils literal notranslate"><span class="pre">./step4</span></code>. Here, we will copy the results for each step.</p>
-<ol class="arabic simple">
-<li><p>The files <code class="docutils literal notranslate"><span class="pre">.out</span></code> generated in <a class="reference internal" href="#step-1"><span class="std std-doc">Step 1</span></a> contains the quantity <code class="docutils literal notranslate"><span class="pre">f_f2</span></code>, which is the work performed. An average of that quantity for each lambda gives the variation of the energy in Step1. The integration of the results quantity over lambda gives the total work in <a class="reference internal" href="#step-1"><span class="std std-doc">Step 1</span></a>. In order to calculate the work performed in Step 1:</p>
-<ol class="arabic simple">
-<li><p>Enter in the dir <code class="docutils literal notranslate"><span class="pre">./step1/out/</span></code></p></li>
-<li><p>Call the script <code class="docutils literal notranslate"><span class="pre">../../utils/work.sh</span> <span class="pre">F</span></code></p></li>
-<li><p>Copy the file <code class="docutils literal notranslate"><span class="pre">F-work.dat</span></code> in the folder <code class="docutils literal notranslate"><span class="pre">./results/</span></code> by changing its name to <code class="docutils literal notranslate"><span class="pre">step1_work.dat</span></code></p></li>
-</ol>
-</li>
-</ol>
-<p>The profile of the work obtained as function of <span class="math notranslate nohighlight">\(\lambda\)</span> is represented in the next figure.
-<img alt="Step-1 profile" src="../figs/ws1.png" /></p>
-<ol class="arabic simple" start="2">
-<li><p>The files <code class="docutils literal notranslate"><span class="pre">.dat</span></code> generated in <a class="reference internal" href="#step-3"><span class="std std-doc">Step 3</span></a> contains the interactions <em>switched-off</em> during the <a class="reference internal" href="#step-3"><span class="std std-doc">Step 3</span></a>. By averaging these values for each value of zw we obtain the variation of the energy, and the integration of the results over zw gives the total work done in <a class="reference internal" href="#step-3"><span class="std std-doc">Step 3</span></a>.</p></li>
-</ol>
-<p>In order to calculate the work performed in Step 3:</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>1. Enter in the dir `./step3/out/`
-2. Call the program `../../utils/a.out`
-3. Call the script `../../utils/work.sh F`
-4. Copy the file `F-work.dat` in the folder `./results/` by changing its name to `step3_work.dat`
-</pre></div>
-</div>
-<p>The profile of the work obtained as function of <span class="math notranslate nohighlight">\(z\)</span> is represented in the next figure.
-<img alt="Step-3 profile" src="../figs/ws3.png" /></p>
-<ol class="arabic simple" start="3">
-<li><p><a class="reference internal" href="#step-4"><span class="std std-doc">Step 4</span></a> is analogous to <a class="reference internal" href="#step-1"><span class="std std-doc">Step 1</span></a>. Remember to change the name of the file obtained to <code class="docutils literal notranslate"><span class="pre">step4_work.dat</span></code></p></li>
-</ol>
-<p>The profile of the work obtained as function of <span class="math notranslate nohighlight">\(\lambda\)</span> is represented in the next figure.
-<img alt="Step-4 profile" src="../figs/ws4.png" /></p>
-<ol class="arabic simple" start="4">
-<li><p>After the profile of the work in the three steps is obtained, we can calculate the SFE by integrating the three curves. Enter in the dir <code class="docutils literal notranslate"><span class="pre">/results</span></code>, copy the Matlab script  <code class="docutils literal notranslate"><span class="pre">/utils/calcSFE.m</span></code> and run it in Matlab from this folder. The final value of the SFE is: <span class="math notranslate nohighlight">\(2.095\pm 0.007\)</span> in units of <span class="math notranslate nohighlight">\(\epsilon\sigma^{-2}\)</span></p></li>
-</ol>
+<hr class="footnotes docutils" />
 </div>
 </div>
 
