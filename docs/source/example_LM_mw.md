@@ -1,316 +1,170 @@
 # Lattice Mold calculations for calculation of nucleation rates for mW at T=220K
 
 ````{note}
-This example requires few hours of computation time on 16 cores to generate a sensible output. However, you can run shorter simulations to acquaintance yourself with the code. To do this, change the input file variables `eqnts` and `nts` (equilibration and production number of time steps) to smaller values and/or reduce the number of points to move the walls ([Step 1](#step-1), [Step 2](#step-2) or [Step 4](#step-4)) or switch off the interactions ([Step 3](#step-3)).
-````
-
-````{note}
 In this section `/` is the package's root folder.
 ````
+Here we provide a detailed instructions to reproduce the crystal fluid interfacial free energy using the BG and `square/well pair_style` available in LAMMPS. 
 
-In this example we will set up the cleaving calculation for the calculation of the SFE of a Lennard-Jones crystal in contact with vacuum.
+The data file (`mold_100.lmp`) and LAMMPS script (`lj_moldint.in`) is provided in the directory `/examples/lj_mold/`, but in this work example we will navigate through those files to explain them in detail.
 
-The input files for the whole calculations are already given in the directory `/examples/lj_SV` but in this tutorial we will go through the writing of such files from scratch.
+The mold integration technique consists of different steps and here we only discuss the last two steps to obtain the interfacial energy of the 100 plane for the LJ particles at $T^\ast=0.617$ and $p^\ast=-0.02$. All the steps can be found in {footcite:t}`espinosa2014mold`, and they can be summarized as: 
 
-First of all, create a new folder and step in it.
+1. Preparation of the configuration by embedding the mold coordinates (from a crystal configuration) into the fluid at coexistence conditions.
+2. Choice of the [optimal well radius](#optimal-radius-calculation) $r_{0w}$ to extrapolate the interfacial energy.
+3. [Thermodynamic integration](#thermodynamic-integration) to calculate the interfacial energy for different well radii above the optimal radius
+  $\gamma(r_{0w}>r_w)$. 
+4. Extrapolation of the interfacial energy to the optimal radius $r_{0w}$.
 
-## Step 1 
+The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding $(p,T)$ conditions. In this example, we provide the system data file for the plane 100 of a LJ particles at $T^\ast=0.617$ and $p^\ast=-0.02$:
 
-1. Create a `step1` folder and enter it. Create the `out/`, `data/`, `restart/`, and `dump/` subfolders. Note that you can safely comment out the `dump` and `restart` lines of the input, since dump and restart files are not needed for the cleaving computation. In this case you don't need to create the `restart/` and `dump/` folders.
+![Step-1](../figs/Fig1.png "Conf_MI")
 
-2. Prepare the LAMMPS input file. Here we use `/examples/lj_S/bulk.in` file as a starting point. Copy it to the current folder, delete all the lines after the `f3` fix and change the temperature to 0.1 `variable Tsyst equal 0.1`.
 
-3. Prepare the starting configuration. Here we copy the `/examples/lj_systems/fcc111-T01.lmp` data file to the current folder. The file contains the starting configuration, a Lennard-Jones fcc crystal oriented along the direction (111) at the (reduced) temperature of 0.1. Edit the `bulk.in` input file so that the correct data file is read (*i.e.* change the `read_data fcc111-T1.lmp` line to `read_data fcc111-T01.lmp`).
+## Optimal radius calculation 
 
-4. Prepare a wells file. Here we will use the `/examples/lj_systems/fcc111-T01-wells.lmp` file, which should be copied to the current folder. The exact format of this file is given in the description of the appropriate fix.
+The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:
 
-5. Prepare a file containing the variation of the strength of the wells. This file contains a sequence of increasing consecutive numbers in the interval $[0,1]$ (extremes included). Here is a (truncated) example:
+1. Create a directory sweeping different radii ($r_w=0.27,\ 0.28,\ \ldots,0.33,0.34\sigma$).
+2. For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.
+3. Copy the LAMMPS script file (`lj_mold.in`) in each subdirectory along with the configuration file (`mold_100.lmp`).
+4. The LAMMPS script contains several variables that it is important to know to properly perform the simulations:
+```
+# ---------------------------- Define variables --------------------------------
+variable  nts          equal  400000     # production number of time-steps
+variable  ts           equal  0.001      # length of the ts (in lj units)
+variable  siglj        equal  1.0        # sigma coefficient for BG pair-style
+variable  epslj        equal  1.0        # epsilon coefficient for BG pair-style
+variable  cut1         equal  2.3        # internal cut-off for BG pair-style
+variable  cut2         equal  2.5        # external cut-off for BG pair-style
+variable  rw           equal  0.33       # (reduced) width of the square well potential
+variable  alpha        equal  0.005      # exponent of the square well potential
+variable  nkT          equal  8.0        # well depth (reduced units) 
+variable  seed         equal  23782      # velocity seed
+variable  Tsyst        equal  0.617      # (reduced) temperature of the system
+variable  Psyst        equal  -0.02      # (reduced) press of the system
+variable  NtsTdamp     equal  100        # Number of ts to damp temperature
+variable  NtsPdamp     equal  100        # Number of ts to damp pressure
+variable  thermoSteps  equal  1000       # Number of ts to write properties on screen
+variable  restartSteps equal  30000      # Number of ts before write restart file
+variable  dumpSteps    equal  5000       # Number of ts before write dump file
+
+# --------------------- Derivate variables -------------------------------------
+variable cutoff1     equal  ${siglj}*${cut1}
+variable cutoff2     equal  ${siglj}*${cut2}
+variable cutoff_well equal  ${rw}*4.0
+variable D           equal  ${nkT}*${Tsyst} # Depth of well
+variable Tdamp       equal  ${NtsTdamp}*${ts}
+variable Pdamp       equal  ${NtsPdamp}*${ts}
+
+
+####  Define mold  ####
+read_data       mold_100.lmp
+group melt type 1
+group mold type 2
 
 ```
-0.0
-0.001
-0.002
-0.05
+For this step, the typical run must be approximately 200000 time-steps (with dt=1e-3), and that can be controlled by the parameter `nts`. 
+Regarding the interaction potential, the parameter `rw` stands for the well radius so this must be changed for the different studies radii during this step `rw`=$0.27,\ 0.28,\ \ldots,0.33,0.34\sigma$. 
+The parameter `nkT` gives the well depth in $k_{B}T$ units and for this step must be kept to 8 or bigger. 
+Regarding the velocity seed, the variable `seed` controls this aspect and thus, it must be changed with a random integer number for each simulation. 
+Also, there are some variables that might be interesting to know:
+- `thermoSteps` gives the number of timesteps to print the thermo
+- `restartSteps` indicates the frequency of saving the restart files
+- `dumpSteps` is the number of steps to save the trajectory in the dump file and for this step it is recommended to be set to 2000.
+
+5. Launch the simulation for each radius and seed. That means a total of 80 simulations, but they are quite short. 
+
+6. The analysis of this step consists in determining if there is induction time, *i.e.* if that radius can be thermodynamically integrated. To do so, the resulting trajectory must be analyzed using the order parameter ${\bar{q}}_6$ to determine the number of particles on the cluster. 
+The recommended values for such analysis is a threshold of ${\bar{q}}_6=0.34$, and a cutoff of $1.35\sigma$. As a result, one obtains different curves for the order parameter as a function of time for the different well radii:
+
+![Step-1\label{kk}](../figs/Fig2.png "q6_time")
+
+A system can be considered to be integrated if the order parameter remains close to the total number of molds within the system (98 wells for this example). Therefore, in this case we can consider $r_w=0.32\sigma$ as the greatest radius with not sufficiently long induction time so it is chosen as our optimal radius to extrapolate.
+
+## Thermodynamic integration 
+
+Once the optimal radius is estimated, the next step consists in thermodynamic integration of different radii above the optimal value of $r_w$. The calculation of the interfacial energy for the different well radii includes the following steps:
+
+1. Create a directory for each radius to be integrated ($r_w=0.33,0.34,0.35\sigma$) and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of $\epsilon$ in $k_{B}T$:
+
+```
+0.00001
 0.1
+0.2
 ...
-0.998
-0.999
-1.0
-```
-
-Note:
-
-* The file must start at 0 and end at 1. 
-* There is no internal control in the code that checks that the boundaries are correct
-   
-Here we will be using the `/examples/lj_SV/step1/lambda_wells.dat` file, so make sure to copy it to the current folder.
-
-![Step-1](../figs/wells-S1.png "Step-1")
-
-6. The wells in the system are introduced using the new fix `wellPforce`:
-
-```
-fix f2 all wellPforce ${dw} ${rw} ${expp} ${lambda} file fcc111-T01-wells.lmp 
-```
-
-where the explanation of the different parameters is given in the [description](./fix_well.md) of the fix. In the wells version of the cleaving model, the wells are introduced by switching the parameter lambda from 0 (no interactions between atoms and wells) and 1 (full interactions between atoms and wells). LAMMPS allows the creation of an input file which can perform several runs in a row by changing the parameter between the different runs. The relevant code that should be added to `bulk.in` is
-
-```
-variable Nevery  equal 100
-variable Nrepeat equal 5
-variable Nfreq   equal 500
-
-variable lam file lambda_wells.dat
-variable i     equal 1
-variable dw    equal 6.0
-variable a0    equal exp(1/3*ln(4/1.05604))
-variable rw    equal sqrt(2)*${a0}/4.0*1.2
-variable expp  equal 3.0
-
-label here
-variable    lambda equal ${lam}
-
-fix f2 all wellPforce ${dw} ${rw} ${expp} ${lambda} file fcc111-T01-wells.lmp 
-
-print       "Well depth ${lambda}"
-run ${eqnts}
-
-fix  f5 all ave/time ${Nevery} ${Nrepeat} ${Nfreq} c_thermo_temp c_thermo_pe f_f2 v_lambda file  out/ave.F.${i}.out
-
-run ${nts}
-
-unfix f5
-unfix f2 
-
-write_data data/Fstep1.${i}.data nocoeff
-variable    ii equal ${i}+1
-variable    i  equal ${ii}
-next lam
-jump SELF here
-```
-
-To keep the main directory clean from all the output files generated during the run, we print those files in the `out` and `data` folders.
-
-We refer to the [LAMMPS documentation](https://docs.lammps.org/jump.html) for the use of the `jump` command to create a loop. Each iteration of the loop produces the following files:
-
-* `Fstep1.${i}.data`: data file containing the last configuration of the i-th iteration
-* `ave.F.${i}.out`: File which contains a summary of the properties of the system, including the work (`f_f2`)
-
-7. Launch the simulation.
-
-## Step 2
-
-This step for this particular system (a crystal in coexistence with vacuum) is empty, so we can directly go to [Step 3](#step-3).
-
-## Step 3
-
-![Step-3](../figs/wells-S3.png "Step-3")
-
-In the third step we switch off the interactions between the two sides of the cleaving wall. 
-
-1. Create the `step3` folder and enter it. Create the `out/`, `data/`, `dat/`, `restart/`, and `dump/` subfolders (where the latter two can be omitted if the related commands in the LAMMPS script file are commented). The `dat/` folder will contain the output of this step.
-
-2. Copy `fcc111-T01-wells.lmp` and the last `data/Fstep1.*.data` file from the [Step 1](#step-1) folder.
-
-3. Prepare a new LAMMPS input file. We again use the `/examples/lj_S/bulk.in` file as a starting point. Copy it to the current folder, delete all the lines after the `f3` fix and change the temperature to 0.1 `variable Tsyst equal 0.1` and change the name of the data file to match the file copied in sub-step 2.
-
-4. The switching off is implemented directly in the definition of the pair interactions. We therefore need to change the pair interaction in the LAMMPS script file (section *Interactions*) to the new defined type
-
-```
-pair_style lj/BGcleavpbc ${cutoff1} ${cutoff2} z
-```
-
-All the parameters (`cutoff1`, `cutoff2`, `epsilon`, `sigma`) are identical to those used in [Step 1](#step-1). Note that there is a third parameter in this `pair_style`, the direction normal to the cleaving plane, which is `z` in this case. 
-
-5. Add the command for the wells, together with the definition of the variables that sets the parameters specifying the wells characteristics:
-
-```
-variable dw    equal 6.0
-variable a0    equal exp(1/3*ln(4/1.05604))
-variable rw    equal sqrt(2)*${a0}/4.0*1.2
-variable expp  equal 3.0
-
-fix f2 all wellPforce ${dw} ${rw} ${expp} 1.0 file fcc111-T01-wells.lmp
-```
-
-In this step the strenght of the wells remains constant, therefore we replace `${lambda}` with 1.
-
-6. Create a file (called `zdir.dat`) for the switching off of the interactions across the cleaving plane (or copy `/examples/LJ_SV/step3/zdir.dat`). The file should contain a list of values that specify how much the box will be moved away from its periodic images along the normal to the cleaving plane (`z` in our case). The file must start with zero, which is the first point of the switching. Here is an example:
-
-```
-0.0
-0.001
-0.002
-0.05
-0.1
-...
+1.9
 2.0
-2.2
-2.4
-2.8
-3.2
-...
+2.3
+2.6
+3
+3.5
+4
+4.5
+5
+6
+7
+8
 ```
 
-Note: the upper boundary should be large enough so that, when the box has moved this much, there are no more interactions between the box and its periodic images. A value of 2.6 is usually enough.
+2. Copy the LAMMPS script file (`lj_mold.in`) in each subdirectory along with the configuration file (`mold_100.lmp`).
 
-7. The work needed to switch off the interactions (described in the next point) is calculated by adding the line `compute 1 all cleavpairs lj/BGcleavpbc norm 2 z` to end of the LAMMPS script file. The meaning of the parameters is reported in the [description](./compute_pcleav.md) of this compute style.
+3. The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of hundred of thousands time-steps (with `dt=1e-3`), controlled by the parameter `nts`. Regarding the interaction potential, the parameter `rw` that controls the well radius must be changed for the different radii `rw=0.33,0.34,0.35` (in $\sigma$). The parameter `nkT` (well depth) must change it for each simulation with the corresponding value. Also, the `thermoSteps` should have a reasonable value (1000 is recommended), and `dumpSteps` can be set above 50000 timesteps as the trajectory is not needed for this step
 
-8. The actual switching off is obtained through another loop which increases the size of the box. Since the atoms are kept in place by the cleaving potential, increasing the size of the box creates a vacuum space. When the vacuum space is larger than `cutoff2` than the box and its image across the cleaving wall do not interact anymore. Add the following loop to the end of the LAMMPS script file:
+4. Launch the simulation for each radius and well depth. 
 
-```
-variable Nevery  equal 100
-variable Nrepeat equal 5
-variable Nfreq   equal 500
-
-variable initzhi equal $(zhi)
-variable initzlo equal $(zlo)
-variable zc file zdir.dat
-variable i equal 1
-
-label here
-variable dhi equal ${zc}
-variable newzhi equal ${dhi}+${initzhi}
-variable newzlo equal ${initzlo}
-
-print       "Forward Interaction ${i}: ${zc} "
-print       " ${initzhi} ${dhi} zhi "
-
-change_box all z final ${newzlo}  ${newzhi}
-
-print       "B ${initzhi} ${dhi} zhi "
-
-run   ${eqnts}
-
-fix   f6 all ave/time ${Nevery} ${Nrepeat} ${Nfreq}  c_1[*] file dat/inters3.${i}.dat mode vector
-fix   f7 all ave/time ${Nevery} ${Nrepeat} ${Nfreq} c_thermo_temp c_thermo_pe f_f2 v_dhi file  out/ave.F.${i}.out
-
-run   ${nts}
-
-unfix f6
-unfix f7
-
-write_data  data/Fstep3.${i}.data  nocoeff
-variable    ii equal ${i}+1
-variable    i  equal ${ii}
-next zc
-jump SELF here
-```
-
-We refer to the [LAMMPS documentation](https://docs.lammps.org/change_box.html) for the exact explanation of the `change_box` command.
-
-9. Launch the simulation.
-
-
-## Step 4
-
-![Step-4](../figs/wells-S4.png "Step-4")
-
-In the last step we remove the wells leaving free the newly created interfaces. 
-
-1. Create the `step4` folder and enter it. Create the `out/`, `data/`, `restart/`, and `dump/` subfolders (where the latter two can be omitted if the related commands in the LAMMPS script file are commented). The `out/` folder will contain the output of this step.
-
-2. Copy `fcc111-T01-wells.lmp` and the last `data/Fstep3.*.data` file from the [Step 3](#step-3) folder.
-
-3. Prepare a new LAMMPS input file. We again use the `/examples/lj_S/bulk.in` file as a starting point. Copy it to the current folder, delete all the lines after the `f3` fix and change the temperature to 0.1 `variable Tsyst equal 0.1` and change the name of the data file to match the file copied in sub-step 2.
-
-4. Prepare a file containing the variation of the strength of the wells. This file contains a sequence of increasing consecutive numbers in the interval $[0,1]$ (extremes included). Here is a (truncated) example:
+5. The `thermo_style` is configured to show some magnitudes that are crucial for the thermodynamic integration. We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to LJ particle-well interaction (`c_1`, column 13), but also the number of particles in the system (`v_nall`, column 15) since the energy is expressed in reduced LJ units, *i.e.* energy per particle instead of energy of the total system:
 
 ```
-1.0
-0.99
-0.98
-...
-0.02
-0.01
-0.0
+# ------------- Output thermo information and averaged variables ---------------
+variable well equal c_1*count(all)
+variable nall equal count(all)
+compute mytemp melt temp
+compute 1 all pair square/well
+thermo    ${thermoSteps}
+thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_well v_nall spcpu density
 ```
 
-Note:
 
-* The file must start at 1 and end at 0. 
-* There is no internal control in the code that checks that the boundaries are correct.
-* The values does not need to be the same (in reverse order) of those used in [Step 1](#step-1).
+````{note}
+For real units the multiplication by the number of particles in the system is not necessary.
+````
 
-Here we will be using the `/examples/lj_SV/step4/rev_lambda_wells.dat` file, so make sure to copy it to the current folder.
+The calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:
 
-5. The loop in [Step 4](#step-4) in analogous to the loop in [Step 1](#step-1) run backwards
+$$\langle Nw \rangle=c_1\cdot n_all/(nkT\cdot T)$$
+
+
+````{note}
+Please note that the system requires a time to reach the steady state so that the analysis must be performed discarding after $t\approx10\tau$. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…)
+````
+
+In the following figure the curves of well occupancy vs. well depth for the different radii are presented.
+
+
+![Step-2\label{Occupancy}](../figs/Fig3.png)
+
+## Extrapolation and interfacial energy calculation
+
+After the analysis in the previous step, one obtain a curve of well occupancy vs well depth for each radius so that the interfacial energy is calculated as
+
+$$\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, N_w(\epsilon) \right],$$
+where $N_w$ is the total number of wells and $l$ is the short side of the box that can be obtained from the thermo (`lx`, `ly`, columns 7 and 8 int the `thermo`). The resulting integrals are provided in the following table:
+
+|         $r_w/\sigma$)        |  0.33 |  0.34 |  0.35 |
+|:----------------------------:|:-----:|:-----:|:-----:|
+| $\gamma/\sigma^{-2}\epsilon$ | 0.363 | 0.357 | 0.348 |
+
+To obtain the interfacial energy, you now shall extrapolate the value of the interfacial energy to the optimal radius ($r_{0w}=0.32\sigma$) using a linear fit. According to the interfacial energy provided in the table the interfacial energy is
+
+$$\gamma=0.370(8) \epsilon\sigma^{−2}$$
+
+![Step-3](../figs/Fig4.png "Extrapolation")
+
+This mold integration reported for the same system an interfacial energy of $\gamma=0.372(8) \epsilon\sigma^{−2}$ extrapolating to an optimal radius of $r_{0w}=0.315\sigma$ (please see the work by Espinosa *et al*{footcite:t}`espinosa2014mold`). Additionally, another work using the cleaving technique{footcite:t}`davidchack2003direct` reported a value of $\gamma=0.371(3) \epsilon\sigma^{−2}$ for the same system.
+
+
+
+
+```{footbibliography}
 
 ```
-variable Nevery  equal 100
-variable Nrepeat equal 5
-variable Nfreq   equal 500
-
-variable lam   file rev_lambda_wells.dat
-variable dw    equal 6.0
-variable a0    equal exp(1/3*ln(4/1.05604))
-variable rw    equal sqrt(2)*${a0}/4.0*1.2
-variable expp  equal 3.0
-variable i     equal 1
-
-label here
-variable    lambda equal ${lam}
-
-fix f2 all wellPforce ${dw} ${rw} ${expp} ${lambda} file fcc111-T01-wells.lmp
-variable totW   equal "f_f2"
-
-print       "Well depth ${lambda}"
-
-run   ${eqnts}
-
-fix  f6 all ave/time  ${Nevery} ${Nrepeat} ${Nfreq}  c_thermo_temp c_thermo_pe v_totW v_lambda f_f2   file out/ave.F.$i.out
-
-run  ${nts}
-
-unfix f2
-unfix f6
-write_data data/Fstep4.$i.data nocoeff
-variable    ii equal $i+1
-variable    i  equal ${ii}
-next lam
-jump SELF here
-```
-
-6. Launch the simulation.
-
-## Calculation of the SFE 
-
-The SFE is obtained by summing the work performed in the [Step 1](#step-1), [Step 3](#step-3), [Step 4](#step-4). The work is calculated by using the results produced in each step. The folder `/utils/` contains some small programs for the post-processing. 
-
-* `work.sh`: bash script to calculate the average of the relevant properties for each step of the thermodynamic integration
-
-* `c3cryst.f90`: fortran program to extract the value of the interactions calculated in  Step 3. It must be compiled by running the command `gfortran c3cryst.f90` from within the `/utils/` folder
-
-* `calcSFE.m`: Matlab script to perform the integration of each curve 
-
-Before analyzing the calculations, let's create a folder '/results/' at the same level of the folders `./step1/`, `./step3`, `./step4`. Here, we will copy the results for each step.
-
-1. The files `.out` generated in [Step 1](#step-1) contains the quantity `f_f2`, which is the work performed. An average of that quantity for each lambda gives the variation of the energy in Step1. The integration of the results quantity over lambda gives the total work in [Step 1](#step-1). In order to calculate the work performed in Step 1:
-
-    1. Enter in the dir `./step1/out/`
-    2. Call the script `../../utils/work.sh F`
-    3. Copy the file `F-work.dat` in the folder `./results/` by changing its name to `step1_work.dat`
-
-The profile of the work obtained as function of $\lambda$ is represented in the next figure.
-![Step-1 profile](../figs/ws1.png "Step-1 profile")
-
-2. The files `.dat` generated in [Step 3](#step-3) contains the interactions _switched-off_ during the [Step 3](#step-3). By averaging these values for each value of zw we obtain the variation of the energy, and the integration of the results over zw gives the total work done in [Step 3](#step-3).
-
-In order to calculate the work performed in Step 3:
- 
-    1. Enter in the dir `./step3/out/`
-    2. Call the program `../../utils/a.out`
-    3. Call the script `../../utils/work.sh F`
-    4. Copy the file `F-work.dat` in the folder `./results/` by changing its name to `step3_work.dat`
-
-
-The profile of the work obtained as function of $z$ is represented in the next figure.
-![Step-3 profile](../figs/ws3.png "Step-3 profile")
-
-3. [Step 4](#step-4) is analogous to [Step 1](#step-1). Remember to change the name of the file obtained to `step4_work.dat`
-
-The profile of the work obtained as function of $\lambda$ is represented in the next figure.
-![Step-4 profile](../figs/ws4.png "Step-4 profile")
-
-
-4. After the profile of the work in the three steps is obtained, we can calculate the SFE by integrating the three curves. Enter in the dir `/results`, copy the Matlab script  `/utils/calcSFE.m` and run it in Matlab from this folder. The final value of the SFE is: $2.095\pm 0.007$ in units of $\epsilon\sigma^{-2}$ 
