@@ -295,17 +295,37 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 <p>Please note that the system requires a time to reach the steady state so that the analysis must be performed discarding after <span class="math notranslate nohighlight">\(t\approx10\tau\)</span>. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…)</p>
 </div>
 <p>In the following figure the curves of well occupancy vs. well depth for the different radii are presented.</p>
-<p><img alt="Step-2\label{Occupancy}" src="_images/Fig3.png" /><em>Caption</em></p>
+<p><img alt="Step-2\label{Occupancy}" src="_images/Fig3.png" /></p>
 </div>
 <div class="section" id="extrapolation-and-interfacial-energy-calculation">
 <h2>Extrapolation and interfacial energy calculation<a class="headerlink" href="#extrapolation-and-interfacial-energy-calculation" title="Permalink to this headline">¶</a></h2>
 <p>After the analysis in the previous step, one obtain a curve of well occupancy vs well depth for each radius so that the interfacial energy is calculated as</p>
 <div class="math notranslate nohighlight">
-\[\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_max-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, N_w(\epsilon) \right],\]</div>
-<p>where <span class="math notranslate nohighlight">\(N_w\)</span> is the total number of wells and l is the short side of the box that can be obtained from the thermos (lx, ly, columns 7 and 8). The resulting integrals are provided in the following table:</p>
-<div class="docutils container" id="id2">
+\[\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, N_w(\epsilon) \right],\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_w\)</span> is the total number of wells and <span class="math notranslate nohighlight">\(l\)</span> is the short side of the box that can be obtained from the thermo (<code class="docutils literal notranslate"><span class="pre">lx</span></code>, <code class="docutils literal notranslate"><span class="pre">ly</span></code>, columns 7 and 8 int the <code class="docutils literal notranslate"><span class="pre">thermo</span></code>). The resulting integrals are provided in the following table:</p>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="text-center head"><p><span class="math notranslate nohighlight">\(r_w/\sigma\)</span>)</p></th>
+<th class="text-center head"><p>0.33</p></th>
+<th class="text-center head"><p>0.34</p></th>
+<th class="text-center head"><p>0.35</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(\gamma/\sigma^{-2}\epsilon\)</span></p></td>
+<td class="text-center"><p>0.363</p></td>
+<td class="text-center"><p>0.357</p></td>
+<td class="text-center"><p>0.348</p></td>
+</tr>
+</tbody>
+</table>
+<p>To obtain the interfacial energy, you now shall extrapolate the value of the interfacial energy to the optimal radius (<span class="math notranslate nohighlight">\(r_{0w}=0.32\sigma\)</span>) using a linear fit. According to the interfacial energy provided in the table the interfacial energy is</p>
+<div class="math notranslate nohighlight">
+\[\gamma=0.370(8) \epsilon\sigma^(−2)\]</div>
+<p>This mold integration reported for the same system an interfacial energy of <span class="math notranslate nohighlight">\(\gamma=0.372(8) \epsilon\sigma^(−2)\)</span> extrapolating to an optimal radius of <span class="math notranslate nohighlight">\(r_{0w}=0.315\sigma\)</span> (please see the work by Espinosa <em>et al</em>Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id2">1</a>). Additionally, another work using the cleaving technique{footcite:t}(<code class="docutils literal notranslate"><span class="pre">davidchack2003direct</span></code>) reported a value of \gamma=0.371(3) \epsilon\sigma^(−2) for the same system.</p>
+<div class="docutils container" id="id3">
 <dl class="footnote brackets">
-<dt class="label" id="footcite-espinosa2014mold"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dt class="label" id="footcite-espinosa2014mold"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
 <dd><p>JR Espinosa, C Vega, and E Sanz. The mold integration method for the calculation of the crystal-fluid interfacial free energy from simulations. <em>The Journal of chemical physics</em>, 141(13):134709, 2014.</p>
 </dd>
 </dl>
