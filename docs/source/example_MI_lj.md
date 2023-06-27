@@ -113,7 +113,36 @@ Once the optimal radius is estimated, the next step consists in thermodynamic in
 
 4. Launch the simulation for each radius and well depth. 
 
-5. The `thermo_style` is configured to show some magnitudes that are crucial for the thermodynamic integration. We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to LJ particle-well interaction (`c_1`, column 13), but also the number of particles in the system (`v_nall`, column 15) since the energy is expressed in reduced LJ units, i.e. energy per particle instead of energy of the total system.
+5. The `thermo_style` is configured to show some magnitudes that are crucial for the thermodynamic integration. We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to LJ particle-well interaction (`c_1`, column 13), but also the number of particles in the system (`v_nall`, column 15) since the energy is expressed in reduced LJ units, *i.e.* energy per particle instead of energy of the total system:
+
+```
+# ------------- Output thermo information and averaged variables ---------------
+variable well equal c_1*count(all)
+variable nall equal count(all)
+compute mytemp melt temp
+compute 1 all pair square/well
+thermo    ${thermoSteps}
+thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_well v_nall spcpu density
+```
+
+
+````{note}
+For real units the multiplication by the number of particles in the system is not necessary.
+````
+
+The calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:
+
+$$\langle Nw \rangle=c_1\cdot n_all/(nkT\cdot T)$$
+
+
+````{note}
+Please note that the system requires a time to reach the steady state so that the analysis must be performed discarding after $t\approx10\tau$. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…)
+````
+
+In the following figure the curves of well occupancy vs. well depth for the different radii are presented.
+
+
+![Step-1\label{kk}](../figs/Fig2.png "q6_time")
 
 ```{footbibliography}
 
