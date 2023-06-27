@@ -142,14 +142,24 @@ Please note that the system requires a time to reach the steady state so that th
 In the following figure the curves of well occupancy vs. well depth for the different radii are presented.
 
 
-![Step-2\label{Occupancy}](../figs/Fig3.png)*Caption*
+![Step-2\label{Occupancy}](../figs/Fig3.png)
 
 ## Extrapolation and interfacial energy calculation
 
 After the analysis in the previous step, one obtain a curve of well occupancy vs well depth for each radius so that the interfacial energy is calculated as
 
-$$\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_max-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, N_w(\epsilon) \right],$$
-where $N_w$ is the total number of wells and l is the short side of the box that can be obtained from the thermos (lx, ly, columns 7 and 8). The resulting integrals are provided in the following table:
+$$\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, N_w(\epsilon) \right],$$
+where $N_w$ is the total number of wells and $l$ is the short side of the box that can be obtained from the thermo (`lx`, `ly`, columns 7 and 8 int the `thermo`). The resulting integrals are provided in the following table:
+
+|         $r_w/\sigma$)        |  0.33 |  0.34 |  0.35 |
+|:----------------------------:|:-----:|:-----:|:-----:|
+| $\gamma/\sigma^{-2}\epsilon$ | 0.363 | 0.357 | 0.348 |
+
+To obtain the interfacial energy, you now shall extrapolate the value of the interfacial energy to the optimal radius ($r_{0w}=0.32\sigma$) using a linear fit. According to the interfacial energy provided in the table the interfacial energy is
+
+$$\gamma=0.370(8) \epsilon\sigma^(−2)$$
+
+This mold integration reported for the same system an interfacial energy of $\gamma=0.372(8) \epsilon\sigma^(−2)$ extrapolating to an optimal radius of $r_{0w}=0.315\sigma$ (please see the work by Espinosa *et al*{footcite:t}`espinosa2014mold`). Additionally, another work using the cleaving technique{footcite:t}(`davidchack2003direct`) reported a value of \gamma=0.371(3) \epsilon\sigma^(−2) for the same system.
 
 
 
