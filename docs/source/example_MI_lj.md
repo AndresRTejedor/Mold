@@ -142,7 +142,7 @@ Please note that the system requires a time to reach the steady state so that th
 In the following figure the curves of well occupancy vs. well depth for the different radii are presented.
 
 
-![Step-1\label{kk}](../figs/Fig2.png "q6_time")
+![Step-2\label{Occupancy}](../figs/Fig3.png)*Caption*
 
 ```{footbibliography}
 
