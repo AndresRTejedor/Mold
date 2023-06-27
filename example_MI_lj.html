@@ -175,7 +175,7 @@
 <ol class="arabic simple">
 <li><p>Preparation of the configuration by embedding the mold coordinates (from a crystal configuration) into the fluid at coexistence conditions.</p></li>
 <li><p>Choice of the <a class="reference internal" href="#optimal-radius-calculation"><span class="std std-doc">optimal well radius</span></a> <span class="math notranslate nohighlight">\(r_{0w}\)</span> to extrapolate the interfacial energy.</p></li>
-<li><p>Calculation of the interfacial energy for different well radii above the optimal radius
+<li><p><a class="reference internal" href="#thermodynamic-integration"><span class="std std-doc">Thermodynamic integration</span></a> to calculate the interfacial energy for different well radii above the optimal radius
 <span class="math notranslate nohighlight">\(\gamma(r_{0w}&gt;r_w)\)</span>.</p></li>
 <li><p>Extrapolation of the interfacial energy to the optimal radius <span class="math notranslate nohighlight">\(r_{0w}\)</span>.</p></li>
 </ol>
@@ -247,7 +247,7 @@ The recommended values for such analysis is a threshold of <span class="math not
 <h2>Thermodynamic integration<a class="headerlink" href="#thermodynamic-integration" title="Permalink to this headline">¶</a></h2>
 <p>Once the optimal radius is estimated, the next step consists in thermodynamic integration of different radii above the optimal value of <span class="math notranslate nohighlight">\(r_w\)</span>. The calculation of the interfacial energy for the different well radii includes the following steps:</p>
 <ol class="arabic simple">
-<li><p>Create a directory for each radius to be integrated (<span class="math notranslate nohighlight">\(r_w=0.33,0.34,0.35\sigma\)</span>) and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of <span class="math notranslate nohighlight">\(\epsilon\)</span> in <span class="math notranslate nohighlight">\(k_{B}T\)</span></p></li>
+<li><p>Create a directory for each radius to be integrated (<span class="math notranslate nohighlight">\(r_w=0.33,0.34,0.35\sigma\)</span>) and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of <span class="math notranslate nohighlight">\(\epsilon\)</span> in <span class="math notranslate nohighlight">\(k_{B}T\)</span>:</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.00001</span>
 <span class="mf">0.1</span>
@@ -267,6 +267,12 @@ The recommended values for such analysis is a threshold of <span class="math not
 <span class="mi">8</span>
 </pre></div>
 </div>
+<ol class="arabic simple" start="2">
+<li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>).</p></li>
+<li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of hundred of thousands time-steps (with <code class="docutils literal notranslate"><span class="pre">dt=1e-3</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code>. Regarding the interaction potential, the parameter <code class="docutils literal notranslate"><span class="pre">rw</span></code> that controls the well radius must be changed for the different radii <code class="docutils literal notranslate"><span class="pre">rw=0.33,0.34,0.35</span></code> (in <span class="math notranslate nohighlight">\(\sigma\)</span>). The parameter <code class="docutils literal notranslate"><span class="pre">nkT</span></code> (well depth) must change it for each simulation with the corresponding value. Also, the <code class="docutils literal notranslate"><span class="pre">thermoSteps</span></code> should have a reasonable value (1000 is recommended), and <code class="docutils literal notranslate"><span class="pre">dumpSteps</span></code> can be set above 50000 timesteps as the trajectory is not needed for this step</p></li>
+<li><p>Launch the simulation for each radius and well depth.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the thermodynamic integration. We need to get the average number of well occupancy for each value of <code class="docutils literal notranslate"><span class="pre">nkT</span></code> so that we print the potential contribution due to LJ particle-well interaction (<code class="docutils literal notranslate"><span class="pre">c_1</span></code>, column 13), but also the number of particles in the system (<code class="docutils literal notranslate"><span class="pre">v_nall</span></code>, column 15) since the energy is expressed in reduced LJ units, i.e. energy per particle instead of energy of the total system.</p></li>
+</ol>
 <div class="docutils container" id="id2">
 <dl class="footnote brackets">
 <dt class="label" id="footcite-espinosa2014mold"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
