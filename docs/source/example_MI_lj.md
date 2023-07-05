@@ -132,7 +132,7 @@ For real units the multiplication by the number of particles in the system is no
 
 The calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:
 
-$$\langle Nw \rangle=c_1\cdot n_all/(nkT\cdot T)$$
+$$\langle Nw \rangle=c_1\cdot n_{all}/(nkT\cdot T)$$
 
 
 ````{note}
