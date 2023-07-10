@@ -21,7 +21,7 @@ The mold integration technique consists of different steps and here we only disc
 
 The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding $(p,T)$ conditions. In this example, we provide the system data file for the plane 100 of a LJ particles at $T^\ast=0.617$ and $p^\ast=-0.02$:
 
-![Step-1](../figs/LatticeMold/Fig1.jpg "Conf_LM")
+![Step-1](../figs/LatticeMold/Fig1.png "Conf_LM")
 
 
 ![Step-2](../figs/LatticeMold/Fig2.jpg "Opt_Rad")
@@ -31,7 +31,20 @@ The configuration (step 1) can be created easily using the liquid and crystal co
 
 The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:
 
-1. Create a directory sweeping different radii ($r_w=0.27,\ 0.28,\ \ldots,0.33,0.34\sigma$).
+1. Create a directory sweeping different radii ($r_w=0.27,\ 0.28,\ \ldots,0.33,0.34\sigma$). 
+
+```
+0.00001
+0.10
+0.20
+...
+2.4
+2.5
+3.5
+5.0
+8.0
+```
+
 2. For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.
 3. Copy the LAMMPS script file (`lj_mold.in`) in each subdirectory along with the configuration file (`mold_100.lmp`).
 4. The LAMMPS script contains several variables that it is important to know to properly perform the simulations:
