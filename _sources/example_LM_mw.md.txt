@@ -3,7 +3,7 @@
 ````{note}
 In this section `/` is the package's root folder.
 ````
-Here we provide a detailed instructions to calculate the nucleation rate of mW water at $T=220K$ using the Lattice Mold technique that requires the `square/well pair_style` available in LAMMPS. 
+Here we provide a detailed instructions to calculate the nucleation rate of mW water at $T=220K$ and $p=1bar$ using the Lattice Mold technique that requires the `square/well pair_style` available in LAMMPS. 
 
 The data file (`39mold.xyz`), the potential file for mW (`mW.sw`) and LAMMPS script (`mw_lattmold.in`) are provided in the directory `/examples/mw_mold/`, but in this work example we will navigate through those files to explain them in detail.
 
