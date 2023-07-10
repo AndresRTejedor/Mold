@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Lattice Mold calculations for calculation of nucleation rates for mW at T=220K &mdash; SurFEC  documentation</title>
+  <title>Lattice mold calculations of mW Ice Ih nucleation rate at T=220K &mdash; SurFEC  documentation</title>
   
 
   
@@ -88,7 +88,7 @@
 <li class="toctree-l1"><a class="reference internal" href="lammps.html">LAMMPS commands</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="example.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="example_MI_lj.html">Mold integration for 100 plane of Lennard-Jones crystal</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Lattice Mold calculations for calculation of nucleation rates for mW at T=220K</a><ul>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Lattice mold calculations of mW Ice Ih nucleation rate at T=220K</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#optimal-radius-calculation">Optimal radius calculation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#thermodynamic-integration">Thermodynamic integration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#extrapolation-and-interfacial-energy-calculation">Extrapolation and interfacial energy calculation</a></li>
@@ -144,7 +144,7 @@
         
           <li><a href="example.html">Examples</a> &raquo;</li>
         
-      <li>Lattice Mold calculations for calculation of nucleation rates for mW at T=220K</li>
+      <li>Lattice mold calculations of mW Ice Ih nucleation rate at T=220K</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -163,14 +163,14 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="tex2jax_ignore mathjax_ignore section" id="lattice-mold-calculations-for-calculation-of-nucleation-rates-for-mw-at-t-220k">
-<h1>Lattice Mold calculations for calculation of nucleation rates for mW at T=220K<a class="headerlink" href="#lattice-mold-calculations-for-calculation-of-nucleation-rates-for-mw-at-t-220k" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="lattice-mold-calculations-of-mw-ice-ih-nucleation-rate-at-t-220k">
+<h1>Lattice mold calculations of mW Ice Ih nucleation rate at T=220K<a class="headerlink" href="#lattice-mold-calculations-of-mw-ice-ih-nucleation-rate-at-t-220k" title="Permalink to this headline">¶</a></h1>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>In this section <code class="docutils literal notranslate"><span class="pre">/</span></code> is the package’s root folder.</p>
 </div>
-<p>Here we provide a detailed instructions to calculate the nucleation rate of mW water at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span> using the Lattice Mold technique that requires the <code class="docutils literal notranslate"><span class="pre">square/well</span> <span class="pre">pair_style</span></code> available in LAMMPS.</p>
-<p>The data file (<code class="docutils literal notranslate"><span class="pre">39mold.xyz</span></code>), the potential file for mW (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>) and LAMMPS script (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) are provided in the directory <code class="docutils literal notranslate"><span class="pre">/examples/mw_mold/</span></code>, but in this work example we will navigate through those files to explain them in detail.</p>
+<p>Here we provide a detailed instructions to calculate the nucleation rate of Ice Ih with the mW model at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span> using the Lattice Mold technique that requires the <code class="docutils literal notranslate"><span class="pre">square/well</span> <span class="pre">pair_style</span></code> available in LAMMPS.</p>
+<p>The data file (<code class="docutils literal notranslate"><span class="pre">39mold.xyz</span></code>), the potential file for mW (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>) and LAMMPS script (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) are provided in the directory <code class="docutils literal notranslate"><span class="pre">/examples/mw_mold/</span></code> and in this work example we will navigate through those files to explain them in detail.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The mW pair style is part of the MANYBODY package. See the <a class="reference external" href="https://docs.lammps.org/Build_package.html">Build package</a> page for more info.</p>
@@ -184,7 +184,8 @@
 <li><p>Extrapolation of the interfacial energy to the optimal radius <span class="math notranslate nohighlight">\(r_{0w}\)</span>.</p></li>
 </ol>
 <p>The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding <span class="math notranslate nohighlight">\((p,T)\)</span> conditions. In this example, we provide the system data file for the plane 100 of a LJ particles at <span class="math notranslate nohighlight">\(T^\ast=0.617\)</span> and <span class="math notranslate nohighlight">\(p^\ast=-0.02\)</span>:</p>
-<p><img alt="Step-1" src="_images/Fig1.png" /></p>
+<p><img alt="Step-1" src="_images/Fig1.jpg" /></p>
+<p><img alt="Step-2" src="_images/Fig2.jpg" /></p>
 <div class="section" id="optimal-radius-calculation">
 <h2>Optimal radius calculation<a class="headerlink" href="#optimal-radius-calculation" title="Permalink to this headline">¶</a></h2>
 <p>The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:</p>
