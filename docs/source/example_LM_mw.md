@@ -1,11 +1,11 @@
-# Lattice Mold calculations for calculation of nucleation rates for mW at T=220K
+# Lattice mold calculations of mW Ice Ih nucleation rate at T=220K
 
 ````{note}
 In this section `/` is the package's root folder.
 ````
-Here we provide a detailed instructions to calculate the nucleation rate of mW water at $T=220K$ and $p=1bar$ using the Lattice Mold technique that requires the `square/well pair_style` available in LAMMPS. 
+Here we provide a detailed instructions to calculate the nucleation rate of Ice Ih with the mW model at $T=220K$ and $p=1bar$ using the Lattice Mold technique that requires the `square/well pair_style` available in LAMMPS. 
 
-The data file (`39mold.xyz`), the potential file for mW (`mW.sw`) and LAMMPS script (`mw_lattmold.in`) are provided in the directory `/examples/mw_mold/`, but in this work example we will navigate through those files to explain them in detail.
+The data file (`39mold.xyz`), the potential file for mW (`mW.sw`) and LAMMPS script (`mw_lattmold.in`) are provided in the directory `/examples/mw_mold/` and in this work example we will navigate through those files to explain them in detail.
 
 ````{note}
 The mW pair style is part of the MANYBODY package. See the [Build package](https://docs.lammps.org/Build_package.html) page for more info.
@@ -21,7 +21,10 @@ The mold integration technique consists of different steps and here we only disc
 
 The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding $(p,T)$ conditions. In this example, we provide the system data file for the plane 100 of a LJ particles at $T^\ast=0.617$ and $p^\ast=-0.02$:
 
-![Step-1](../figs/Fig1.png "Conf_MI")
+![Step-1](../figs/LatticeMold/Fig1.jpg "Conf_LM")
+
+
+![Step-2](../figs/LatticeMold/Fig2.jpg "Opt_Rad")
 
 
 ## Optimal radius calculation 
