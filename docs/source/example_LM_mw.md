@@ -25,7 +25,7 @@ The configuration (step 1) can be created easily using the liquid and crystal co
 
 The optimal radius is easily calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of $\sim8k_BT$. The radius above which the occupancy exceeds the 100%, *i.e.* more than one water molecule can access the well, is considered as the optimal radius. For the current example we have to extrapolate to $r_{0w}=1.32Å$ (see figure below).
 
-![Step-2](../figs/LatticeMold/Fig2.jpg "Opt_Rad")
+![Step-2](../figs/LatticeMold/Fig2.png "Opt_Rad")
 
 
 ## Well occupancy 
@@ -107,7 +107,7 @@ $$\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)$$
 
 6. Plot the different curves of well occupancy for the different radii. The result should look similar to the figure below
 
-![Step-3](../figs/LatticeMold/Fig3.jpg "Well_ocu")
+![Step-3](../figs/LatticeMold/Fig3.png "Well_ocu")
 
 The free energy difference between the liquid and the liquid with the precritical cluster is calculated as 
 
