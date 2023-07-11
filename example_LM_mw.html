@@ -92,8 +92,6 @@
 <li class="toctree-l3"><a class="reference internal" href="#well-occupancy">Well occupancy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#average-nucleation-time">Average nucleation time</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#extrapolation-of-the-nucleation-rate">Extrapolation of the nucleation rate</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#thermodynamic-integration">Thermodynamic integration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#extrapolation-and-interfacial-energy-calculation">Extrapolation and interfacial energy calculation</a></li>
 </ul>
 </li>
 </ul>
@@ -281,70 +279,11 @@ The final calculation of the free energy difference must include the rotational 
 </div>
 <div class="section" id="average-nucleation-time">
 <h2>Average nucleation time<a class="headerlink" href="#average-nucleation-time" title="Permalink to this headline">¶</a></h2>
-<p>The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:</p>
+<p><img alt="Step-4" src="_images/Fig4.jpg" /></p>
 </div>
 <div class="section" id="extrapolation-of-the-nucleation-rate">
 <h2>Extrapolation of the nucleation rate<a class="headerlink" href="#extrapolation-of-the-nucleation-rate" title="Permalink to this headline">¶</a></h2>
 <p>The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:</p>
-</div>
-<div class="section" id="thermodynamic-integration">
-<h2>Thermodynamic integration<a class="headerlink" href="#thermodynamic-integration" title="Permalink to this headline">¶</a></h2>
-<p>Once the optimal radius is estimated, the next step consists in thermodynamic integration of different radii above the optimal value of <span class="math notranslate nohighlight">\(r_w\)</span>. The calculation of the interfacial energy for the different well radii includes the following steps:</p>
-<ol class="arabic simple">
-<li><p>Create a directory for each radius to be integrated (<span class="math notranslate nohighlight">\(r_w=0.33,0.34,0.35\sigma\)</span>) and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of <span class="math notranslate nohighlight">\(\epsilon\)</span> in <span class="math notranslate nohighlight">\(k_{B}T\)</span>:</p></li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.00001</span>
-<span class="mf">0.1</span>
-<span class="mf">0.2</span>
-<span class="o">...</span>
-<span class="mf">1.9</span>
-<span class="mf">2.0</span>
-<span class="mf">2.3</span>
-<span class="mf">2.6</span>
-<span class="mi">3</span>
-<span class="mf">3.5</span>
-<span class="mi">4</span>
-<span class="mf">4.5</span>
-<span class="mi">5</span>
-<span class="mi">6</span>
-<span class="mi">7</span>
-<span class="mi">8</span>
-</pre></div>
-</div>
-<ol class="arabic simple" start="2">
-<li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>).</p></li>
-<li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of hundred of thousands time-steps (with <code class="docutils literal notranslate"><span class="pre">dt=1e-3</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code>. Regarding the interaction potential, the parameter <code class="docutils literal notranslate"><span class="pre">rw</span></code> that controls the well radius must be changed for the different radii <code class="docutils literal notranslate"><span class="pre">rw=0.33,0.34,0.35</span></code> (in <span class="math notranslate nohighlight">\(\sigma\)</span>). The parameter <code class="docutils literal notranslate"><span class="pre">nkT</span></code> (well depth) must change it for each simulation with the corresponding value. Also, the <code class="docutils literal notranslate"><span class="pre">thermoSteps</span></code> should have a reasonable value (1000 is recommended), and <code class="docutils literal notranslate"><span class="pre">dumpSteps</span></code> can be set above 50000 timesteps as the trajectory is not needed for this step</p></li>
-<li><p>Launch the simulation for each radius and well depth.</p></li>
-<li><ol class="arabic simple" start="5">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves. We need to get the average number of well occupancy for each value of <code class="docutils literal notranslate"><span class="pre">nkT</span></code> so that we print the potential contribution due to mW-well interaction (<code class="docutils literal notranslate"><span class="pre">c_1</span></code>, column 8):</p></li>
-</ol>
-</li>
-</ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># ------------- Output thermo information and averaged variables ---------------
-variable well equal c_1*count(all)
-variable nall equal count(all)
-compute mytemp melt temp
-compute 1 all pair square/well
-thermo    ${thermoSteps}
-thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_well v_nall spcpu density
-</pre></div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>For real units the multiplication by the number of particles in the system is not necessary.</p>
-</div>
-<p>The calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:</p>
-<div class="math notranslate nohighlight">
-\[\langle Nw \rangle=c_1\cdot n_all/(nkT\cdot T)\]</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Please note that the system requires a time to reach the steady state so that the analysis must be performed discarding after <span class="math notranslate nohighlight">\(t\approx10\tau\)</span>. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…)</p>
-</div>
-<p>In the following figure the curves of well occupancy vs. well depth for the different radii are presented.</p>
-<p><img alt="Step-2\label{Occupancy}" src="_images/Fig31.png" /></p>
-</div>
-<div class="section" id="extrapolation-and-interfacial-energy-calculation">
-<h2>Extrapolation and interfacial energy calculation<a class="headerlink" href="#extrapolation-and-interfacial-energy-calculation" title="Permalink to this headline">¶</a></h2>
 <p>After the analysis in the previous step, one obtain a curve of well occupancy vs well depth for each radius so that the interfacial energy is calculated as</p>
 <div class="math notranslate nohighlight">
 \[\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, N_w(\epsilon) \right],\]</div>
@@ -368,7 +307,7 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 <p>To obtain the interfacial energy, you now shall extrapolate the value of the interfacial energy to the optimal radius (<span class="math notranslate nohighlight">\(r_{0w}=0.32\sigma\)</span>) using a linear fit. According to the interfacial energy provided in the table the interfacial energy is</p>
 <div class="math notranslate nohighlight">
 \[\gamma=0.370(8) \epsilon\sigma^{−2}\]</div>
-<p><img alt="Step-3" src="_images/Fig4.png" /></p>
+<p><img alt="Step-5" src="_images/Fig5.jpg" /></p>
 <p>This mold integration reported for the same system an interfacial energy of <span class="math notranslate nohighlight">\(\gamma=0.372(8) \epsilon\sigma^{−2}\)</span> extrapolating to an optimal radius of <span class="math notranslate nohighlight">\(r_{0w}=0.315\sigma\)</span> (please see the work by Espinosa <em>et al</em>Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id2">2</a>). Additionally, another work using the cleaving techniqueDavidchack and Laird<a class="footnote-reference brackets" href="#footcite-davidchack2003direct" id="id3">3</a> reported a value of <span class="math notranslate nohighlight">\(\gamma=0.371(3) \epsilon\sigma^{−2}\)</span> for the same system.</p>
 <div class="docutils container" id="id4">
 <dl class="footnote brackets">
