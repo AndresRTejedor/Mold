@@ -126,76 +126,12 @@ where $\rho_f$ is the fluid number density, and $V_w$ is the volume of a single 
 
 ## Average nucleation time 
 
-The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:
+![Step-4](../figs/LatticeMold/Fig4.jpg "Time")
+
 
 ## Extrapolation of the nucleation rate 
 
 The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:
-
-
-## Thermodynamic integration 
-
-Once the optimal radius is estimated, the next step consists in thermodynamic integration of different radii above the optimal value of $r_w$. The calculation of the interfacial energy for the different well radii includes the following steps:
-
-1. Create a directory for each radius to be integrated ($r_w=0.33,0.34,0.35\sigma$) and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of $\epsilon$ in $k_{B}T$:
-
-```
-0.00001
-0.1
-0.2
-...
-1.9
-2.0
-2.3
-2.6
-3
-3.5
-4
-4.5
-5
-6
-7
-8
-```
-
-2. Copy the LAMMPS script file (`lj_mold.in`) in each subdirectory along with the configuration file (`mold_100.lmp`).
-
-3. The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of hundred of thousands time-steps (with `dt=1e-3`), controlled by the parameter `nts`. Regarding the interaction potential, the parameter `rw` that controls the well radius must be changed for the different radii `rw=0.33,0.34,0.35` (in $\sigma$). The parameter `nkT` (well depth) must change it for each simulation with the corresponding value. Also, the `thermoSteps` should have a reasonable value (1000 is recommended), and `dumpSteps` can be set above 50000 timesteps as the trajectory is not needed for this step
-
-4. Launch the simulation for each radius and well depth. 
-
-5. 5.	The `thermo_style` is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves. We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to mW-well interaction (`c_1`, column 8):
-
-```
-# ------------- Output thermo information and averaged variables ---------------
-variable well equal c_1*count(all)
-variable nall equal count(all)
-compute mytemp melt temp
-compute 1 all pair square/well
-thermo    ${thermoSteps}
-thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_well v_nall spcpu density
-```
-
-
-````{note}
-For real units the multiplication by the number of particles in the system is not necessary.
-````
-
-The calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:
-
-$$\langle Nw \rangle=c_1\cdot n_all/(nkT\cdot T)$$
-
-
-````{note}
-Please note that the system requires a time to reach the steady state so that the analysis must be performed discarding after $t\approx10\tau$. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…)
-````
-
-In the following figure the curves of well occupancy vs. well depth for the different radii are presented.
-
-
-![Step-2\label{Occupancy}](../figs/Fig3.png)
-
-## Extrapolation and interfacial energy calculation
 
 After the analysis in the previous step, one obtain a curve of well occupancy vs well depth for each radius so that the interfacial energy is calculated as
 
@@ -210,7 +146,7 @@ To obtain the interfacial energy, you now shall extrapolate the value of the int
 
 $$\gamma=0.370(8) \epsilon\sigma^{−2}$$
 
-![Step-3](../figs/Fig4.png "Extrapolation")
+![Step-5](../figs/LatticeMold/Fig5.jpg "Extrapolation")
 
 This mold integration reported for the same system an interfacial energy of $\gamma=0.372(8) \epsilon\sigma^{−2}$ extrapolating to an optimal radius of $r_{0w}=0.315\sigma$ (please see the work by Espinosa *et al*{footcite:t}`espinosa2014mold`). Additionally, another work using the cleaving technique{footcite:t}`davidchack2003direct` reported a value of $\gamma=0.371(3) \epsilon\sigma^{−2}$ for the same system.
 
