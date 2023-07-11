@@ -132,7 +132,7 @@ For real units the multiplication by the number of particles in the system is no
 
 The calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:
 
-$$\langle Nw \rangle=c_1\cdot n_{all}/(nkT\cdot T)$$
+$$\langle N_w \rangle=c_1\cdot n_{all}/(nkT\cdot T)$$
 
 
 ````{note}
@@ -148,7 +148,7 @@ In the following figure the curves of well occupancy vs. well depth for the diff
 
 After the analysis in the previous step, one obtain a curve of well occupancy vs well depth for each radius so that the interfacial energy is calculated as
 
-$$\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, N_w(\epsilon) \right],$$
+$$\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, \langle N_w(\epsilon)\rangle \right],$$
 where $N_w$ is the total number of wells and $l$ is the short side of the box that can be obtained from the thermo (`lx`, `ly`, columns 7 and 8 int the `thermo`). The resulting integrals are provided in the following table:
 
 |         $r_w/\sigma$)        |  0.33 |  0.34 |  0.35 |

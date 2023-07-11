@@ -11,27 +11,28 @@ The data file (`39mold.xyz`), the potential file for mW (`mW.sw`) and LAMMPS scr
 The mW pair style is part of the MANYBODY package. See the [Build package](https://docs.lammps.org/Build_package.html) page for more info.
 ````
 
-The mold integration technique consists of different steps and here we only discuss the last two steps to obtain the interfacial energy of the 100 plane for the LJ particles at $T^\ast=0.617$ and $p^\ast=-0.02$. All the steps can be found in {footcite:t}`espinosa2014mold`, and they can be summarized as: 
+The lattice mold technique consists of 5 different steps. All the steps can be found in {footcite:t}`sanchez2022homogeneous`, and they can be summarized as:  
 
-1. Preparation of the configuration by embedding the mold coordinates (from a crystal configuration) into the fluid at coexistence conditions.
-2. Choice of the [optimal well radius](#optimal-radius-calculation) $r_{0w}$ to extrapolate the interfacial energy.
-3. [Thermodynamic integration](#thermodynamic-integration) to calculate the interfacial energy for different well radii above the optimal radius
-  $\gamma(r_{0w}>r_w)$. 
-4. Extrapolation of the interfacial energy to the optimal radius $r_{0w}$.
+1. Create an appropriate spheroidal mold and embed it in the liquid at the correct density
+2. Choice of the optimal well radius $r_{0w}$ to extrapolate, so two water molecules fit inside the same well.
+3. Calculation of the [well occupancy](#Well-occupancy) curves for each well depth below the optimal radius. 
+4. Calculation of the [average nucleation time](#Average-nucleation-time) to obtain the nucleation rate at each well radius.
+5. [Extrapolation of the nucleation rate](#Extrapolation-of-the-nucleation-rate) to the optimal radius $r_{0w}$.
 
-The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding $(p,T)$ conditions. In this example, we provide the system data file for the plane 100 of a LJ particles at $T^\ast=0.617$ and $p^\ast=-0.02$:
+The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding $(p,T)$ conditions for the desired Ice (Ih in this example). Here, we provide the system data file of a mold made of 39 wells at $T=220K$ and $p=1bar$ (see the figure below). 
 
 ![Step-1](../figs/LatticeMold/Fig1.png "Conf_LM")
 
+The optimal radius is easily calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of $\sim8k_BT$. The radius above which the occupancy exceeds the 100%, *i.e.* more than one water molecule can access the well, is considered as the optimal radius. For the current example we have to extrapolate to $r_{0w}=1.32\AA$ (see figure below).
 
 ![Step-2](../figs/LatticeMold/Fig2.jpg "Opt_Rad")
 
 
-## Optimal radius calculation 
+## Well occupancy 
 
-The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:
+The calculation of the well occupancy for different well radii under the optimal well radius consists of the following steps:
 
-1. Create a directory sweeping different radii ($r_w=0.27,\ 0.28,\ \ldots,0.33,0.34\sigma$). 
+1. Create the directory for sweeping different radii ($r_w=0.85,0.99,1.12\AA$), and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of $\epsilon$ in $k_{B}T$:
 
 ```
 0.00001
@@ -44,62 +45,92 @@ The calculation of the optimal radius for extrapolation of the interfacial energ
 5.0
 8.0
 ```
+Please note that the number of well depths included in the calculation may increase to capture with more accuracy the transition of well filling. This should vary with the well radius.
 
-2. For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.
-3. Copy the LAMMPS script file (`lj_mold.in`) in each subdirectory along with the configuration file (`mold_100.lmp`).
-4. The LAMMPS script contains several variables that it is important to know to properly perform the simulations:
+2. Copy the LAMMPS script file (`mw_lattmold.in`) in each subdirectory along with the configuration file (`39mold.xyz `) and the mW potential file (`mW.sw`).
+3. The LAMMPS script contains several variables that are important to know to properly perform the simulations:
+
 ```
 # ---------------------------- Define variables --------------------------------
-variable  nts          equal  400000     # production number of time-steps
-variable  ts           equal  0.001      # length of the ts (in lj units)
-variable  siglj        equal  1.0        # sigma coefficient for BG pair-style
-variable  epslj        equal  1.0        # epsilon coefficient for BG pair-style
-variable  cut1         equal  2.3        # internal cut-off for BG pair-style
-variable  cut2         equal  2.5        # external cut-off for BG pair-style
-variable  rw           equal  0.33       # (reduced) width of the square well potential
-variable  alpha        equal  0.005      # exponent of the square well potential
-variable  nkT          equal  8.0        # well depth (reduced units) 
+variable  nts          equal  99000000   # production number of time-steps
+variable  T            equal  220.0      # Temperature of the system in K
+variable  nkT          equal  8          # Well depth in kT
+variable  ts           equal  1          # length of the ts (in fs units)
+variable  width        equal  0.25       # (reduced) width of the square well potential
+variable  alpha        equal  0.017025   # exponent of the square well potential (0.005*3.405)
 variable  seed         equal  23782      # velocity seed
-variable  Tsyst        equal  0.617      # (reduced) temperature of the system
-variable  Psyst        equal  -0.02      # (reduced) press of the system
 variable  NtsTdamp     equal  100        # Number of ts to damp temperature
-variable  NtsPdamp     equal  100        # Number of ts to damp pressure
 variable  thermoSteps  equal  1000       # Number of ts to write properties on screen
-variable  restartSteps equal  30000      # Number of ts before write restart file
-variable  dumpSteps    equal  5000       # Number of ts before write dump file
+variable  restartSteps equal  1000000    # Number of ts before write restart file
+variable  dumpSteps    equal  250000     # Number of ts before write dump file
+
 
 # --------------------- Derivate variables -------------------------------------
-variable cutoff1     equal  ${siglj}*${cut1}
-variable cutoff2     equal  ${siglj}*${cut2}
-variable cutoff_well equal  ${rw}*4.0
-variable D           equal  ${nkT}*${Tsyst} # Depth of well
-variable Tdamp       equal  ${NtsTdamp}*${ts}
-variable Pdamp       equal  ${NtsPdamp}*${ts}
+variable D           equal ${nkT}*8.314*$T/4184    # Depth of well (real units)
+variable rw          equal ${width}*3.405          # Width of the well (real units)
+variable cutoff_well equal  ${rw}*4.0              # Well potential cutoff (real units)
 
 
-####  Define mold  ####
-read_data       mold_100.lmp
-group melt type 1
-group mold type 2
+####   Define Mold   ####
+read_data      39mold.xyz  # contains the positions and masses and other information
+group freeze type 2 
+group unfrozen subtract all freeze
 
 ```
-For this step, the typical run must be approximately 200000 time-steps (with dt=1e-3), and that can be controlled by the parameter `nts`. 
-Regarding the interaction potential, the parameter `rw` stands for the well radius so this must be changed for the different studies radii during this step `rw`=$0.27,\ 0.28,\ \ldots,0.33,0.34\sigma$. 
-The parameter `nkT` gives the well depth in $k_{B}T$ units and for this step must be kept to 8 or bigger. 
-Regarding the velocity seed, the variable `seed` controls this aspect and thus, it must be changed with a random integer number for each simulation. 
-Also, there are some variables that might be interesting to know:
-- `thermoSteps` gives the number of timesteps to print the thermo
-- `restartSteps` indicates the frequency of saving the restart files
-- `dumpSteps` is the number of steps to save the trajectory in the dump file and for this step it is recommended to be set to 2000.
 
-5. Launch the simulation for each radius and seed. That means a total of 80 simulations, but they are quite short. 
+For this step, the typical run must be approximately 5 ns (with `dt=1 fs`), and that can be controlled by the parameter `nts` which must be set to `nts=5000000`. 
+Regarding the interaction potential, the parameter `width` stands for the well radius so this must be changed for the different studies radii during this step `width=0.25,0.29,0.33` in reduced units. 
+The parameter `nkT` gives the well depth in $k_BT$  and must sweep the values presented above. 
+Regarding the velocity seed, the variable `seed` controls the initial velocity seed. 
+Also, there are some variables that might be interesting to know: 
+- `thermoSteps` gives the number of timesteps to print the thermos. 
+- `restartSteps` indicates the frequency of saving the restart files.
+- `dumpSteps` is the number of steps to save the trajectory in the dump file and for this step can be set above 200000 as it is not required in this step.
 
-6. The analysis of this step consists in determining if there is induction time, *i.e.* if that radius can be thermodynamically integrated. To do so, the resulting trajectory must be analyzed using the order parameter ${\bar{q}}_6$ to determine the number of particles on the cluster. 
-The recommended values for such analysis is a threshold of ${\bar{q}}_6=0.34$, and a cutoff of $1.35\sigma$. As a result, one obtains different curves for the order parameter as a function of time for the different well radii:
 
-![Step-1\label{kk}](../figs/Fig2.png "q6_time")
+5. Launch the simulation for each radius and well depth.
+6. The `thermo_style` is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves. We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to mW-well interaction (`c_1`, column 8):
 
-A system can be considered to be integrated if the order parameter remains close to the total number of molds within the system (98 wells for this example). Therefore, in this case we can consider $r_w=0.32\sigma$ as the greatest radius with not sufficiently long induction time so it is chosen as our optimal radius to extrapolate.
+```
+# ------------- Output thermo information and averaged variables ---------------
+compute 1 all pair square/well
+compute 2 all pair sw
+compute mytemp unfrozen temp
+thermo_style   custom step c_mytemp pe etotal press vol enthalpy c_1 c_2 spcpu  # energy and thermo properties printed to output
+thermo_modify  flush yes  # flush the buffer and write the output in real time
+thermo         ${thermoSteps}      # how often (in steps) will write the properties of thermo_style to the output
+```
+
+Thus, the calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:
+  
+$$\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)$$
+
+6. Plot the different curves of well occupancy for the different radii. The result should look similar to the figure below
+
+![Step-3](../figs/LatticeMold/Fig3.jpg "Well_ocu")
+
+The free energy difference between the liquid and the liquid with the precritical cluster is calculated as 
+$$\Delta G^*=N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon_{sw}\, \langle N_{sw}(\epsilon_{sw})\rangle,$$
+
+where $N_{w}$ is the total number of wells in the mold ($39$), $\epsilon_{max}$ is the maximum well depth to evaluate this integral, 
+$\langle N_{sw}(\epsilon_{sw})\rangle$ is the average number of mold sites occupied by liquid molecules obtained previously, 
+and $\epsilon_0$ is the minimum value of epsilon considered in the calculation (close to zero). 
+The final calculation of the free energy difference must include the rotational and translational degrees of freedom such that
+
+$$\Delta G/k_B T=\Delta G^*/k_B T + \ln(\rho_f V_w)- \ln(8\pi^2),$$
+
+where $\rho_f$ is the fluid number density, and $V_w$ is the volume of a single well.
+
+
+
+## Average nucleation time 
+
+The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:
+
+## Extrapolation of the nucleation rate 
+
+The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:
+
 
 ## Thermodynamic integration 
 
@@ -132,7 +163,7 @@ Once the optimal radius is estimated, the next step consists in thermodynamic in
 
 4. Launch the simulation for each radius and well depth. 
 
-5. The `thermo_style` is configured to show some magnitudes that are crucial for the thermodynamic integration. We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to LJ particle-well interaction (`c_1`, column 13), but also the number of particles in the system (`v_nall`, column 15) since the energy is expressed in reduced LJ units, *i.e.* energy per particle instead of energy of the total system:
+5. 5.	The `thermo_style` is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves. We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to mW-well interaction (`c_1`, column 8):
 
 ```
 # ------------- Output thermo information and averaged variables ---------------

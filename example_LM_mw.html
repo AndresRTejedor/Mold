@@ -89,7 +89,9 @@
 <li class="toctree-l1 current"><a class="reference internal" href="example.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="example_MI_lj.html">Mold integration for 100 plane of Lennard-Jones crystal</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Lattice mold calculations of mW Ice Ih nucleation rate at T=220K</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#optimal-radius-calculation">Optimal radius calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#well-occupancy">Well occupancy</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#average-nucleation-time">Average nucleation time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extrapolation-of-the-nucleation-rate">Extrapolation of the nucleation rate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#thermodynamic-integration">Thermodynamic integration</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#extrapolation-and-interfacial-energy-calculation">Extrapolation and interfacial energy calculation</a></li>
 </ul>
@@ -175,22 +177,23 @@
 <p class="admonition-title">Note</p>
 <p>The mW pair style is part of the MANYBODY package. See the <a class="reference external" href="https://docs.lammps.org/Build_package.html">Build package</a> page for more info.</p>
 </div>
-<p>The mold integration technique consists of different steps and here we only discuss the last two steps to obtain the interfacial energy of the 100 plane for the LJ particles at <span class="math notranslate nohighlight">\(T^\ast=0.617\)</span> and <span class="math notranslate nohighlight">\(p^\ast=-0.02\)</span>. All the steps can be found in Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id1">1</a>, and they can be summarized as:</p>
+<p>The lattice mold technique consists of 5 different steps. All the steps can be found in Sanchez-Burgos <em>et al.</em><a class="footnote-reference brackets" href="#footcite-sanchez2022homogeneous" id="id1">1</a>, and they can be summarized as:</p>
 <ol class="arabic simple">
-<li><p>Preparation of the configuration by embedding the mold coordinates (from a crystal configuration) into the fluid at coexistence conditions.</p></li>
-<li><p>Choice of the <a class="reference internal" href="#optimal-radius-calculation"><span class="std std-doc">optimal well radius</span></a> <span class="math notranslate nohighlight">\(r_{0w}\)</span> to extrapolate the interfacial energy.</p></li>
-<li><p><a class="reference internal" href="#thermodynamic-integration"><span class="std std-doc">Thermodynamic integration</span></a> to calculate the interfacial energy for different well radii above the optimal radius
-<span class="math notranslate nohighlight">\(\gamma(r_{0w}&gt;r_w)\)</span>.</p></li>
-<li><p>Extrapolation of the interfacial energy to the optimal radius <span class="math notranslate nohighlight">\(r_{0w}\)</span>.</p></li>
+<li><p>Create an appropriate spheroidal mold and embed it in the liquid at the correct density</p></li>
+<li><p>Choice of the optimal well radius <span class="math notranslate nohighlight">\(r_{0w}\)</span> to extrapolate, so two water molecules fit inside the same well.</p></li>
+<li><p>Calculation of the <span class="xref myst">well occupancy</span> curves for each well depth below the optimal radius.</p></li>
+<li><p>Calculation of the <span class="xref myst">average nucleation time</span> to obtain the nucleation rate at each well radius.</p></li>
+<li><p><span class="xref myst">Extrapolation of the nucleation rate</span> to the optimal radius <span class="math notranslate nohighlight">\(r_{0w}\)</span>.</p></li>
 </ol>
-<p>The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding <span class="math notranslate nohighlight">\((p,T)\)</span> conditions. In this example, we provide the system data file for the plane 100 of a LJ particles at <span class="math notranslate nohighlight">\(T^\ast=0.617\)</span> and <span class="math notranslate nohighlight">\(p^\ast=-0.02\)</span>:</p>
+<p>The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding <span class="math notranslate nohighlight">\((p,T)\)</span> conditions for the desired Ice (Ih in this example). Here, we provide the system data file of a mold made of 39 wells at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span> (see the figure below).</p>
 <p><img alt="Step-1" src="_images/Fig1.png" /></p>
+<p>The optimal radius is easily calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of <span class="math notranslate nohighlight">\(\sim8k_BT\)</span>. The radius above which the occupancy exceeds the 100%, <em>i.e.</em> more than one water molecule can access the well, is considered as the optimal radius. For the current example we have to extrapolate to <span class="math notranslate nohighlight">\(r_{0w}=1.32\AA\)</span> (see figure below).</p>
 <p><img alt="Step-2" src="_images/Fig2.jpg" /></p>
-<div class="section" id="optimal-radius-calculation">
-<h2>Optimal radius calculation<a class="headerlink" href="#optimal-radius-calculation" title="Permalink to this headline">¶</a></h2>
-<p>The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:</p>
+<div class="section" id="well-occupancy">
+<h2>Well occupancy<a class="headerlink" href="#well-occupancy" title="Permalink to this headline">¶</a></h2>
+<p>The calculation of the well occupancy for different well radii under the optimal well radius consists of the following steps:</p>
 <ol class="arabic simple">
-<li><p>Create a directory sweeping different radii (<span class="math notranslate nohighlight">\(r_w=0.27,\ 0.28,\ \ldots,0.33,0.34\sigma\)</span>).</p></li>
+<li><p>Create the directory for sweeping different radii (<span class="math notranslate nohighlight">\(r_w=0.85,0.99,1.12\AA\)</span>), and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of <span class="math notranslate nohighlight">\(\epsilon\)</span> in <span class="math notranslate nohighlight">\(k_{B}T\)</span>:</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.00001</span>
 <span class="mf">0.10</span>
@@ -203,63 +206,85 @@
 <span class="mf">8.0</span>
 </pre></div>
 </div>
+<p>Please note that the number of well depths included in the calculation may increase to capture with more accuracy the transition of well filling. This should vary with the well radius.</p>
 <ol class="arabic simple" start="2">
-<li><p>For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.</p></li>
-<li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>).</p></li>
-<li><p>The LAMMPS script contains several variables that it is important to know to properly perform the simulations:</p></li>
+<li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">39mold.xyz</span> </code>) and the mW potential file (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>).</p></li>
+<li><p>The LAMMPS script contains several variables that are important to know to properly perform the simulations:</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># ---------------------------- Define variables --------------------------------
-variable  nts          equal  400000     # production number of time-steps
-variable  ts           equal  0.001      # length of the ts (in lj units)
-variable  siglj        equal  1.0        # sigma coefficient for BG pair-style
-variable  epslj        equal  1.0        # epsilon coefficient for BG pair-style
-variable  cut1         equal  2.3        # internal cut-off for BG pair-style
-variable  cut2         equal  2.5        # external cut-off for BG pair-style
-variable  rw           equal  0.33       # (reduced) width of the square well potential
-variable  alpha        equal  0.005      # exponent of the square well potential
-variable  nkT          equal  8.0        # well depth (reduced units) 
+variable  nts          equal  99000000   # production number of time-steps
+variable  T            equal  220.0      # Temperature of the system in K
+variable  nkT          equal  8          # Well depth in kT
+variable  ts           equal  1          # length of the ts (in fs units)
+variable  width        equal  0.25       # (reduced) width of the square well potential
+variable  alpha        equal  0.017025   # exponent of the square well potential (0.005*3.405)
 variable  seed         equal  23782      # velocity seed
-variable  Tsyst        equal  0.617      # (reduced) temperature of the system
-variable  Psyst        equal  -0.02      # (reduced) press of the system
 variable  NtsTdamp     equal  100        # Number of ts to damp temperature
-variable  NtsPdamp     equal  100        # Number of ts to damp pressure
 variable  thermoSteps  equal  1000       # Number of ts to write properties on screen
-variable  restartSteps equal  30000      # Number of ts before write restart file
-variable  dumpSteps    equal  5000       # Number of ts before write dump file
+variable  restartSteps equal  1000000    # Number of ts before write restart file
+variable  dumpSteps    equal  250000     # Number of ts before write dump file
+
 
 # --------------------- Derivate variables -------------------------------------
-variable cutoff1     equal  ${siglj}*${cut1}
-variable cutoff2     equal  ${siglj}*${cut2}
-variable cutoff_well equal  ${rw}*4.0
-variable D           equal  ${nkT}*${Tsyst} # Depth of well
-variable Tdamp       equal  ${NtsTdamp}*${ts}
-variable Pdamp       equal  ${NtsPdamp}*${ts}
+variable D           equal ${nkT}*8.314*$T/4184    # Depth of well (real units)
+variable rw          equal ${width}*3.405          # Width of the well (real units)
+variable cutoff_well equal  ${rw}*4.0              # Well potential cutoff (real units)
 
 
-####  Define mold  ####
-read_data       mold_100.lmp
-group melt type 1
-group mold type 2
+####   Define Mold   ####
+read_data      39mold.xyz  # contains the positions and masses and other information
+group freeze type 2 
+group unfrozen subtract all freeze
 
 </pre></div>
 </div>
-<p>For this step, the typical run must be approximately 200000 time-steps (with dt=1e-3), and that can be controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code>.
-Regarding the interaction potential, the parameter <code class="docutils literal notranslate"><span class="pre">rw</span></code> stands for the well radius so this must be changed for the different studies radii during this step <code class="docutils literal notranslate"><span class="pre">rw</span></code>=<span class="math notranslate nohighlight">\(0.27,\ 0.28,\ \ldots,0.33,0.34\sigma\)</span>.
-The parameter <code class="docutils literal notranslate"><span class="pre">nkT</span></code> gives the well depth in <span class="math notranslate nohighlight">\(k_{B}T\)</span> units and for this step must be kept to 8 or bigger.
-Regarding the velocity seed, the variable <code class="docutils literal notranslate"><span class="pre">seed</span></code> controls this aspect and thus, it must be changed with a random integer number for each simulation.
+<p>For this step, the typical run must be approximately 5 ns (with <code class="docutils literal notranslate"><span class="pre">dt=1</span> <span class="pre">fs</span></code>), and that can be controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code> which must be set to <code class="docutils literal notranslate"><span class="pre">nts=5000000</span></code>.
+Regarding the interaction potential, the parameter <code class="docutils literal notranslate"><span class="pre">width</span></code> stands for the well radius so this must be changed for the different studies radii during this step <code class="docutils literal notranslate"><span class="pre">width=0.25,0.29,0.33</span></code> in reduced units.
+The parameter <code class="docutils literal notranslate"><span class="pre">nkT</span></code> gives the well depth in <span class="math notranslate nohighlight">\(k_BT\)</span>  and must sweep the values presented above.
+Regarding the velocity seed, the variable <code class="docutils literal notranslate"><span class="pre">seed</span></code> controls the initial velocity seed.
 Also, there are some variables that might be interesting to know:</p>
 <ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">thermoSteps</span></code> gives the number of timesteps to print the thermo</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">restartSteps</span></code> indicates the frequency of saving the restart files</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">dumpSteps</span></code> is the number of steps to save the trajectory in the dump file and for this step it is recommended to be set to 2000.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">thermoSteps</span></code> gives the number of timesteps to print the thermos.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">restartSteps</span></code> indicates the frequency of saving the restart files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dumpSteps</span></code> is the number of steps to save the trajectory in the dump file and for this step can be set above 200000 as it is not required in this step.</p></li>
 </ul>
 <ol class="arabic simple" start="5">
-<li><p>Launch the simulation for each radius and seed. That means a total of 80 simulations, but they are quite short.</p></li>
-<li><p>The analysis of this step consists in determining if there is induction time, <em>i.e.</em> if that radius can be thermodynamically integrated. To do so, the resulting trajectory must be analyzed using the order parameter <span class="math notranslate nohighlight">\({\bar{q}}_6\)</span> to determine the number of particles on the cluster.
-The recommended values for such analysis is a threshold of <span class="math notranslate nohighlight">\({\bar{q}}_6=0.34\)</span>, and a cutoff of <span class="math notranslate nohighlight">\(1.35\sigma\)</span>. As a result, one obtains different curves for the order parameter as a function of time for the different well radii:</p></li>
+<li><p>Launch the simulation for each radius and well depth.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves. We need to get the average number of well occupancy for each value of <code class="docutils literal notranslate"><span class="pre">nkT</span></code> so that we print the potential contribution due to mW-well interaction (<code class="docutils literal notranslate"><span class="pre">c_1</span></code>, column 8):</p></li>
 </ol>
-<p><img alt="Step-1\label{kk}" src="_images/Fig2.png" /></p>
-<p>A system can be considered to be integrated if the order parameter remains close to the total number of molds within the system (98 wells for this example). Therefore, in this case we can consider <span class="math notranslate nohighlight">\(r_w=0.32\sigma\)</span> as the greatest radius with not sufficiently long induction time so it is chosen as our optimal radius to extrapolate.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># ------------- Output thermo information and averaged variables ---------------
+compute 1 all pair square/well
+compute 2 all pair sw
+compute mytemp unfrozen temp
+thermo_style   custom step c_mytemp pe etotal press vol enthalpy c_1 c_2 spcpu  # energy and thermo properties printed to output
+thermo_modify  flush yes  # flush the buffer and write the output in real time
+thermo         ${thermoSteps}      # how often (in steps) will write the properties of thermo_style to the output
+</pre></div>
+</div>
+<p>Thus, the calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:</p>
+<div class="math notranslate nohighlight">
+\[\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)\]</div>
+<ol class="arabic simple" start="6">
+<li><p>Plot the different curves of well occupancy for the different radii. The result should look similar to the figure below</p></li>
+</ol>
+<p><img alt="Step-3" src="_images/Fig3.jpg" /></p>
+<p>The free energy difference between the liquid and the liquid with the precritical cluster is calculated as
+$<span class="math notranslate nohighlight">\(\Delta G^*=N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon_{sw}\, \langle N_{sw}(\epsilon_{sw})\rangle,\)</span>$</p>
+<p>where <span class="math notranslate nohighlight">\(N_{w}\)</span> is the total number of wells in the mold (<span class="math notranslate nohighlight">\(39\)</span>), <span class="math notranslate nohighlight">\(\epsilon_{max}\)</span> is the maximum well depth to evaluate this integral,
+<span class="math notranslate nohighlight">\(\langle N_{sw}(\epsilon_{sw})\rangle\)</span> is the average number of mold sites occupied by liquid molecules obtained previously,
+and <span class="math notranslate nohighlight">\(\epsilon_0\)</span> is the minimum value of epsilon considered in the calculation (close to zero).
+The final calculation of the free energy difference must include the rotational and translational degrees of freedom such that</p>
+<div class="math notranslate nohighlight">
+\[\Delta G/k_B T=\Delta G^*/k_B T + \ln(\rho_f V_w)- \ln(8\pi^2),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\rho_f\)</span> is the fluid number density, and <span class="math notranslate nohighlight">\(V_w\)</span> is the volume of a single well.</p>
+</div>
+<div class="section" id="average-nucleation-time">
+<h2>Average nucleation time<a class="headerlink" href="#average-nucleation-time" title="Permalink to this headline">¶</a></h2>
+<p>The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:</p>
+</div>
+<div class="section" id="extrapolation-of-the-nucleation-rate">
+<h2>Extrapolation of the nucleation rate<a class="headerlink" href="#extrapolation-of-the-nucleation-rate" title="Permalink to this headline">¶</a></h2>
+<p>The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:</p>
 </div>
 <div class="section" id="thermodynamic-integration">
 <h2>Thermodynamic integration<a class="headerlink" href="#thermodynamic-integration" title="Permalink to this headline">¶</a></h2>
@@ -289,7 +314,10 @@ The recommended values for such analysis is a threshold of <span class="math not
 <li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>).</p></li>
 <li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of hundred of thousands time-steps (with <code class="docutils literal notranslate"><span class="pre">dt=1e-3</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code>. Regarding the interaction potential, the parameter <code class="docutils literal notranslate"><span class="pre">rw</span></code> that controls the well radius must be changed for the different radii <code class="docutils literal notranslate"><span class="pre">rw=0.33,0.34,0.35</span></code> (in <span class="math notranslate nohighlight">\(\sigma\)</span>). The parameter <code class="docutils literal notranslate"><span class="pre">nkT</span></code> (well depth) must change it for each simulation with the corresponding value. Also, the <code class="docutils literal notranslate"><span class="pre">thermoSteps</span></code> should have a reasonable value (1000 is recommended), and <code class="docutils literal notranslate"><span class="pre">dumpSteps</span></code> can be set above 50000 timesteps as the trajectory is not needed for this step</p></li>
 <li><p>Launch the simulation for each radius and well depth.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the thermodynamic integration. We need to get the average number of well occupancy for each value of <code class="docutils literal notranslate"><span class="pre">nkT</span></code> so that we print the potential contribution due to LJ particle-well interaction (<code class="docutils literal notranslate"><span class="pre">c_1</span></code>, column 13), but also the number of particles in the system (<code class="docutils literal notranslate"><span class="pre">v_nall</span></code>, column 15) since the energy is expressed in reduced LJ units, <em>i.e.</em> energy per particle instead of energy of the total system:</p></li>
+<li><ol class="arabic simple" start="5">
+<li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves. We need to get the average number of well occupancy for each value of <code class="docutils literal notranslate"><span class="pre">nkT</span></code> so that we print the potential contribution due to mW-well interaction (<code class="docutils literal notranslate"><span class="pre">c_1</span></code>, column 8):</p></li>
+</ol>
+</li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># ------------- Output thermo information and averaged variables ---------------
 variable well equal c_1*count(all)
@@ -340,13 +368,16 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 <div class="math notranslate nohighlight">
 \[\gamma=0.370(8) \epsilon\sigma^{−2}\]</div>
 <p><img alt="Step-3" src="_images/Fig4.png" /></p>
-<p>This mold integration reported for the same system an interfacial energy of <span class="math notranslate nohighlight">\(\gamma=0.372(8) \epsilon\sigma^{−2}\)</span> extrapolating to an optimal radius of <span class="math notranslate nohighlight">\(r_{0w}=0.315\sigma\)</span> (please see the work by Espinosa <em>et al</em>Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id2">1</a>). Additionally, another work using the cleaving techniqueDavidchack and Laird<a class="footnote-reference brackets" href="#footcite-davidchack2003direct" id="id3">2</a> reported a value of <span class="math notranslate nohighlight">\(\gamma=0.371(3) \epsilon\sigma^{−2}\)</span> for the same system.</p>
+<p>This mold integration reported for the same system an interfacial energy of <span class="math notranslate nohighlight">\(\gamma=0.372(8) \epsilon\sigma^{−2}\)</span> extrapolating to an optimal radius of <span class="math notranslate nohighlight">\(r_{0w}=0.315\sigma\)</span> (please see the work by Espinosa <em>et al</em>Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id2">2</a>). Additionally, another work using the cleaving techniqueDavidchack and Laird<a class="footnote-reference brackets" href="#footcite-davidchack2003direct" id="id3">3</a> reported a value of <span class="math notranslate nohighlight">\(\gamma=0.371(3) \epsilon\sigma^{−2}\)</span> for the same system.</p>
 <div class="docutils container" id="id4">
 <dl class="footnote brackets">
-<dt class="label" id="footcite-espinosa2014mold"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
+<dt class="label" id="footcite-sanchez2022homogeneous"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Ignacio Sanchez-Burgos, Andres R Tejedor, Carlos Vega, Maria M Conde, Eduardo Sanz, Jorge Ramirez, and Jorge R Espinosa. Homogeneous ice nucleation rates for mw and tip4p/ice models through lattice mold calculations. <em>The Journal of Chemical Physics</em>, 157(9):094503, 2022.</p>
+</dd>
+<dt class="label" id="footcite-espinosa2014mold"><span class="brackets"><a class="fn-backref" href="#id2">2</a></span></dt>
 <dd><p>JR Espinosa, C Vega, and E Sanz. The mold integration method for the calculation of the crystal-fluid interfacial free energy from simulations. <em>The Journal of chemical physics</em>, 141(13):134709, 2014.</p>
 </dd>
-<dt class="label" id="footcite-davidchack2003direct"><span class="brackets"><a class="fn-backref" href="#id3">2</a></span></dt>
+<dt class="label" id="footcite-davidchack2003direct"><span class="brackets"><a class="fn-backref" href="#id3">3</a></span></dt>
 <dd><p>Ruslan L Davidchack and Brian B Laird. Direct calculation of the crystal–melt interfacial free energies for continuous potentials: application to the lennard-jones system. <em>The Journal of chemical physics</em>, 118(16):7651–7657, 2003.</p>
 </dd>
 </dl>

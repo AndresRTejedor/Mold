@@ -289,7 +289,7 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 </div>
 <p>The calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:</p>
 <div class="math notranslate nohighlight">
-\[\langle Nw \rangle=c_1\cdot n_{all}/(nkT\cdot T)\]</div>
+\[\langle N_w \rangle=c_1\cdot n_{all}/(nkT\cdot T)\]</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>Please note that the system requires a time to reach the steady state so that the analysis must be performed discarding after <span class="math notranslate nohighlight">\(t\approx10\tau\)</span>. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…)</p>
@@ -301,7 +301,7 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 <h2>Extrapolation and interfacial energy calculation<a class="headerlink" href="#extrapolation-and-interfacial-energy-calculation" title="Permalink to this headline">¶</a></h2>
 <p>After the analysis in the previous step, one obtain a curve of well occupancy vs well depth for each radius so that the interfacial energy is calculated as</p>
 <div class="math notranslate nohighlight">
-\[\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, N_w(\epsilon) \right],\]</div>
+\[\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, \langle N_w(\epsilon)\rangle \right],\]</div>
 <p>where <span class="math notranslate nohighlight">\(N_w\)</span> is the total number of wells and <span class="math notranslate nohighlight">\(l\)</span> is the short side of the box that can be obtained from the thermo (<code class="docutils literal notranslate"><span class="pre">lx</span></code>, <code class="docutils literal notranslate"><span class="pre">ly</span></code>, columns 7 and 8 int the <code class="docutils literal notranslate"><span class="pre">thermo</span></code>). The resulting integrals are provided in the following table:</p>
 <table class="colwidths-auto docutils align-default">
 <thead>
