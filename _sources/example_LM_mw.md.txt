@@ -151,7 +151,9 @@ Some seeds may need to run longer times in case the mold has not been able to nu
 
 The extrapolation of the nucleation rate is straitghforward. 
 - The nucleation rate is calculated as
-$$J=P/\langle t\rangle, $$
+
+$$J=P/\langle t\rangle,$$
+
 where $P$ is the probability calculated in [Step 3](#well-occupancy) and $\langle t\rangle $ is the average nucleation time obtained in [Step 4] (#average-nucleation-time). 
 - Plot the nucleation rates vs the well radii using logarithmic scale in the y-axis as in the figure below.
 
@@ -164,9 +166,7 @@ The table below provides the obtained free energy, average nucleation time and n
 |         $r_w/Å$)        |  0.85 |  0.99 |  1.12 |
 |:----------------------------:|:-----:|:-----:|:-----:|
 | $\Delta G/\k_B T$       | 31.21 | 28.80 | 27.38 |
-|:----------------------------:|:-----:|:-----:|:-----:|
 | $\langle t\rangle (ns)$ |  9.8  |  16.2 | 29.1 |
-|:----------------------------:|:-----:|:-----:|:-----:|
 | $\log_{10}J$            |  23.0 |  23.8 |  24.2 |
 
 
