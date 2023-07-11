@@ -15,15 +15,15 @@ The lattice mold technique consists of 5 different steps. All the steps can be f
 
 1. Create an appropriate spheroidal mold and embed it in the liquid at the correct density
 2. Choice of the optimal well radius $r_{0w}$ to extrapolate, so two water molecules fit inside the same well.
-3. Calculation of the [well occupancy](#Well-occupancy) curves for each well depth below the optimal radius. 
-4. Calculation of the [average nucleation time](#Average-nucleation-time) to obtain the nucleation rate at each well radius.
-5. [Extrapolation of the nucleation rate](#Extrapolation-of-the-nucleation-rate) to the optimal radius $r_{0w}$.
+3. Calculation of the [well occupancy](#well-occupancy) curves for each well depth below the optimal radius. 
+4. Calculation of the [average nucleation time](#average-nucleation-time) to obtain the nucleation rate at each well radius.
+5. [Extrapolation of the nucleation rate](#extrapolation-of-the-nucleation-rate) to the optimal radius $r_{0w}$.
 
 The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding $(p,T)$ conditions for the desired Ice (Ih in this example). Here, we provide the system data file of a mold made of 39 wells at $T=220K$ and $p=1bar$ (see the figure below). 
 
 ![Step-1](../figs/LatticeMold/Fig1.png "Conf_LM")
 
-The optimal radius is easily calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of $\sim8k_BT$. The radius above which the occupancy exceeds the 100%, *i.e.* more than one water molecule can access the well, is considered as the optimal radius. For the current example we have to extrapolate to $r_{0w}=1.32\AA$ (see figure below).
+The optimal radius is easily calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of $\sim8k_BT$. The radius above which the occupancy exceeds the 100%, *i.e.* more than one water molecule can access the well, is considered as the optimal radius. For the current example we have to extrapolate to $r_{0w}=1.32Å$ (see figure below).
 
 ![Step-2](../figs/LatticeMold/Fig2.jpg "Opt_Rad")
 
@@ -32,7 +32,7 @@ The optimal radius is easily calculated by running a simulation of a single well
 
 The calculation of the well occupancy for different well radii under the optimal well radius consists of the following steps:
 
-1. Create the directory for sweeping different radii ($r_w=0.85,0.99,1.12\AA$), and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of $\epsilon$ in $k_{B}T$:
+1. Create the directory for sweeping different radii ($r_w=0.85,0.99,1.12Å$), and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of $\epsilon$ in $k_{B}T$:
 
 ```
 0.00001
@@ -110,6 +110,7 @@ $$\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)$$
 ![Step-3](../figs/LatticeMold/Fig3.jpg "Well_ocu")
 
 The free energy difference between the liquid and the liquid with the precritical cluster is calculated as 
+
 $$\Delta G^*=N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon_{sw}\, \langle N_{sw}(\epsilon_{sw})\rangle,$$
 
 where $N_{w}$ is the total number of wells in the mold ($39$), $\epsilon_{max}$ is the maximum well depth to evaluate this integral, 
