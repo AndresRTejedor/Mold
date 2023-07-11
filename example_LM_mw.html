@@ -188,7 +188,7 @@
 <p>The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding <span class="math notranslate nohighlight">\((p,T)\)</span> conditions for the desired Ice (Ih in this example). Here, we provide the system data file of a mold made of 39 wells at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span> (see the figure below).</p>
 <p><img alt="Step-1" src="_images/Fig1.png" /></p>
 <p>The optimal radius is easily calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of <span class="math notranslate nohighlight">\(\sim8k_BT\)</span>. The radius above which the occupancy exceeds the 100%, <em>i.e.</em> more than one water molecule can access the well, is considered as the optimal radius. For the current example we have to extrapolate to <span class="math notranslate nohighlight">\(r_{0w}=1.32Å\)</span> (see figure below).</p>
-<p><img alt="Step-2" src="_images/Fig2.jpg" /></p>
+<p><img alt="Step-2" src="_images/Fig2.png" /></p>
 <div class="section" id="well-occupancy">
 <h2>Well occupancy<a class="headerlink" href="#well-occupancy" title="Permalink to this headline">¶</a></h2>
 <p>The calculation of the well occupancy for different well radii under the optimal well radius consists of the following steps:</p>
@@ -267,7 +267,7 @@ thermo         ${thermoSteps}      # how often (in steps) will write the propert
 <ol class="arabic simple" start="6">
 <li><p>Plot the different curves of well occupancy for the different radii. The result should look similar to the figure below</p></li>
 </ol>
-<p><img alt="Step-3" src="_images/Fig3.jpg" /></p>
+<p><img alt="Step-3" src="_images/Fig3.png" /></p>
 <p>The free energy difference between the liquid and the liquid with the precritical cluster is calculated as</p>
 <div class="math notranslate nohighlight">
 \[\Delta G^*=N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon_{sw}\, \langle N_{sw}(\epsilon_{sw})\rangle,\]</div>
@@ -341,7 +341,7 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 <p>Please note that the system requires a time to reach the steady state so that the analysis must be performed discarding after <span class="math notranslate nohighlight">\(t\approx10\tau\)</span>. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…)</p>
 </div>
 <p>In the following figure the curves of well occupancy vs. well depth for the different radii are presented.</p>
-<p><img alt="Step-2\label{Occupancy}" src="_images/Fig3.png" /></p>
+<p><img alt="Step-2\label{Occupancy}" src="_images/Fig31.png" /></p>
 </div>
 <div class="section" id="extrapolation-and-interfacial-energy-calculation">
 <h2>Extrapolation and interfacial energy calculation<a class="headerlink" href="#extrapolation-and-interfacial-energy-calculation" title="Permalink to this headline">¶</a></h2>
