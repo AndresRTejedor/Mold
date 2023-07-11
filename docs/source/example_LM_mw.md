@@ -121,34 +121,56 @@ The final calculation of the free energy difference must include the rotational 
 $$\Delta G/k_B T=\Delta G^*/k_B T + \ln(\rho_f V_w)- \ln(8\pi^2),$$
 
 where $\rho_f$ is the fluid number density, and $V_w$ is the volume of a single well.
+The free energy difference is used to calculate the probability per unit volume of finding a crystal cluster of the size of the one induced by the mold as dictated by the following equation:
 
+$$P=\rho_f \exp(-\Delta G/(k_B T)) .$$
 
 
 ## Average nucleation time 
 
-![Step-4](../figs/LatticeMold/Fig4.jpg "Time")
+To estimate the average nucleation time, one must follow these steps:
+
+1. Create the directory for sweeping different radii ($r_w=0.85,0.99,1.12Å$).
+2. For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.
+3. Copy the LAMMPS script file (`mw_lattmold.in`) in each subdirectory along with the configuration file (`39mold.xyz `) and the mW potential file (`mW.sw`).
+4. The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of $100ns$ (with `dt=1 fs`), controlled by the parameter `nts` which must be set to `nts=10000000`. The well depth `nkT` must be set to 8. Importantly, for this step the `seed` variable must be change for every independent run.
+5. Launch the simulation for each radius and independent velocity seed.
+6. The `thermos_style` provides the potential energy (`pe`) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example. Plot the variable `pe` vs the time that correspond to multiply the `step` variable (column 1 in `thermo`) by the `timestep` ($1fs$). 
+The sharp decay in the curves determine the nucleation time that averaged over all seeds provides the estimation for all the seeds as shown in the figure below
+
+![Step-4](../figs/LatticeMold/Fig4.png "Time")
+
+
+````{warning}
+Some seeds may need to run longer times in case the mold has not been able to nucleate. 
+````
 
 
 ## Extrapolation of the nucleation rate 
 
-The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:
 
-After the analysis in the previous step, one obtain a curve of well occupancy vs well depth for each radius so that the interfacial energy is calculated as
+The extrapolation of the nucleation rate is straitghforward. 
+- The nucleation rate is calculated as
+$$J=P/\langle t\rangle, $$
+where $P$ is the probability calculated in [Step 3](#well-occupancy) and $\langle t\rangle $ is the average nucleation time obtained in [Step 4] (#average-nucleation-time). 
+- Plot the nucleation rates vs the well radii using logarithmic scale in the y-axis as in the figure below.
 
-$$\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, N_w(\epsilon) \right],$$
-where $N_w$ is the total number of wells and $l$ is the short side of the box that can be obtained from the thermo (`lx`, `ly`, columns 7 and 8 int the `thermo`). The resulting integrals are provided in the following table:
+![Step-5](../figs/LatticeMold/Fig5.png "Extrapolation")
+ 
+- Fit the data to a linear function
+- Use the resulting fit equation to extrapolate the nucleation rate to the optimal radius ($J(r_{0w}=1.32)$)
+The table below provides the obtained free energy, average nucleation time and nucleation rate for each well radius. 
 
-|         $r_w/\sigma$)        |  0.33 |  0.34 |  0.35 |
+|         $r_w/Å$)        |  0.85 |  0.99 |  1.12 |
 |:----------------------------:|:-----:|:-----:|:-----:|
-| $\gamma/\sigma^{-2}\epsilon$ | 0.363 | 0.357 | 0.348 |
+| $\Delta G/\k_B T$       | 31.21 | 28.80 | 27.38 |
+|:----------------------------:|:-----:|:-----:|:-----:|
+| $\langle t\rangle (ns)$ |  9.8  |  16.2 | 29.1 |
+|:----------------------------:|:-----:|:-----:|:-----:|
+| $\log_{10}J$            |  23.0 |  23.8 |  24.2 |
 
-To obtain the interfacial energy, you now shall extrapolate the value of the interfacial energy to the optimal radius ($r_{0w}=0.32\sigma$) using a linear fit. According to the interfacial energy provided in the table the interfacial energy is
 
-$$\gamma=0.370(8) \epsilon\sigma^{−2}$$
-
-![Step-5](../figs/LatticeMold/Fig5.jpg "Extrapolation")
-
-This mold integration reported for the same system an interfacial energy of $\gamma=0.372(8) \epsilon\sigma^{−2}$ extrapolating to an optimal radius of $r_{0w}=0.315\sigma$ (please see the work by Espinosa *et al*{footcite:t}`espinosa2014mold`). Additionally, another work using the cleaving technique{footcite:t}`davidchack2003direct` reported a value of $\gamma=0.371(3) \epsilon\sigma^{−2}$ for the same system.
+Extrapolating the nucleation rate to the optimal radius gives $\log_{10}J(r_{0w}=1.32Å)=25.3(2.5)$ for ice Ih of mW at $T=220K$ and $p=1bar$
 
 
 
