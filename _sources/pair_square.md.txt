@@ -18,7 +18,7 @@ pair_coeff    1 2 square/well 5.0 0.33 0.005 1.32
 The square/well style computes a continuous version of the square-well potential given by:
 
 $$
-	U_{wp} (r)=-\frac{1}{2} \epsilon\left[1-\tanh\left(\frac{r-r_w}{\alpha}\right)\right]   \quad \text{for} r<r_{c}
+	U_{wp} (r)=-\frac{1}{2} \epsilon\left[1-\tanh\left(\frac{r-r_w}{\alpha}\right)\right]   \quad \text{for} \quad r<r_{c}
 $$
 where $r_{c}$ is the cutoff.
 
@@ -29,11 +29,12 @@ The following coefficients must be defined for each pair of atoms types via the 
 -  $\alpha$
 -  $r_{c}$ (distance units)
 
-This continuous square-well potential can be used to calculate liquid-crystal interfacial energies through the mold integration ({footcite:t}`espinosa2014mold`) or the lattice mold techniques ({footcite:t}`espinosa2016lattice` and {footcite:t}`sanchez2022homogeneous`). Also, it can simulate attractive patches distributed along the surface of a sphere, known as “patchy particles” ({footcite:t}`espinosa2019breakdown`).
+This continuous square-well potential can be used to calculate liquid-crystal interfacial free energies through the mold integration ({footcite:t}`espinosa2014mold`) or the lattice mold techniques ({footcite:t}`espinosa2016lattice` and {footcite:t}`sanchez2022homogeneous`). Also, it can be used to simulate attractive patches distributed along the surface of a sphere, known as “patchy particles” ({footcite:t}`espinosa2019breakdown`).
 
 
 ````{warning}
 The value of $\alpha$ cannot be too large to avoid strong forces acting on the particles trapped inside the wells.
+If large values are needed, the simulation timestep must be reduced ({footcite:t}`sanchez2023direct`).
 ````
 
 ````{note}
@@ -42,7 +43,7 @@ In case $\epsilon$ is set to a negative value, the well potential would become f
 
 ## Restrictions
 
-This pair style can only be used if LAMMPS was built with the EXTRA-MOLD package. See the Build package doc page for more info.
+This pair style can only be used if LAMMPS was built with the (Mold package)[https://github.com/AndresRTejedor/Mold]. See the Build package doc page for more info.
 
 
 ```{footbibliography}
