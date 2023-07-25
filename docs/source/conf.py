@@ -17,7 +17,7 @@
 
 # -- Project information -----------------------------------------------------
 
-project = 'SurFEC'
+project = 'SIFT'
 copyright = '2023, Andres R. Tejedor, Jorge Ramírez, Nicodemo Di Pasquale, and Jorge R. Espinosa'
 author = 'Andres R. Tejedor'
 

@@ -15,10 +15,10 @@ pair_coeff    1 2 square/well 5.0 0.33 0.005 1.32
 
 ## Description
 
-The square/well style computes continuous version of the square-well potential given by:
+The square/well style computes a continuous version of the square-well potential given by:
 
 $$
-	U_{wp} (r)=-\frac{1}{2} \epsilon\left[1-\tanh\left(\frac{r-r_w}{\alpha}\right)\right]     r<r_{c}
+	U_{wp} (r)=-\frac{1}{2} \epsilon\left[1-\tanh\left(\frac{r-r_w}{\alpha}\right)\right]   \quad \text{for} r<r_{c}
 $$
 where $r_{c}$ is the cutoff.
 
