@@ -14,16 +14,16 @@ The mW pair style is part of the MANYBODY package. See the [Build package](https
 The lattice mold technique consists of 5 different steps. All the steps can be found in {footcite:t}`sanchez2022homogeneous`, and they can be summarized as:  
 
 1. Create an appropriate spheroidal mold and embed it in the liquid at the correct density
-2. Choice of the optimal well radius $r_{0w}$ to extrapolate, so two water molecules fit inside the same well.
+2. Choice of the optimal well radius $r_{w,0}$ to extrapolate, in the limit where two water molecules fit inside the same well.
 3. Calculation of the [well occupancy](#well-occupancy) curves for each well depth below the optimal radius. 
 4. Calculation of the [average nucleation time](#average-nucleation-time) to obtain the nucleation rate at each well radius.
-5. [Extrapolation of the nucleation rate](#extrapolation-of-the-nucleation-rate) to the optimal radius $r_{0w}$.
+5. [Extrapolation of the nucleation rate](#extrapolation-of-the-nucleation-rate) to the optimal radius $r_{w,0}$.
 
 The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding $(p,T)$ conditions for the desired Ice (Ih in this example). Here, we provide the system data file of a mold made of 39 wells at $T=220K$ and $p=1bar$ (see the figure below). 
 
 ![Step-1](../figs/LatticeMold/Fig1.png "Conf_LM")
 
-The optimal radius is easily calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of $\sim8k_BT$. The radius above which the occupancy exceeds the 100%, *i.e.* more than one water molecule can access the well, is considered as the optimal radius. For the current example we have to extrapolate to $r_{0w}=1.32Å$ (see figure below).
+The optimal radius is easily calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of $\sim8k_BT$. The radius above which the occupancy exceeds the 100%, *i.e.* more than one water molecule can access the well, is considered as the optimal radius. For the current example we have to extrapolate to $r_{w,0}=1.32Å$ (see figure below).
 
 ![Step-2](../figs/LatticeMold/Fig2.png "Opt_Rad")
 
@@ -160,7 +160,7 @@ where $P$ is the probability calculated in [Step 3](#well-occupancy) and $\langl
 ![Step-5](../figs/LatticeMold/Fig5.png "Extrapolation")
  
 - Fit the data to a linear function
-- Use the resulting fit equation to extrapolate the nucleation rate to the optimal radius ($J(r_{0w}=1.32Å)$)
+- Use the resulting fit equation to extrapolate the nucleation rate to the optimal radius ($J(r_{w,0}=1.32Å)$)
 The table below provides the obtained free energy, average nucleation time and nucleation rate for each well radius. 
 
 |         $r_w/Å$)        |  0.85 |  0.99 |  1.12 |
@@ -170,7 +170,7 @@ The table below provides the obtained free energy, average nucleation time and n
 | $\log_{10}J$            |  23.0 |  23.8 |  24.2 |
 
 
-Extrapolating the nucleation rate to the optimal radius gives $\log_{10}J(r_{0w}=1.32Å)=25.3(2.5)$ for ice Ih of mW at $T=220K$ and $p=1bar$
+Extrapolating the nucleation rate to the optimal radius gives $\log_{10}J(r_{w,0}=1.32Å)=25.3(2.5)$ for ice Ih of mW at $T=220K$ and $p=1bar$
 
 
 
