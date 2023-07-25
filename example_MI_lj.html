@@ -91,7 +91,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Mold integration for 100 plane of the fcc crystal for the Lennard-Jones potential</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#optimal-radius-calculation">Optimal radius calculation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#thermodynamic-integration">Thermodynamic integration</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#extrapolation-and-interfacial-free-energy-calculation">Extrapolation and interfacial free energy calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extrapolation-for-calculating-the-interfacial-free-energy">Extrapolation for calculating the interfacial free energy</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="example_LM_mw.html">Lattice mold calculations of mW Ice Ih nucleation rate at T=220K</a></li>
@@ -234,11 +234,12 @@ Also, there are some variables that might be interesting to know:</p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">thermoSteps</span></code> gives the number of timesteps to print the thermo</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">restartSteps</span></code> indicates the frequency of saving the restart files</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">dumpSteps</span></code> is the number of steps to save the trajectory in the dump file and for this step it is recommended to be set to 2000.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dumpSteps</span></code> is the number of steps to save the trajectory in the dump file and for this step it is recommended to be set to 2000 (be aware that low values of this parameter can produce large trajectory files).</p></li>
 </ul>
 <ol class="arabic simple" start="5">
 <li><p>Launch the simulation for each radius and seed. That means a total of 80 simulations, but they are quite short.</p></li>
-<li><p>The analysis of this step consists in determining if there is induction time, <em>i.e.</em> if that radius can be thermodynamically integrated. To do so, the resulting trajectory must be analyzed using the order parameter <span class="math notranslate nohighlight">\({\bar{q}}_6\)</span> to determine the number of particles on the cluster.
+<li><p>The analysis of this step consists in determining if there is induction time, <em>i.e.</em> further energy is required for the formation of the interface (see Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id2">1</a>).
+To do so, we recommend analyzing the resulting trajectory using the order parameter <span class="math notranslate nohighlight">\({\bar{q}}_6\)</span> (Lechner and Dellago<a class="footnote-reference brackets" href="#footcite-lechner2008accurate" id="id3">2</a>) to determine the number of crystal-like particles in the slab.
 The recommended values for such analysis is a threshold of <span class="math notranslate nohighlight">\({\bar{q}}_6=0.34\)</span>, and a cutoff of <span class="math notranslate nohighlight">\(1.35\sigma\)</span>. As a result, one obtains different curves for the order parameter as a function of time for the different well radii:</p></li>
 </ol>
 <p><img alt="Step-1\label{kk}" src="_images/Fig21.png" /></p>
@@ -246,9 +247,9 @@ The recommended values for such analysis is a threshold of <span class="math not
 </div>
 <div class="section" id="thermodynamic-integration">
 <h2>Thermodynamic integration<a class="headerlink" href="#thermodynamic-integration" title="Permalink to this headline">¶</a></h2>
-<p>Once the optimal radius is estimated, the next step consists in thermodynamic integration of different radii above the optimal value of <span class="math notranslate nohighlight">\(r_w\)</span>. The calculation of the interfacial free energy for the different well radii includes the following steps:</p>
+<p>Once the optimal well radius is estimated, the next step consists in performing thermodynamic integration of the different radii above the optimal value of <span class="math notranslate nohighlight">\(r_w\)</span>. The calculation of the interfacial free energy for the different well radii includes the following steps:</p>
 <ol class="arabic simple">
-<li><p>Create a directory for each radius to be integrated (<span class="math notranslate nohighlight">\(r_w=0.33,0.34,0.35\sigma\)</span>) and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of <span class="math notranslate nohighlight">\(\epsilon\)</span> in <span class="math notranslate nohighlight">\(k_{B}T\)</span>:</p></li>
+<li><p>Create a directory for each radius to be integrated (<span class="math notranslate nohighlight">\(r_w=0.33,0.34,0.35\sigma\)</span>) and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of <span class="math notranslate nohighlight">\(\epsilon\)</span> in <span class="math notranslate nohighlight">\(k_{B}T\)</span>. A system can be considered to be integrated if the of crystal-like particles does not grow irreversibly (<em>e.g.</em> <span class="math notranslate nohighlight">\(r_w\geq 0.33\)</span>).</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.00001</span>
 <span class="mf">0.1</span>
@@ -270,9 +271,13 @@ The recommended values for such analysis is a threshold of <span class="math not
 </div>
 <ol class="arabic simple" start="2">
 <li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>).</p></li>
-<li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of hundred of thousands time-steps (with <code class="docutils literal notranslate"><span class="pre">dt=1e-3</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code>. Regarding the interaction potential, the parameter <code class="docutils literal notranslate"><span class="pre">rw</span></code> that controls the well radius must be changed for the different radii <code class="docutils literal notranslate"><span class="pre">rw=0.33,0.34,0.35</span></code> (in <span class="math notranslate nohighlight">\(\sigma\)</span>). The parameter <code class="docutils literal notranslate"><span class="pre">nkT</span></code> (well depth) must change it for each simulation with the corresponding value. Also, the <code class="docutils literal notranslate"><span class="pre">thermoSteps</span></code> should have a reasonable value (1000 is recommended), and <code class="docutils literal notranslate"><span class="pre">dumpSteps</span></code> can be set above 50000 timesteps as the trajectory is not needed for this step</p></li>
+<li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of hundreds of thousands time-steps (with <code class="docutils literal notranslate"><span class="pre">dt=1e-3</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code> (<em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">nts=500000</span></code>).
+Regarding the interaction potential, the parameter <code class="docutils literal notranslate"><span class="pre">rw</span></code> that controls the well radius must be changed for the different radii <code class="docutils literal notranslate"><span class="pre">rw=0.33,0.34,0.35</span></code> (in <span class="math notranslate nohighlight">\(\sigma\)</span>).
+The parameter <code class="docutils literal notranslate"><span class="pre">nkT</span></code> (well depth) must change it for each simulation with the corresponding value.
+Also, the <code class="docutils literal notranslate"><span class="pre">thermoSteps</span></code> should have a reasonable value (1000 is recommended), and <code class="docutils literal notranslate"><span class="pre">dumpSteps</span></code> can be set above 50000 timesteps as the trajectory is not needed for this step.</p></li>
 <li><p>Launch the simulation for each radius and well depth.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the thermodynamic integration. We need to get the average number of well occupancy for each value of <code class="docutils literal notranslate"><span class="pre">nkT</span></code> so that we print the potential contribution due to LJ particle-well interaction (<code class="docutils literal notranslate"><span class="pre">c_1</span></code>, column 13), but also the number of particles in the system (<code class="docutils literal notranslate"><span class="pre">v_nall</span></code>, column 15) since the energy is expressed in reduced LJ units, <em>i.e.</em> energy per particle instead of energy of the total system:</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the thermodynamic integration.
+We need to get the average number of well occupancy for each value of <code class="docutils literal notranslate"><span class="pre">nkT</span></code> so that we print the potential contribution due to LJ particle-well interaction (<code class="docutils literal notranslate"><span class="pre">c_1</span></code>, column 13), but also the number of particles in the system (<code class="docutils literal notranslate"><span class="pre">v_nall</span></code>, column 15) since the energy is expressed in reduced LJ units, <em>i.e.</em> energy per particle instead of energy of the total system:</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># ------------- Output thermo information and averaged variables ---------------
 variable well equal c_1*count(all)
@@ -287,22 +292,22 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 <p class="admonition-title">Note</p>
 <p>For real units the multiplication by the number of particles in the system is not necessary.</p>
 </div>
-<p>The calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:</p>
+<p>The calculation of the well occupancy for each depth can be easily estimated by taking the average over all the simulation of this value:</p>
 <div class="math notranslate nohighlight">
 \[\langle N_w \rangle=c_1\cdot n_{all}/(nkT\cdot T)\]</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Please note that the system requires a time to reach the steady state so that the analysis must be performed discarding after <span class="math notranslate nohighlight">\(t\approx10\tau\)</span>. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…)</p>
+<p>Please note that the system requires a time to equilibrate so that the analysis must be performed after <span class="math notranslate nohighlight">\(t\approx10\tau\)</span>. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…).</p>
 </div>
 <p>In the following figure the curves of well occupancy vs. well depth for the different radii are presented.</p>
 <p><img alt="Step-2\label{Occupancy}" src="_images/Fig31.png" /></p>
 </div>
-<div class="section" id="extrapolation-and-interfacial-free-energy-calculation">
-<h2>Extrapolation and interfacial free energy calculation<a class="headerlink" href="#extrapolation-and-interfacial-free-energy-calculation" title="Permalink to this headline">¶</a></h2>
-<p>After the analysis in the previous step, one obtain a curve of well occupancy vs well depth for each radius so that the interfacial free energy is calculated as</p>
+<div class="section" id="extrapolation-for-calculating-the-interfacial-free-energy">
+<h2>Extrapolation for calculating the interfacial free energy<a class="headerlink" href="#extrapolation-for-calculating-the-interfacial-free-energy" title="Permalink to this headline">¶</a></h2>
+<p>After the analysis in the previous step, one can obtain a curve of well occupancy vs well depth for each radius so that the interfacial free energy is calculated as</p>
 <div class="math notranslate nohighlight">
 \[\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, \langle N_w(\epsilon)\rangle \right],\]</div>
-<p>where <span class="math notranslate nohighlight">\(N_w\)</span> is the total number of wells and <span class="math notranslate nohighlight">\(l\)</span> is the short side of the box that can be obtained from the thermo (<code class="docutils literal notranslate"><span class="pre">lx</span></code>, <code class="docutils literal notranslate"><span class="pre">ly</span></code>, columns 7 and 8 int the <code class="docutils literal notranslate"><span class="pre">thermo</span></code>). The resulting integrals are provided in the following table:</p>
+<p>where <span class="math notranslate nohighlight">\(N_w\)</span> is the total number of wells and <span class="math notranslate nohighlight">\(l\)</span> is the short side of the box that can be obtained from the thermo (<code class="docutils literal notranslate"><span class="pre">lx</span></code>, <code class="docutils literal notranslate"><span class="pre">ly</span></code>, columns 7 and 8 int the <code class="docutils literal notranslate"><span class="pre">thermo</span></code>). The resulting values for the integrals are provided in the following table (please note that the energy is now expressed in LJ units instead of <span class="math notranslate nohighlight">\(KBT\)</span> (<span class="math notranslate nohighlight">\(\epsilon_{LJ}=0.617\cdot\epsilon_{k_BT}\)</span>)):</p>
 <table class="colwidths-auto docutils align-default">
 <thead>
 <tr class="row-odd"><th class="text-center head"><p><span class="math notranslate nohighlight">\(r_w/\sigma\)</span>)</p></th>
@@ -319,17 +324,22 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 </tr>
 </tbody>
 </table>
-<p>To obtain the interfacial free energy, you now shall extrapolate the value of the interfacial free energy to the optimal radius (<span class="math notranslate nohighlight">\(r_{w,0}=0.32\sigma\)</span>) using a linear fit. According to the interfacial free energy provided in the table the interfacial free energy is</p>
+<p>To obtain the interfacial free energy, you now shall extrapolate the value of the interfacial free energy to the optimal well radius (<span class="math notranslate nohighlight">\(r_{w,0}=0.32\sigma\)</span>) using a linear fit.
+According to the interfacial free energies as a function of the well radii provided in the table, the final estimate for the interfacial free energy is</p>
 <div class="math notranslate nohighlight">
 \[\gamma=0.370(8) \epsilon\sigma^{−2}\]</div>
 <p><img alt="Step-3" src="_images/Fig41.png" /></p>
-<p>This mold integration reported for the same system an interfacial free energy of <span class="math notranslate nohighlight">\(\gamma=0.372(8) \epsilon\sigma^{−2}\)</span> extrapolating to an optimal radius of <span class="math notranslate nohighlight">\(r_{w,0}=0.315\sigma\)</span> (please see the work by Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id2">1</a>). Additionally, another work using the cleaving technique (Davidchack and Laird<a class="footnote-reference brackets" href="#footcite-davidchack2003direct" id="id3">2</a>) reported a value of <span class="math notranslate nohighlight">\(\gamma=0.371(3) \epsilon\sigma^{−2}\)</span> for the same system.</p>
-<div class="docutils container" id="id4">
+<p>The calculation from mold integration technique reported for the same system from Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id4">1</a> provided an interfacial free energy of <span class="math notranslate nohighlight">\(\gamma=0.372(8) \epsilon\sigma^{−2}\)</span> extrapolating to an optimal radius of <span class="math notranslate nohighlight">\(r_{w,0}=0.315\sigma\)</span>.
+Additionally, another work using the cleaving technique (Davidchack and Laird<a class="footnote-reference brackets" href="#footcite-davidchack2003direct" id="id5">3</a>) reported a value of <span class="math notranslate nohighlight">\(\gamma=0.371(3) \epsilon\sigma^{−2}\)</span> for the same system.</p>
+<div class="docutils container" id="id6">
 <dl class="footnote brackets">
-<dt class="label" id="footcite-espinosa2014mold"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>)</span></dt>
+<dt class="label" id="footcite-espinosa2014mold"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>,<a href="#id4">3</a>)</span></dt>
 <dd><p>JR Espinosa, C Vega, and E Sanz. The mold integration method for the calculation of the crystal-fluid interfacial free energy from simulations. <em>The Journal of chemical physics</em>, 141(13):134709, 2014.</p>
 </dd>
-<dt class="label" id="footcite-davidchack2003direct"><span class="brackets"><a class="fn-backref" href="#id3">2</a></span></dt>
+<dt class="label" id="footcite-lechner2008accurate"><span class="brackets"><a class="fn-backref" href="#id3">2</a></span></dt>
+<dd><p>Wolfgang Lechner and Christoph Dellago. Accurate determination of crystal structures based on averaged local bond order parameters. <em>The Journal of chemical physics</em>, 2008.</p>
+</dd>
+<dt class="label" id="footcite-davidchack2003direct"><span class="brackets"><a class="fn-backref" href="#id5">3</a></span></dt>
 <dd><p>Ruslan L Davidchack and Brian B Laird. Direct calculation of the crystal–melt interfacial free energies for continuous potentials: application to the lennard-jones system. <em>The Journal of chemical physics</em>, 118(16):7651–7657, 2003.</p>
 </dd>
 </dl>

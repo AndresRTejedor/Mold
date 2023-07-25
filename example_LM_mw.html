@@ -178,14 +178,14 @@
 <p>The lattice mold technique consists of 5 different steps. All the steps can be found in Sanchez-Burgos <em>et al.</em><a class="footnote-reference brackets" href="#footcite-sanchez2022homogeneous" id="id1">1</a>, and they can be summarized as:</p>
 <ol class="arabic simple">
 <li><p>Create an appropriate spheroidal mold and embed it in the liquid at the correct density</p></li>
-<li><p>Choice of the optimal well radius <span class="math notranslate nohighlight">\(r_{0w}\)</span> to extrapolate, so two water molecules fit inside the same well.</p></li>
+<li><p>Choice of the optimal well radius <span class="math notranslate nohighlight">\(r_{w,0}\)</span> to extrapolate, in the limit where two water molecules fit inside the same well.</p></li>
 <li><p>Calculation of the <a class="reference internal" href="#well-occupancy"><span class="std std-doc">well occupancy</span></a> curves for each well depth below the optimal radius.</p></li>
 <li><p>Calculation of the <a class="reference internal" href="#average-nucleation-time"><span class="std std-doc">average nucleation time</span></a> to obtain the nucleation rate at each well radius.</p></li>
-<li><p><a class="reference internal" href="#extrapolation-of-the-nucleation-rate"><span class="std std-doc">Extrapolation of the nucleation rate</span></a> to the optimal radius <span class="math notranslate nohighlight">\(r_{0w}\)</span>.</p></li>
+<li><p><a class="reference internal" href="#extrapolation-of-the-nucleation-rate"><span class="std std-doc">Extrapolation of the nucleation rate</span></a> to the optimal radius <span class="math notranslate nohighlight">\(r_{w,0}\)</span>.</p></li>
 </ol>
 <p>The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding <span class="math notranslate nohighlight">\((p,T)\)</span> conditions for the desired Ice (Ih in this example). Here, we provide the system data file of a mold made of 39 wells at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span> (see the figure below).</p>
 <p><img alt="Step-1" src="_images/Fig1.png" /></p>
-<p>The optimal radius is easily calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of <span class="math notranslate nohighlight">\(\sim8k_BT\)</span>. The radius above which the occupancy exceeds the 100%, <em>i.e.</em> more than one water molecule can access the well, is considered as the optimal radius. For the current example we have to extrapolate to <span class="math notranslate nohighlight">\(r_{0w}=1.32Å\)</span> (see figure below).</p>
+<p>The optimal radius is easily calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of <span class="math notranslate nohighlight">\(\sim8k_BT\)</span>. The radius above which the occupancy exceeds the 100%, <em>i.e.</em> more than one water molecule can access the well, is considered as the optimal radius. For the current example we have to extrapolate to <span class="math notranslate nohighlight">\(r_{w,0}=1.32Å\)</span> (see figure below).</p>
 <p><img alt="Step-2" src="_images/Fig2.png" /></p>
 <div class="section" id="well-occupancy">
 <h2>Well occupancy<a class="headerlink" href="#well-occupancy" title="Permalink to this headline">¶</a></h2>
@@ -313,7 +313,7 @@ The sharp decay in the curves determine the nucleation time that averaged over a
 <p><img alt="Step-5" src="_images/Fig5.png" /></p>
 <ul class="simple">
 <li><p>Fit the data to a linear function</p></li>
-<li><p>Use the resulting fit equation to extrapolate the nucleation rate to the optimal radius (<span class="math notranslate nohighlight">\(J(r_{0w}=1.32Å)\)</span>)
+<li><p>Use the resulting fit equation to extrapolate the nucleation rate to the optimal radius (<span class="math notranslate nohighlight">\(J(r_{w,0}=1.32Å)\)</span>)
 The table below provides the obtained free energy, average nucleation time and nucleation rate for each well radius.</p></li>
 </ul>
 <table class="colwidths-auto docutils align-default">
@@ -342,7 +342,7 @@ The table below provides the obtained free energy, average nucleation time and n
 </tr>
 </tbody>
 </table>
-<p>Extrapolating the nucleation rate to the optimal radius gives <span class="math notranslate nohighlight">\(\log_{10}J(r_{0w}=1.32Å)=25.3(2.5)\)</span> for ice Ih of mW at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span></p>
+<p>Extrapolating the nucleation rate to the optimal radius gives <span class="math notranslate nohighlight">\(\log_{10}J(r_{w,0}=1.32Å)=25.3(2.5)\)</span> for ice Ih of mW at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span></p>
 <div class="docutils container" id="id2">
 <dl class="footnote brackets">
 <dt class="label" id="footcite-sanchez2022homogeneous"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
