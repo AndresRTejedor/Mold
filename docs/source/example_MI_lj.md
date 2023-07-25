@@ -65,9 +65,9 @@ group mold type 2
 
 ```
 For this step, the typical run must be approximately 200000 time-steps (with dt=1e-3), and that can be controlled by the parameter `nts`. 
-Regarding the interaction potential, the parameter `rw` stands for the well radius so this must be changed for the different studies radii during this step `rw`=$0.27,\ 0.28,\ \ldots,0.33,0.34\sigma$. 
-The parameter `nkT` gives the well depth in $k_{B}T$ units and for this step must be kept to 8 or bigger. 
-Regarding the velocity seed, the variable `seed` controls this aspect and thus, it must be changed with a random integer number for each simulation. 
+Regarding the interaction potential, the parameter `rw` stands for the well radius so this must be changed for the different studied radii during this step `rw`=$0.27,\ 0.28,\ \ldots,0.33,0.34\sigma$. 
+The parameter `nkT` gives the well depth in $k_{B}T$ units and for this step we use 8$k_BT$, although any value that guarantee that all the wells are filled can be also used. 
+Regarding the velocity seed, the variable `seed` controls this aspect, and thus, it must be changed with a random integer number for each simulation. 
 Also, there are some variables that might be interesting to know:
 - `thermoSteps` gives the number of timesteps to print the thermo
 - `restartSteps` indicates the frequency of saving the restart files
