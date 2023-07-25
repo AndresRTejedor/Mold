@@ -71,11 +71,12 @@ Regarding the velocity seed, the variable `seed` controls this aspect, and thus,
 Also, there are some variables that might be interesting to know:
 - `thermoSteps` gives the number of timesteps to print the thermo
 - `restartSteps` indicates the frequency of saving the restart files
-- `dumpSteps` is the number of steps to save the trajectory in the dump file and for this step it is recommended to be set to 2000.
+- `dumpSteps` is the number of steps to save the trajectory in the dump file and for this step it is recommended to be set to 2000 (be aware that low values of this parameter can produce large trajectory files).
 
 5. Launch the simulation for each radius and seed. That means a total of 80 simulations, but they are quite short. 
 
-6. The analysis of this step consists in determining if there is induction time, *i.e.* if that radius can be thermodynamically integrated. To do so, the resulting trajectory must be analyzed using the order parameter ${\bar{q}}_6$ to determine the number of particles on the cluster. 
+6. The analysis of this step consists in determining if there is induction time, *i.e.* further energy is required for the formation of the interface (see {footcite:t}`espinosa2014mold`). 
+To do so, we recommend analyzing the resulting trajectory using the order parameter ${\bar{q}}_6$ ({footcite:t}`lechner2008accurate`) to determine the number of crystal-like particles in the slab. 
 The recommended values for such analysis is a threshold of ${\bar{q}}_6=0.34$, and a cutoff of $1.35\sigma$. As a result, one obtains different curves for the order parameter as a function of time for the different well radii:
 
 ![Step-1\label{kk}](../figs/Fig2.png "q6_time")
@@ -84,9 +85,9 @@ A system can be considered to be integrated if the order parameter remains close
 
 ## Thermodynamic integration 
 
-Once the optimal radius is estimated, the next step consists in thermodynamic integration of different radii above the optimal value of $r_w$. The calculation of the interfacial free energy for the different well radii includes the following steps:
+Once the optimal well radius is estimated, the next step consists in performing thermodynamic integration of the different radii above the optimal value of $r_w$. The calculation of the interfacial free energy for the different well radii includes the following steps:
 
-1. Create a directory for each radius to be integrated ($r_w=0.33,0.34,0.35\sigma$) and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of $\epsilon$ in $k_{B}T$:
+1. Create a directory for each radius to be integrated ($r_w=0.33,0.34,0.35\sigma$) and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of $\epsilon$ in $k_{B}T$. A system can be considered to be integrated if the of crystal-like particles does not grow irreversibly (*e.g.* $r_w\geq 0.33$).
 
 ```
 0.00001
@@ -109,11 +110,15 @@ Once the optimal radius is estimated, the next step consists in thermodynamic in
 
 2. Copy the LAMMPS script file (`lj_mold.in`) in each subdirectory along with the configuration file (`mold_100.lmp`).
 
-3. The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of hundred of thousands time-steps (with `dt=1e-3`), controlled by the parameter `nts`. Regarding the interaction potential, the parameter `rw` that controls the well radius must be changed for the different radii `rw=0.33,0.34,0.35` (in $\sigma$). The parameter `nkT` (well depth) must change it for each simulation with the corresponding value. Also, the `thermoSteps` should have a reasonable value (1000 is recommended), and `dumpSteps` can be set above 50000 timesteps as the trajectory is not needed for this step
+3. The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of hundreds of thousands time-steps (with `dt=1e-3`), controlled by the parameter `nts` (*e.g.* `nts=500000`). 
+Regarding the interaction potential, the parameter `rw` that controls the well radius must be changed for the different radii `rw=0.33,0.34,0.35` (in $\sigma$). 
+The parameter `nkT` (well depth) must change it for each simulation with the corresponding value. 
+Also, the `thermoSteps` should have a reasonable value (1000 is recommended), and `dumpSteps` can be set above 50000 timesteps as the trajectory is not needed for this step.
 
 4. Launch the simulation for each radius and well depth. 
 
-5. The `thermo_style` is configured to show some magnitudes that are crucial for the thermodynamic integration. We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to LJ particle-well interaction (`c_1`, column 13), but also the number of particles in the system (`v_nall`, column 15) since the energy is expressed in reduced LJ units, *i.e.* energy per particle instead of energy of the total system:
+5. The `thermo_style` is configured to show some magnitudes that are crucial for the thermodynamic integration. 
+We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to LJ particle-well interaction (`c_1`, column 13), but also the number of particles in the system (`v_nall`, column 15) since the energy is expressed in reduced LJ units, *i.e.* energy per particle instead of energy of the total system:
 
 ```
 # ------------- Output thermo information and averaged variables ---------------
@@ -130,38 +135,39 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 For real units the multiplication by the number of particles in the system is not necessary.
 ````
 
-The calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:
+The calculation of the well occupancy for each depth can be easily estimated by taking the average over all the simulation of this value:
 
 $$\langle N_w \rangle=c_1\cdot n_{all}/(nkT\cdot T)$$
 
 
 ````{note}
-Please note that the system requires a time to reach the steady state so that the analysis must be performed discarding after $t\approx10\tau$. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…)
+Please note that the system requires a time to equilibrate so that the analysis must be performed after $t\approx10\tau$. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…).
 ````
 
 In the following figure the curves of well occupancy vs. well depth for the different radii are presented.
 
-
 ![Step-2\label{Occupancy}](../figs/Fig3.png)
 
-## Extrapolation and interfacial free energy calculation
+## Extrapolation for calculating the interfacial free energy
 
-After the analysis in the previous step, one obtain a curve of well occupancy vs well depth for each radius so that the interfacial free energy is calculated as
+After the analysis in the previous step, one can obtain a curve of well occupancy vs well depth for each radius so that the interfacial free energy is calculated as
 
 $$\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, \langle N_w(\epsilon)\rangle \right],$$
-where $N_w$ is the total number of wells and $l$ is the short side of the box that can be obtained from the thermo (`lx`, `ly`, columns 7 and 8 int the `thermo`). The resulting integrals are provided in the following table:
+where $N_w$ is the total number of wells and $l$ is the short side of the box that can be obtained from the thermo (`lx`, `ly`, columns 7 and 8 int the `thermo`). The resulting values for the integrals are provided in the following table (please note that the energy is now expressed in LJ units instead of $KBT$ ($\epsilon_{LJ}=0.617\cdot\epsilon_{k_BT}$)):
 
 |         $r_w/\sigma$)        |  0.33 |  0.34 |  0.35 |
 |:----------------------------:|:-----:|:-----:|:-----:|
 | $\gamma/\sigma^{-2}\epsilon$ | 0.363 | 0.357 | 0.348 |
 
-To obtain the interfacial free energy, you now shall extrapolate the value of the interfacial free energy to the optimal radius ($r_{w,0}=0.32\sigma$) using a linear fit. According to the interfacial free energy provided in the table the interfacial free energy is
+To obtain the interfacial free energy, you now shall extrapolate the value of the interfacial free energy to the optimal well radius ($r_{w,0}=0.32\sigma$) using a linear fit. 
+According to the interfacial free energies as a function of the well radii provided in the table, the final estimate for the interfacial free energy is
 
 $$\gamma=0.370(8) \epsilon\sigma^{−2}$$
 
 ![Step-3](../figs/Fig4.png "Extrapolation")
 
-This mold integration reported for the same system an interfacial free energy of $\gamma=0.372(8) \epsilon\sigma^{−2}$ extrapolating to an optimal radius of $r_{w,0}=0.315\sigma$ (please see the work by {footcite:t}`espinosa2014mold`). Additionally, another work using the cleaving technique ({footcite:t}`davidchack2003direct`) reported a value of $\gamma=0.371(3) \epsilon\sigma^{−2}$ for the same system.
+The calculation from mold integration technique reported for the same system from {footcite:t}`espinosa2014mold` provided an interfacial free energy of $\gamma=0.372(8) \epsilon\sigma^{−2}$ extrapolating to an optimal radius of $r_{w,0}=0.315\sigma$. 
+Additionally, another work using the cleaving technique ({footcite:t}`davidchack2003direct`) reported a value of $\gamma=0.371(3) \epsilon\sigma^{−2}$ for the same system.
 
 
 
