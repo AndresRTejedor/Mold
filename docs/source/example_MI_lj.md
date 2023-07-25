@@ -1,32 +1,32 @@
-# Mold integration for 100 plane of Lennard-Jones crystal
+# Mold integration for 100 plane of the fcc crystal for the Lennard-Jones potential
 
 ````{note}
 In this section `/` is the package's root folder.
 ````
 
-Here we provide a detailed instructions to reproduce the crystal fluid interfacial free energy using the BG and `square/well pair_style` available in LAMMPS. 
+Here we provide a detailed set of instructions to reproduce the crystal fluid interfacial free energy using the Broughton and Gilmer Lennard-Jones potential and `square/well pair_style` available in LAMMPS.
 
-The data file (`mold_100.lmp`) and LAMMPS script (`lj_moldint.in`) are provided in the directory `/examples/lj_mold/`, but in this work example we will navigate through those files to explain them in detail.
+The data file (`mold_100.lmp`) and LAMMPS script (`lj_moldint.in`) are provided in the directory `/examples/lj_mold/` (see [here](https://github.com/AndresRTejedor/Mold/tree/main/example/lj_mold)), but in this work example we will navigate through these files to explain them in detail.
 
-The mold integration technique consists of different steps and here we only discuss the last two steps to obtain the interfacial energy of the 100 plane for the LJ particles at $T^\ast=0.617$ and $p^\ast=-0.02$. All the steps can be found in {footcite:t}`espinosa2014mold`, and they can be summarized as: 
+The mold integration technique consists of different steps and here we only discuss the last two steps to obtain the interfacial free energy of the 100 plane for the LJ particles at $T^\ast=0.617$ and $p^\ast=-0.02$. All the steps can be found in {footcite:t}`espinosa2014mold`, and they can be summarized as: 
 
-1. Preparation of the configuration by embedding the mold coordinates (from a crystal configuration) into the fluid at coexistence conditions.
-2. Choice of the [optimal well radius](#optimal-radius-calculation) $r_{0w}$ to extrapolate the interfacial energy.
-3. [Thermodynamic integration](#thermodynamic-integration) to calculate the interfacial energy for different well radii above the optimal radius
-  $\gamma(r_{0w}>r_w)$. 
-4. Extrapolation of the interfacial energy to the optimal radius $r_{0w}$.
+1. Preparation of the configuration by embedding the mold coordinates (from a crystal configuration with the equilibrium density and the perfect crystal lattice) into the fluid at coexistence conditions.
+2. Choice of the [optimal well radius](#optimal-radius-calculation) $r_{w,0}$ to extrapolate the interfacial free energy.
+3. [Thermodynamic integration](#thermodynamic-integration) to calculate the interfacial free energy for different well radii above the optimal radius
+  $\gamma(r_{w,0}>r_w)$. 
+4. Extrapolation of the interfacial free energy to the optimal radius $r_{w,0}$.
 
-The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding $(p,T)$ conditions. In this example, we provide the system data file for the plane 100 of a LJ particles at $T^\ast=0.617$ and $p^\ast=-0.02$:
+The configuration (step 1) can be easily created using the bulk liquid and crystal configurations at the corresponding $(p,T)$ conditions. In this example, we provide the system data file for the plane 100 of the fcc crystal lattice for a LJ system at $T^\ast=0.617$ and $p^\ast=-0.02$:
 
 ![Step-1](../figs/Fig1.png "Conf_MI")
 
 
 ## Optimal radius calculation 
 
-The calculation of the optimal radius for extrapolation of the interfacial energy includes the following steps:
+The calculation of the optimal well radius for extrapolation of the interfacial free energy includes the following steps:
 
 1. Create a directory sweeping different radii ($r_w=0.27,\ 0.28,\ \ldots,0.33,0.34\sigma$).
-2. For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.
+2. For each radius one needs to run independent trajectories with different initial velocities. Create 10 directories for each radius directory (1 for each trajectory).
 3. Copy the LAMMPS script file (`lj_mold.in`) in each subdirectory along with the configuration file (`mold_100.lmp`).
 4. The LAMMPS script contains several variables that it is important to know to properly perform the simulations:
 ```
@@ -38,7 +38,7 @@ variable  epslj        equal  1.0        # epsilon coefficient for BG pair-style
 variable  cut1         equal  2.3        # internal cut-off for BG pair-style
 variable  cut2         equal  2.5        # external cut-off for BG pair-style
 variable  rw           equal  0.33       # (reduced) width of the square well potential
-variable  alpha        equal  0.005      # exponent of the square well potential
+variable  alpha        equal  0.005      # parameter for the slope of the square well potential
 variable  nkT          equal  8.0        # well depth (reduced units) 
 variable  seed         equal  23782      # velocity seed
 variable  Tsyst        equal  0.617      # (reduced) temperature of the system
@@ -84,7 +84,7 @@ A system can be considered to be integrated if the order parameter remains close
 
 ## Thermodynamic integration 
 
-Once the optimal radius is estimated, the next step consists in thermodynamic integration of different radii above the optimal value of $r_w$. The calculation of the interfacial energy for the different well radii includes the following steps:
+Once the optimal radius is estimated, the next step consists in thermodynamic integration of different radii above the optimal value of $r_w$. The calculation of the interfacial free energy for the different well radii includes the following steps:
 
 1. Create a directory for each radius to be integrated ($r_w=0.33,0.34,0.35\sigma$) and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of $\epsilon$ in $k_{B}T$:
 
@@ -144,9 +144,9 @@ In the following figure the curves of well occupancy vs. well depth for the diff
 
 ![Step-2\label{Occupancy}](../figs/Fig3.png)
 
-## Extrapolation and interfacial energy calculation
+## Extrapolation and interfacial free energy calculation
 
-After the analysis in the previous step, one obtain a curve of well occupancy vs well depth for each radius so that the interfacial energy is calculated as
+After the analysis in the previous step, one obtain a curve of well occupancy vs well depth for each radius so that the interfacial free energy is calculated as
 
 $$\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, \langle N_w(\epsilon)\rangle \right],$$
 where $N_w$ is the total number of wells and $l$ is the short side of the box that can be obtained from the thermo (`lx`, `ly`, columns 7 and 8 int the `thermo`). The resulting integrals are provided in the following table:
@@ -155,13 +155,13 @@ where $N_w$ is the total number of wells and $l$ is the short side of the box th
 |:----------------------------:|:-----:|:-----:|:-----:|
 | $\gamma/\sigma^{-2}\epsilon$ | 0.363 | 0.357 | 0.348 |
 
-To obtain the interfacial energy, you now shall extrapolate the value of the interfacial energy to the optimal radius ($r_{0w}=0.32\sigma$) using a linear fit. According to the interfacial energy provided in the table the interfacial energy is
+To obtain the interfacial free energy, you now shall extrapolate the value of the interfacial free energy to the optimal radius ($r_{w,0}=0.32\sigma$) using a linear fit. According to the interfacial free energy provided in the table the interfacial free energy is
 
 $$\gamma=0.370(8) \epsilon\sigma^{−2}$$
 
 ![Step-3](../figs/Fig4.png "Extrapolation")
 
-This mold integration reported for the same system an interfacial energy of $\gamma=0.372(8) \epsilon\sigma^{−2}$ extrapolating to an optimal radius of $r_{0w}=0.315\sigma$ (please see the work by {footcite:t}`espinosa2014mold`). Additionally, another work using the cleaving technique ({footcite:t}`davidchack2003direct`) reported a value of $\gamma=0.371(3) \epsilon\sigma^{−2}$ for the same system.
+This mold integration reported for the same system an interfacial free energy of $\gamma=0.372(8) \epsilon\sigma^{−2}$ extrapolating to an optimal radius of $r_{w,0}=0.315\sigma$ (please see the work by {footcite:t}`espinosa2014mold`). Additionally, another work using the cleaving technique ({footcite:t}`davidchack2003direct`) reported a value of $\gamma=0.371(3) \epsilon\sigma^{−2}$ for the same system.
 
 
 

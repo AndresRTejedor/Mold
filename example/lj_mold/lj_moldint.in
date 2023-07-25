@@ -13,7 +13,7 @@ variable  epslj        equal  1.0        # epsilon coefficient for BG pair-style
 variable  cut1         equal  2.3        # internal cut-off for BG pair-style
 variable  cut2         equal  2.5        # external cut-off for BG pair-style
 variable  rw           equal  0.33       # (reduced) width of the square well potential
-variable  alpha        equal  0.005      # exponent of the square well potential
+variable  alpha        equal  0.005      # parameter for the slope of the square well potential
 variable  nkT          equal  8.0        # well depth (reduced units) 
 variable  seed         equal  23782      # velocity seed
 variable  Tsyst        equal  0.617      # (reduced) temperature of the system
