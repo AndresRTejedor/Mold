@@ -1,9 +1,5 @@
 # Mold integration for 100 plane of the fcc crystal for the Lennard-Jones potential
 
-````{note}
-In this section `/` is the package's root folder.
-````
-
 Here we provide a detailed set of instructions to reproduce the crystal fluid interfacial free energy using the Broughton and Gilmer Lennard-Jones potential and `square/well pair_style` available in LAMMPS.
 
 The data file (`mold_100.lmp`) and LAMMPS script (`lj_moldint.in`) are provided in the directory `/examples/lj_mold/` (see [here](https://github.com/AndresRTejedor/Mold/tree/main/example/lj_mold)), but in this work example we will navigate through these files to explain them in detail.
@@ -81,7 +77,15 @@ The recommended values for such analysis is a threshold of ${\bar{q}}_6=0.34$, a
 
 ![Step-1\label{kk}](../figs/Fig2.png "q6_time")
 
-A system can be considered to be integrated if the order parameter remains close to the total number of molds within the system (98 wells for this example). Therefore, in this case we can consider $r_w=0.32\sigma$ as the greatest radius with not sufficiently long induction time so it is chosen as our optimal radius to extrapolate.
+Following {footcite:t}`espinosa2014mold`, one equivalent analysis consist in calculating the following quantity:
+
+$$\rho=k_BTlog(P),$$
+
+where
+
+![Step-1\label{kk}](../figs/Fig2.png "Denergy")
+
+Therefore, in this case we can consider $r_w=0.32\sigma$ as the greatest radius that creates an irreversible interface so it is chosen as our optimal radius to extrapolate.
 
 ## Thermodynamic integration 
 
