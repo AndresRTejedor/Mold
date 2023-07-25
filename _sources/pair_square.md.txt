@@ -43,7 +43,7 @@ In case $\epsilon$ is set to a negative value, the well potential would become f
 
 ## Restrictions
 
-This pair style can only be used if LAMMPS was built with the (Mold package)[https://github.com/AndresRTejedor/Mold]. See the Build package doc page for more info.
+This pair style can only be used if LAMMPS was built with the (Mold)[https://github.com/AndresRTejedor/Mold] package. See the Build package doc page for more info.
 
 
 ```{footbibliography}
