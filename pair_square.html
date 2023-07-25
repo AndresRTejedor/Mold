@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pair_style square/well &mdash; SurFEC  documentation</title>
+  <title>pair_style square/well &mdash; SIFT  documentation</title>
   
 
   
@@ -52,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> SurFEC
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> SIFT
           
 
           
@@ -112,7 +112,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">SurFEC</a>
+          <a href="index.html">SIFT</a>
         
       </nav>
 
@@ -184,10 +184,10 @@
 </div>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>The square/well style computes continuous version of the square-well potential given by:</p>
+<p>The square/well style computes a continuous version of the square-well potential given by:</p>
 <div class="math notranslate nohighlight">
 \[
-	U_{wp} (r)=-\frac{1}{2} \epsilon\left[1-\tanh\left(\frac{r-r_w}{\alpha}\right)\right]     r&lt;r_{c}
+	U_{wp} (r)=-\frac{1}{2} \epsilon\left[1-\tanh\left(\frac{r-r_w}{\alpha}\right)\right]   \quad \text{for} r&lt;r_{c}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(r_{c}\)</span> is the cutoff.</p>
 <p>The following coefficients must be defined for each pair of atoms types via the pair_coeff command as in the example above, or in the data file or restart files read by the read_data or read_restart commands:</p>
