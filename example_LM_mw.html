@@ -185,13 +185,14 @@ Please note that the perfect crystal structure must be used to generate the mold
 Here, we provide the system data file of a mold made of 39 wells at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span> (see the figure below where blue particles represent water molecules and gray particles the mold wells).</p>
 <p><img alt="Step-1" src="_images/Fig1.png" /></p>
 <p>The optimal radius is calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of <span class="math notranslate nohighlight">\(8k_BT\)</span>.
-The radius above which the occupancy exceeds the 100%, <em>i.e.</em> more than one water molecule per potential well, is considered as the optimal radius. For the current example we have to extrapolate to <span class="math notranslate nohighlight">\(r_{w,0}=1.32Å\)</span> (see figure below).</p>
+The radius above which the occupancy exceeds the 100%, <em>i.e.</em> more than one water molecule per potential well, is considered as the optimal radius. For the current example we extrapolate to <span class="math notranslate nohighlight">\(r_{w,0}=1.32Å\)</span> (see figure below, red vertical line).</p>
 <p><img alt="Step-2" src="_images/Fig2.png" /></p>
 <div class="section" id="well-occupancy">
 <h2>Well occupancy<a class="headerlink" href="#well-occupancy" title="Permalink to this headline">¶</a></h2>
-<p>The calculation of the well occupancy for different well radii under the optimal well radius consists of the following steps:</p>
+<p>The calculation of the well occupancy for different well radii under the optimal radius consists of the following steps:</p>
 <ol class="arabic simple">
-<li><p>Create the directory for sweeping different radii (<span class="math notranslate nohighlight">\(r_w=0.85,0.99,1.12Å\)</span>), and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of <span class="math notranslate nohighlight">\(\epsilon\)</span> in <span class="math notranslate nohighlight">\(k_{B}T\)</span>:</p></li>
+<li><p>Create the directory for sweeping different radii (<span class="math notranslate nohighlight">\(r_w=0.85,0.99,1.12Å\)</span>), and within each directory, create a directory for each well depth considered for the calculation.
+This is a truncated range of values of <span class="math notranslate nohighlight">\(\epsilon\)</span> in <span class="math notranslate nohighlight">\(k_{B}T\)</span>:</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.00001</span>
 <span class="mf">0.10</span>
@@ -204,7 +205,7 @@ The radius above which the occupancy exceeds the 100%, <em>i.e.</em> more than o
 <span class="mf">8.0</span>
 </pre></div>
 </div>
-<p>Please note that the number of well depths included in the calculation may increase to capture with more accuracy the transition of well filling. This should vary with the well radius.</p>
+<p>Please note that the grid of well depths included in the calculation may need to be increased to capture the transition of well filling with more accuracy. Also, for different well radius the grid may change.</p>
 <ol class="arabic simple" start="2">
 <li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">39mold.xyz</span> </code>) and the mW potential file (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>).</p></li>
 <li><p>The LAMMPS script contains several variables that are important to know to properly perform the simulations:</p></li>
@@ -215,7 +216,7 @@ variable  T            equal  220.0      # Temperature of the system in K
 variable  nkT          equal  8          # Well depth in kT
 variable  ts           equal  1          # length of the ts (in fs units)
 variable  width        equal  0.25       # (reduced) width of the square well potential
-variable  alpha        equal  0.017025   # exponent of the square well potential (0.005*3.405)
+variable  alpha        equal  0.017025   # Parameter for the slope of the square well potential (0.005*3.405)
 variable  seed         equal  23782      # velocity seed
 variable  NtsTdamp     equal  100        # Number of ts to damp temperature
 variable  thermoSteps  equal  1000       # Number of ts to write properties on screen
@@ -237,7 +238,7 @@ group unfrozen subtract all freeze
 </pre></div>
 </div>
 <p>For this step, the typical run must be approximately 5 ns (with <code class="docutils literal notranslate"><span class="pre">dt=1</span> <span class="pre">fs</span></code>), and that can be controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code> which must be set to <code class="docutils literal notranslate"><span class="pre">nts=5000000</span></code>.
-Regarding the interaction potential, the parameter <code class="docutils literal notranslate"><span class="pre">width</span></code> stands for the well radius so this must be changed for the different studies radii during this step <code class="docutils literal notranslate"><span class="pre">width=0.25,0.29,0.33</span></code> in reduced units.
+Regarding the interaction potential, the parameter <code class="docutils literal notranslate"><span class="pre">width</span></code> stands for the well radius so this must be changed for the different studied radii during this step <code class="docutils literal notranslate"><span class="pre">width=0.25,0.29,0.33</span></code> in reduced units (please note that for using reduced units of distance we employ <span class="math notranslate nohighlight">\(\sigma=3.405\)</span> which does not necessarily correspond to the <span class="math notranslate nohighlight">\(\sigma\)</span> in the water model).
 The parameter <code class="docutils literal notranslate"><span class="pre">nkT</span></code> gives the well depth in <span class="math notranslate nohighlight">\(k_BT\)</span>  and must sweep the values presented above.
 Regarding the velocity seed, the variable <code class="docutils literal notranslate"><span class="pre">seed</span></code> controls the initial velocity seed.
 Also, there are some variables that might be interesting to know:</p>
@@ -248,7 +249,8 @@ Also, there are some variables that might be interesting to know:</p>
 </ul>
 <ol class="arabic simple" start="5">
 <li><p>Launch the simulation for each radius and well depth.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves. We need to get the average number of well occupancy for each value of <code class="docutils literal notranslate"><span class="pre">nkT</span></code> so that we print the potential contribution due to mW-well interaction (<code class="docutils literal notranslate"><span class="pre">c_1</span></code>, column 8):</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves.
+We need to get the average number of well occupancy for each value of <code class="docutils literal notranslate"><span class="pre">nkT</span></code> so that we print the potential contribution due to mW-well interaction (<code class="docutils literal notranslate"><span class="pre">c_1</span></code>, column 8):</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># ------------- Output thermo information and averaged variables ---------------
 compute 1 all pair square/well
@@ -262,7 +264,8 @@ thermo         ${thermoSteps}      # how often (in steps) will write the propert
 <p>Thus, the calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:</p>
 <div class="math notranslate nohighlight">
 \[\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)\]</div>
-<ol class="arabic simple" start="6">
+<p>Please note that the temperature must be recalculated to consider only the water molecules since the LAMMPS <code class="docutils literal notranslate"><span class="pre">thermo</span></code> considers all the particles to estimate the system temperature (in real units).</p>
+<ol class="arabic simple" start="7">
 <li><p>Plot the different curves of well occupancy for the different radii. The result should look similar to the figure below</p></li>
 </ol>
 <p><img alt="Step-3" src="_images/Fig3.png" /></p>
