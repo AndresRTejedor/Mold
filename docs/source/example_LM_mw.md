@@ -20,6 +20,7 @@ The lattice mold technique consists of 5 different steps. All the steps can be f
 The configuration (step 1) can be easily created using the bulk liquid and crystal configuration at the corresponding $(p,T)$ conditions for the desired ice phase (Ih in this example). 
 Please note that the perfect crystal structure must be used to generate the mold potential well using the equilibrium density at the given conditions. 
 Here, we provide the system data file of a mold made of 39 wells at $T=220K$ and $p=1bar$ (see the figure below where blue particles represent water molecules and gray particles the mold wells). 
+The number of wells in the mold is chosen so that the system displays induction time to permit reversible thermodynamical integration of the precritical cluster, but still it is able to overcome the free energy nucleation barrier and eventually crystallize in a reasonable computational time.
 
 ![Step-1](../figs/LatticeMold/Fig1.png "Conf_LM")
 
