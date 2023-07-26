@@ -24,16 +24,17 @@ Here, we provide the system data file of a mold made of 39 wells at $T=220K$ and
 ![Step-1](../figs/LatticeMold/Fig1.png "Conf_LM")
 
 The optimal radius is calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of $8k_BT$. 
-The radius above which the occupancy exceeds the 100%, *i.e.* more than one water molecule per potential well, is considered as the optimal radius. For the current example we have to extrapolate to $r_{w,0}=1.32Å$ (see figure below).
+The radius above which the occupancy exceeds the 100%, *i.e.* more than one water molecule per potential well, is considered as the optimal radius. For the current example we extrapolate to $r_{w,0}=1.32Å$ (see figure below, red vertical line).
 
 ![Step-2](../figs/LatticeMold/Fig2.png "Opt_Rad")
 
 
 ## Well occupancy 
 
-The calculation of the well occupancy for different well radii under the optimal well radius consists of the following steps:
+The calculation of the well occupancy for different well radii under the optimal radius consists of the following steps:
 
-1. Create the directory for sweeping different radii ($r_w=0.85,0.99,1.12Å$), and in each directory, create a for each well depth considered for the calculation. This is a truncated range of values of $\epsilon$ in $k_{B}T$:
+1. Create the directory for sweeping different radii ($r_w=0.85,0.99,1.12Å$), and within each directory, create a directory for each well depth considered for the calculation. 
+This is a truncated range of values of $\epsilon$ in $k_{B}T$:
 
 ```
 0.00001
@@ -46,7 +47,7 @@ The calculation of the well occupancy for different well radii under the optimal
 5.0
 8.0
 ```
-Please note that the number of well depths included in the calculation may increase to capture with more accuracy the transition of well filling. This should vary with the well radius.
+Please note that the grid of well depths included in the calculation may need to be increased to capture the transition of well filling with more accuracy. Also, for different well radius the grid may change.
 
 2. Copy the LAMMPS script file (`mw_lattmold.in`) in each subdirectory along with the configuration file (`39mold.xyz `) and the mW potential file (`mW.sw`).
 3. The LAMMPS script contains several variables that are important to know to properly perform the simulations:
@@ -58,7 +59,7 @@ variable  T            equal  220.0      # Temperature of the system in K
 variable  nkT          equal  8          # Well depth in kT
 variable  ts           equal  1          # length of the ts (in fs units)
 variable  width        equal  0.25       # (reduced) width of the square well potential
-variable  alpha        equal  0.017025   # exponent of the square well potential (0.005*3.405)
+variable  alpha        equal  0.017025   # Parameter for the slope of the square well potential (0.005*3.405)
 variable  seed         equal  23782      # velocity seed
 variable  NtsTdamp     equal  100        # Number of ts to damp temperature
 variable  thermoSteps  equal  1000       # Number of ts to write properties on screen
@@ -80,7 +81,7 @@ group unfrozen subtract all freeze
 ```
 
 For this step, the typical run must be approximately 5 ns (with `dt=1 fs`), and that can be controlled by the parameter `nts` which must be set to `nts=5000000`. 
-Regarding the interaction potential, the parameter `width` stands for the well radius so this must be changed for the different studies radii during this step `width=0.25,0.29,0.33` in reduced units. 
+Regarding the interaction potential, the parameter `width` stands for the well radius so this must be changed for the different studied radii during this step `width=0.25,0.29,0.33` in reduced units (please note that for using reduced units of distance we employ $\sigma=3.405$ which does not necessarily correspond to the $\sigma$ in the water model). 
 The parameter `nkT` gives the well depth in $k_BT$  and must sweep the values presented above. 
 Regarding the velocity seed, the variable `seed` controls the initial velocity seed. 
 Also, there are some variables that might be interesting to know: 
@@ -90,7 +91,8 @@ Also, there are some variables that might be interesting to know:
 
 
 5. Launch the simulation for each radius and well depth.
-6. The `thermo_style` is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves. We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to mW-well interaction (`c_1`, column 8):
+6. The `thermo_style` is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves. 
+We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to mW-well interaction (`c_1`, column 8):
 
 ```
 # ------------- Output thermo information and averaged variables ---------------
@@ -106,7 +108,9 @@ Thus, the calculation of the well occupancy for each depth can be estimated easi
   
 $$\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)$$
 
-6. Plot the different curves of well occupancy for the different radii. The result should look similar to the figure below
+Please note that the temperature must be recalculated to consider only the water molecules since the LAMMPS `thermo` considers all the particles to estimate the system temperature (in real units).
+
+7. Plot the different curves of well occupancy for the different radii. The result should look similar to the figure below
 
 ![Step-3](../figs/LatticeMold/Fig3.png "Well_ocu")
 
