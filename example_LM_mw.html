@@ -182,7 +182,8 @@ In this work example we will navigate through these files to explain them in det
 </ol>
 <p>The configuration (step 1) can be easily created using the bulk liquid and crystal configuration at the corresponding <span class="math notranslate nohighlight">\((p,T)\)</span> conditions for the desired ice phase (Ih in this example).
 Please note that the perfect crystal structure must be used to generate the mold potential well using the equilibrium density at the given conditions.
-Here, we provide the system data file of a mold made of 39 wells at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span> (see the figure below where blue particles represent water molecules and gray particles the mold wells).</p>
+Here, we provide the system data file of a mold made of 39 wells at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span> (see the figure below where blue particles represent water molecules and gray particles the mold wells).
+The number of wells in the mold is chosen so that the system displays induction time to permit reversible thermodynamical integration of the precritical cluster, but still it is able to overcome the free energy nucleation barrier and eventually crystallize in a reasonable computational time.</p>
 <p><img alt="Step-1" src="_images/Fig1.png" /></p>
 <p>The optimal radius is calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of <span class="math notranslate nohighlight">\(8k_BT\)</span>.
 The radius above which the occupancy exceeds the 100%, <em>i.e.</em> more than one water molecule per potential well, is considered as the optimal radius. For the current example we extrapolate to <span class="math notranslate nohighlight">\(r_{w,0}=1.32Å\)</span> (see figure below, red vertical line).</p>
@@ -261,20 +262,20 @@ thermo_modify  flush yes  # flush the buffer and write the output in real time
 thermo         ${thermoSteps}      # how often (in steps) will write the properties of thermo_style to the output
 </pre></div>
 </div>
-<p>Thus, the calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:</p>
+<p>Thus, the calculation of the mold occupancy for each well depth can be estimated by taking the average over the production simulation time through this equation:</p>
 <div class="math notranslate nohighlight">
 \[\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)\]</div>
-<p>Please note that the temperature must be recalculated to consider only the water molecules since the LAMMPS <code class="docutils literal notranslate"><span class="pre">thermo</span></code> considers all the particles to estimate the system temperature (in real units).</p>
+<p>Please note that the temperature must be recalculated to consider only the water molecules in the system, since the LAMMPS <code class="docutils literal notranslate"><span class="pre">thermo</span></code> considers all the particles to evaluate the global temperature. This only applies for calculations inn real units.</p>
 <ol class="arabic simple" start="7">
-<li><p>Plot the different curves of well occupancy for the different radii. The result should look similar to the figure below</p></li>
+<li><p>Plot the different curves of mold occupancy as a function of the well depth for the different radii. The result should look similar to the figure below</p></li>
 </ol>
 <p><img alt="Step-3" src="_images/Fig3.png" /></p>
 <p>The free energy difference between the liquid and the liquid with the precritical cluster is calculated as</p>
 <div class="math notranslate nohighlight">
 \[\Delta G^*=N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon_{sw}\, \langle N_{sw}(\epsilon_{sw})\rangle,\]</div>
-<p>where <span class="math notranslate nohighlight">\(N_{w}\)</span> is the total number of wells in the mold (<span class="math notranslate nohighlight">\(39\)</span>), <span class="math notranslate nohighlight">\(\epsilon_{max}\)</span> is the maximum well depth to evaluate this integral,
-<span class="math notranslate nohighlight">\(\langle N_{sw}(\epsilon_{sw})\rangle\)</span> is the average number of mold sites occupied by liquid molecules obtained previously,
-and <span class="math notranslate nohighlight">\(\epsilon_0\)</span> is the minimum value of epsilon considered in the calculation (close to zero).
+<p>where <span class="math notranslate nohighlight">\(N_{w}\)</span> is the total number of wells in the mold (<span class="math notranslate nohighlight">\(39\)</span>), <span class="math notranslate nohighlight">\(\epsilon_{max}\)</span> is the maximum well depth to evaluate this integral (<span class="math notranslate nohighlight">\(8k_BT\)</span>),
+<span class="math notranslate nohighlight">\(\langle N_{sw}(\epsilon_{sw})\rangle\)</span> is the average number of mold sites occupied by liquid molecules as a function of <span class="math notranslate nohighlight">\(\epsilon_{sw}\)</span>,
+and <span class="math notranslate nohighlight">\(\epsilon_0\)</span> is the minimum value of epsilon considered in the calculation.
 The final calculation of the free energy difference must include the rotational and translational degrees of freedom such that</p>
 <div class="math notranslate nohighlight">
 \[\Delta G/k_B T=\Delta G^*/k_B T + \ln(\rho_f V_w)- \ln(8\pi^2),\]</div>
@@ -290,9 +291,11 @@ The free energy difference is used to calculate the probability per unit volume 
 <li><p>Create the directory for sweeping different radii (<span class="math notranslate nohighlight">\(r_w=0.85,0.99,1.12Å\)</span>).</p></li>
 <li><p>For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.</p></li>
 <li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">39mold.xyz</span> </code>) and the mW potential file (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>).</p></li>
-<li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of <span class="math notranslate nohighlight">\(100ns\)</span> (with <code class="docutils literal notranslate"><span class="pre">dt=1</span> <span class="pre">fs</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code> which must be set to <code class="docutils literal notranslate"><span class="pre">nts=10000000</span></code>. The well depth <code class="docutils literal notranslate"><span class="pre">nkT</span></code> must be set to 8. Importantly, for this step the <code class="docutils literal notranslate"><span class="pre">seed</span></code> variable must be change for every independent run.</p></li>
+<li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step and this particular system, the typical run must be of the order of <span class="math notranslate nohighlight">\(100ns\)</span> (with <code class="docutils literal notranslate"><span class="pre">dt=1fs</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code> which must be set to <code class="docutils literal notranslate"><span class="pre">nts=10000000</span></code>.
+The well depth <code class="docutils literal notranslate"><span class="pre">nkT</span></code> must be set to 8. Importantly, for this step the <code class="docutils literal notranslate"><span class="pre">seed</span></code> variable must be change for every independent run.</p></li>
 <li><p>Launch the simulation for each radius and independent velocity seed.</p></li>
-<li><p>The <code class="docutils literal notranslate"><span class="pre">thermos_style</span></code> provides the potential energy (<code class="docutils literal notranslate"><span class="pre">pe</span></code>) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example. Plot the variable <code class="docutils literal notranslate"><span class="pre">pe</span></code> vs the time that correspond to multiply the <code class="docutils literal notranslate"><span class="pre">step</span></code> variable (column 1 in <code class="docutils literal notranslate"><span class="pre">thermo</span></code>) by the <code class="docutils literal notranslate"><span class="pre">timestep</span></code> (<span class="math notranslate nohighlight">\(1fs\)</span>).
+<li><p>The <code class="docutils literal notranslate"><span class="pre">thermos_style</span></code> provides the potential energy (<code class="docutils literal notranslate"><span class="pre">pe</span></code>) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example.
+Plot the variable <code class="docutils literal notranslate"><span class="pre">pe</span></code> vs the time that correspond to multiply the <code class="docutils literal notranslate"><span class="pre">step</span></code> variable (column 1 in <code class="docutils literal notranslate"><span class="pre">thermo</span></code>) by the <code class="docutils literal notranslate"><span class="pre">timestep</span></code> (1fs).
 The sharp decay in the curves determine the nucleation time that averaged over all seeds provides the estimation for all the seeds as shown in the figure below</p></li>
 </ol>
 <p><img alt="Step-4" src="_images/Fig4.png" /></p>
@@ -379,7 +382,7 @@ The table below provides the obtained free energy, average nucleation time and n
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2023, Andres R. Tejedor, Jorge Ramírez, Ignacio Sanchez-Burgos, Felipe J. Blas, Eduardo Sanz, Carlos Vega, Nicodemo Di Pasquale, and Jorge R. Espinosa
+        &copy; Copyright 2023, Andres R. Tejedor, Ignacio Sanchez-Burgos, Felipe J. Blas, Eduardo Sanz, Carlos Vega, Nicodemo Di Pasquale, Jorge Ramírez, and Jorge R. Espinosa
 
     </p>
   </div>
