@@ -1,8 +1,9 @@
 # Lattice mold calculations of mW Ice Ih nucleation rate at T=220K
 
-Here we provide a detailed instructions to calculate the nucleation rate of Ice Ih with the mW model at $T=220K$ and $p=1bar$ using the Lattice Mold technique that requires the `square/well pair_style` available in LAMMPS. 
+Here we provide a detailed set of instructions to calculate the nucleation rate of Ice Ih with the mW coarse-grained water model at $T=220K$ and $p=1bar$ using the Lattice Mold technique (see {footcite:t}`espinosa2016lattice` and {footcite:t}`sanchez2022homogeneous`) that requires the `square/well pair_style` available in LAMMPS.
 
-The data file (`39mold.xyz`), the potential file for mW (`mW.sw`) and LAMMPS script (`mw_lattmold.in`) are provided in the directory `/examples/mw_mold/` and in this work example we will navigate through those files to explain them in detail.
+The data file (`39mold.xyz`), the potential file for mW (`mW.sw`) and LAMMPS script (`mw_lattmold.in`) are provided in the directory `/examples/mw_mold/` (see [here](https://github.com/AndresRTejedor/Mold/tree/main/example/mw_mold)). 
+In this work example we will navigate through these files to explain them in detail.
 
 ````{note}
 The mW pair style is part of the MANYBODY package. See the [Build package](https://docs.lammps.org/Build_package.html) page for more info.
@@ -10,10 +11,10 @@ The mW pair style is part of the MANYBODY package. See the [Build package](https
 
 The lattice mold technique consists of 5 different steps. All the steps can be found in {footcite:t}`sanchez2022homogeneous`, and they can be summarized as:  
 
-1. Create an appropriate spheroidal mold and embed it in the liquid at the correct density
-2. Choice of the optimal well radius $r_{w,0}$ to extrapolate, in the limit where two water molecules fit inside the same well.
+1. Create an appropriate spherical mold with the perfect structure of the crystal Ih ice and embed it in the liquid at the equilibrium density at the given conditions.
+2. Choice of the optimal well radius $r_{w,0}$ for obtaining the nucleation rate, *i.e.* the limit for which two water molecules fit inside the same well.
 3. Calculation of the [well occupancy](#well-occupancy) curves for each well depth below the optimal radius. 
-4. Calculation of the [average nucleation time](#average-nucleation-time) to obtain the nucleation rate at each well radius.
+4. Calculation of the [average nucleation time](#average-nucleation-time) for each well radius to overcome the nucleation free energy barrier.
 5. [Extrapolation of the nucleation rate](#extrapolation-of-the-nucleation-rate) to the optimal radius $r_{w,0}$.
 
 The configuration (step 1) can be created easily using the liquid and crystal configuration at the corresponding $(p,T)$ conditions for the desired Ice (Ih in this example). Here, we provide the system data file of a mold made of 39 wells at $T=220K$ and $p=1bar$ (see the figure below). 
