@@ -104,13 +104,13 @@ thermo_modify  flush yes  # flush the buffer and write the output in real time
 thermo         ${thermoSteps}      # how often (in steps) will write the properties of thermo_style to the output
 ```
 
-Thus, the calculation of the well occupancy for each depth can be estimated easily by taking the average over all the simulation of this value:
+Thus, the calculation of the mold occupancy for each well depth can be estimated by taking the average over the production simulation time through this equation:
   
 $$\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)$$
 
-Please note that the temperature must be recalculated to consider only the water molecules since the LAMMPS `thermo` considers all the particles to estimate the system temperature (in real units).
+Please note that the temperature must be recalculated to consider only the water molecules in the system, since the LAMMPS `thermo` considers all the particles to evaluate the global temperature. This only applies for calculations inn real units.
 
-7. Plot the different curves of well occupancy for the different radii. The result should look similar to the figure below
+7. Plot the different curves of mold occupancy as a function of the well depth for the different radii. The result should look similar to the figure below
 
 ![Step-3](../figs/LatticeMold/Fig3.png "Well_ocu")
 
@@ -118,9 +118,9 @@ The free energy difference between the liquid and the liquid with the precritica
 
 $$\Delta G^*=N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon_{sw}\, \langle N_{sw}(\epsilon_{sw})\rangle,$$
 
-where $N_{w}$ is the total number of wells in the mold ($39$), $\epsilon_{max}$ is the maximum well depth to evaluate this integral, 
-$\langle N_{sw}(\epsilon_{sw})\rangle$ is the average number of mold sites occupied by liquid molecules obtained previously, 
-and $\epsilon_0$ is the minimum value of epsilon considered in the calculation (close to zero). 
+where $N_{w}$ is the total number of wells in the mold ($39$), $\epsilon_{max}$ is the maximum well depth to evaluate this integral ($8k_BT$), 
+$\langle N_{sw}(\epsilon_{sw})\rangle$ is the average number of mold sites occupied by liquid molecules as a function of $\epsilon_{sw}$, 
+and $\epsilon_0$ is the minimum value of epsilon considered in the calculation. 
 The final calculation of the free energy difference must include the rotational and translational degrees of freedom such that
 
 $$\Delta G/k_B T=\Delta G^*/k_B T + \ln(\rho_f V_w)- \ln(8\pi^2),$$
@@ -138,9 +138,11 @@ To estimate the average nucleation time, one must follow these steps:
 1. Create the directory for sweeping different radii ($r_w=0.85,0.99,1.12Å$).
 2. For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.
 3. Copy the LAMMPS script file (`mw_lattmold.in`) in each subdirectory along with the configuration file (`39mold.xyz `) and the mW potential file (`mW.sw`).
-4. The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of $100ns$ (with `dt=1 fs`), controlled by the parameter `nts` which must be set to `nts=10000000`. The well depth `nkT` must be set to 8. Importantly, for this step the `seed` variable must be change for every independent run.
+4. The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step and this particular system, the typical run must be of the order of $100ns$ (with `dt=1fs`), controlled by the parameter `nts` which must be set to `nts=10000000`. 
+The well depth `nkT` must be set to 8. Importantly, for this step the `seed` variable must be change for every independent run.
 5. Launch the simulation for each radius and independent velocity seed.
-6. The `thermos_style` provides the potential energy (`pe`) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example. Plot the variable `pe` vs the time that correspond to multiply the `step` variable (column 1 in `thermo`) by the `timestep` ($1fs$). 
+6. The `thermos_style` provides the potential energy (`pe`) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example. 
+Plot the variable `pe` vs the time that correspond to multiply the `step` variable (column 1 in `thermo`) by the `timestep` (1fs). 
 The sharp decay in the curves determine the nucleation time that averaged over all seeds provides the estimation for all the seeds as shown in the figure below
 
 ![Step-4](../figs/LatticeMold/Fig4.png "Time")
