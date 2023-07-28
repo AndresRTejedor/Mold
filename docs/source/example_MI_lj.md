@@ -83,7 +83,7 @@ $$\Delta G/k_B T=-log(P(n_s))+constant,$$
 
 where $P(n_s)$ is the probability distribution of finding a cluster with size $n_s$ that can be straightforwardly estimated from the order parameter curves. 
 
-![Step-1\label{kk}](../figs/Fig2.png "Denergy")
+![Step-1\label{kk}](../figs/FigDG.png "Denergy")
 
 Therefore, in this case we can consider $r_w=0.32\sigma$ as the optimal radius with not sufficiently long induction time.
 
@@ -139,7 +139,7 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 For real units the multiplication by the number of particles in the system is not necessary.
 ````
 
-COMENTAR LA TEMPERATURA.
+Please note that using reduced LJ units the temperature must be rescaled so LAMMPS does not consider the well particles to thermalize the system. 
 
 The calculation of the well occupancy for each depth can be easily estimated by taking the average over all the simulation of this value:
 
