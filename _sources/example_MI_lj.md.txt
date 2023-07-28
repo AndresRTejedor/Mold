@@ -77,15 +77,15 @@ The recommended values for such analysis is a threshold of ${\bar{q}}_6=0.34$, a
 
 ![Step-1\label{kk}](../figs/Fig2.png "q6_time")
 
-Following {footcite:t}`espinosa2014mold`, one equivalent analysis consist in calculating the following quantity:
+Following {footcite:t}`espinosa2014mold`, one equivalent analysis consist in calculating the free energy profile:
 
-$$\rho=k_BTlog(P),$$
+$$\Delta G/k_B T=-log(P(n_s))+constant,$$
 
-where
+where $P(n_s)$ is the probability distribution of finding a cluster with size $n_s$ that can be straightforwardly estimated from the order parameter curves. 
 
-![Step-1\label{kk}](../figs/Fig2.png "Denergy")
+![Step-1\label{kk}](../figs/FigDG.png "Denergy")
 
-Therefore, in this case we can consider $r_w=0.32\sigma$ as the greatest radius that creates an irreversible interface so it is chosen as our optimal radius to extrapolate.
+Therefore, in this case we can consider $r_w=0.32\sigma$ as the optimal radius with not sufficiently long induction time.
 
 ## Thermodynamic integration 
 
@@ -138,6 +138,8 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 ````{note}
 For real units the multiplication by the number of particles in the system is not necessary.
 ````
+
+Please note that using reduced LJ units the temperature must be rescaled so LAMMPS does not consider the well particles to thermalize the system. 
 
 The calculation of the well occupancy for each depth can be easily estimated by taking the average over all the simulation of this value:
 

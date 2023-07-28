@@ -262,7 +262,7 @@ thermo_modify  flush yes  # flush the buffer and write the output in real time
 thermo         ${thermoSteps}      # how often (in steps) will write the properties of thermo_style to the output
 </pre></div>
 </div>
-<p>Thus, the calculation of the mold occupancy for each well depth can be estimated by taking the average over the production simulation time through this equation:</p>
+<p>Thus, the calculation of the mold occupancy for each well depth can be estimated by taking the average over the production (after equilibration) simulation time through this equation:</p>
 <div class="math notranslate nohighlight">
 \[\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)\]</div>
 <p>Please note that the temperature must be recalculated to consider only the water molecules in the system, since the LAMMPS <code class="docutils literal notranslate"><span class="pre">thermo</span></code> considers all the particles to evaluate the global temperature. This only applies for calculations inn real units.</p>
@@ -312,7 +312,7 @@ The sharp decay in the curves determine the nucleation time that averaged over a
 </ul>
 <div class="math notranslate nohighlight">
 \[J=P/\langle t\rangle,\]</div>
-<p>where <span class="math notranslate nohighlight">\(P\)</span> is the probability calculated in <a class="reference internal" href="#well-occupancy"><span class="std std-doc">Step 3</span></a> and <span class="math notranslate nohighlight">\(\langle t\rangle \)</span> is the average nucleation time obtained in <a class="reference internal" href="#average-nucleation-time"><span class="std std-doc">Step 4</span></a>.</p>
+<p>where <span class="math notranslate nohighlight">\(P\)</span> is the probability calculated in <a class="reference internal" href="#well-occupancy"><span class="std std-doc">Step 3</span></a> and <span class="math notranslate nohighlight">\(\langle t\rangle \)</span> is the average nucleation time obtained in <a class="reference internal" href="#average-nucleation-time"><span class="std std-doc">Step 4</span></a> for each well radius.</p>
 <ul class="simple">
 <li><p>Plot the nucleation rates vs the well radii using logarithmic scale in the y-axis as in the figure below.</p></li>
 </ul>
@@ -332,23 +332,23 @@ The table below provides the obtained free energy, average nucleation time and n
 </thead>
 <tbody>
 <tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(\Delta G/k_B T\)</span></p></td>
-<td class="text-center"><p>31.21</p></td>
-<td class="text-center"><p>28.80</p></td>
-<td class="text-center"><p>27.38</p></td>
+<td class="text-center"><p>31.21(25)</p></td>
+<td class="text-center"><p>28.80(23)</p></td>
+<td class="text-center"><p>27.38(22)</p></td>
 </tr>
 <tr class="row-odd"><td class="text-center"><p><span class="math notranslate nohighlight">\(\langle t\rangle (ns)\)</span></p></td>
-<td class="text-center"><p>9.8</p></td>
-<td class="text-center"><p>16.2</p></td>
-<td class="text-center"><p>29.1</p></td>
+<td class="text-center"><p>9.8(8)</p></td>
+<td class="text-center"><p>16.2(8)</p></td>
+<td class="text-center"><p>29.1(9)</p></td>
 </tr>
-<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(\log_{10}J\)</span></p></td>
-<td class="text-center"><p>23.0</p></td>
-<td class="text-center"><p>23.8</p></td>
-<td class="text-center"><p>24.2</p></td>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(\log_{10}(J\cdot m^{3}s)\)</span></p></td>
+<td class="text-center"><p>23.0(2)</p></td>
+<td class="text-center"><p>23.8(2)</p></td>
+<td class="text-center"><p>24.2(3)</p></td>
 </tr>
 </tbody>
 </table>
-<p>Extrapolating the nucleation rate to the optimal radius gives <span class="math notranslate nohighlight">\(\log_{10}J(r_{w,0}=1.32Å)=25.3(2.5)\)</span> for ice Ih of mW at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span></p>
+<p>Extrapolating the nucleation rate to the optimal radius gives <span class="math notranslate nohighlight">\(\log_{10}J(r_{w,0}=1.32Å)=25.3(2.5)\)</span> for ice Ih of mW at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span>.</p>
 <div class="docutils container" id="id4">
 <dl class="footnote brackets">
 <dt class="label" id="footcite-espinosa2016lattice"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
