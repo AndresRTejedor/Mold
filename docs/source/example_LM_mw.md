@@ -105,7 +105,7 @@ thermo_modify  flush yes  # flush the buffer and write the output in real time
 thermo         ${thermoSteps}      # how often (in steps) will write the properties of thermo_style to the output
 ```
 
-Thus, the calculation of the mold occupancy for each well depth can be estimated by taking the average over the production simulation time through this equation:
+Thus, the calculation of the mold occupancy for each well depth can be estimated by taking the average over the production (after equilibration) simulation time through this equation:
   
 $$\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)$$
 
@@ -162,7 +162,7 @@ The extrapolation of the nucleation rate is straitghforward.
 
 $$J=P/\langle t\rangle,$$
 
-where $P$ is the probability calculated in [Step 3](#well-occupancy) and $\langle t\rangle $ is the average nucleation time obtained in [Step 4](#average-nucleation-time). 
+where $P$ is the probability calculated in [Step 3](#well-occupancy) and $\langle t\rangle $ is the average nucleation time obtained in [Step 4](#average-nucleation-time) for each well radius. 
 - Plot the nucleation rates vs the well radii using logarithmic scale in the y-axis as in the figure below.
 
 ![Step-5](../figs/LatticeMold/Fig5.png "Extrapolation")
@@ -171,16 +171,14 @@ where $P$ is the probability calculated in [Step 3](#well-occupancy) and $\langl
 - Use the resulting fit equation to extrapolate the nucleation rate to the optimal radius ($J(r_{w,0}=1.32Å)$)
 The table below provides the obtained free energy, average nucleation time and nucleation rate for each well radius. 
 
-|         $r_w/Å$)        |  0.85 |  0.99 |  1.12 |
-|:----------------------------:|:-----:|:-----:|:-----:|
-| $\Delta G/k_B T$       | 31.21 | 28.80 | 27.38 |
-| $\langle t\rangle (ns)$ |  9.8  |  16.2 | 29.1 |
-| $\log_{10}J$            |  23.0 |  23.8 |  24.2 |
+|         $r_w/Å$)            |    0.85  |    0.99   |   1.12   |
+|:---------------------------:|:--------:|:---------:|:--------:|
+| $\Delta G/k_B T$            | 31.21(25)| 28.80(23) | 27.38(22)|
+| $\langle t\rangle (ns)$     |  9.8(8)  |  16.2(8)  | 29.1(9)  |
+| $\log_{10}(J\cdot m^{3}s)$  |  23.0(2) |  23.8(2)  |  24.2(3) |
 
 
-Extrapolating the nucleation rate to the optimal radius gives $\log_{10}J(r_{w,0}=1.32Å)=25.3(2.5)$ for ice Ih of mW at $T=220K$ and $p=1bar$
-
-
+Extrapolating the nucleation rate to the optimal radius gives $\log_{10}J(r_{w,0}=1.32Å)=25.3(2.5)$ for ice Ih of mW at $T=220K$ and $p=1bar$.
 
 
 ```{footbibliography}
