@@ -23,7 +23,7 @@ variable cutoff_well equal  ${rw}*4.0              # Well potential cutoff (real
 
 
 ####   Define Mold   ####
-read_data      39mold.xyz  # contains the positions and masses and other information
+read_data      39mold.lmp  # contains the positions and masses and other information
 group freeze type 2 
 group unfrozen subtract all freeze
 

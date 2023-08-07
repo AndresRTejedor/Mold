@@ -26,15 +26,15 @@ The following coefficients must be defined for each pair of atoms types via the 
 
 -  $\epsilon_w$ (energy units)
 -  $r_{w}$ (distance units)
--  $\alpha$
+-  $\alpha$ (distance units)
 -  $r_{c}$ (distance units)
 
 This continuous square-well potential can be used to calculate liquid-crystal interfacial free energies through the mold integration ({footcite:t}`espinosa2014mold`) or the lattice mold techniques ({footcite:t}`espinosa2016lattice` and {footcite:t}`sanchez2022homogeneous`). Also, it can be used to simulate attractive patches distributed along the surface of a sphere, known as “patchy particles” ({footcite:t}`espinosa2019breakdown`).
 
 
 ````{warning}
-The value of $\alpha$ cannot be too large to avoid strong forces acting on the particles trapped inside the wells.
-If large values are needed, the simulation timestep must be reduced ({footcite:t}`sanchez2023direct`).
+The value of $\alpha$ cannot be too small to avoid strong forces acting on the particles trapped inside the wells.
+If small values are needed (steep potential), the simulation timestep must be reduced ({footcite:t}`sanchez2023direct`).
 ````
 
 ````{note}
