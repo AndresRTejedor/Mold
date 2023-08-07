@@ -1,5 +1,5 @@
 # Mold method
-Lammps package including square-like well potential to implement Mold integration and Lattice mold techniques (USER-MOLD).
+Lammps package including a square-like well potential to implement Mold integration and Lattice mold techniques (MOLD).
 
 ## Documentation
 
