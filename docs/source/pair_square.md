@@ -18,13 +18,13 @@ pair_coeff    1 2 square/well 5.0 0.33 0.005 1.32
 The square/well style computes a continuous version of the square-well potential given by:
 
 $$
-	U_{wp} (r)=-\frac{1}{2} \epsilon\left[1-\tanh\left(\frac{r-r_w}{\alpha}\right)\right]   \quad \text{for} \quad r<r_{c}
+	U_{wp} (r)=-\frac{1}{2} \epsilon_w\left[1-\tanh\left(\frac{r-r_w}{\alpha}\right)\right]   \quad \text{for} \quad r<r_{c}
 $$
 where $r_{c}$ is the cutoff.
 
 The following coefficients must be defined for each pair of atoms types via the pair_coeff command as in the example above, or in the data file or restart files read by the read_data or read_restart commands:
 
--  $\epsilon$ (energy units)
+-  $\epsilon_w$ (energy units)
 -  $r_{w}$ (distance units)
 -  $\alpha$
 -  $r_{c}$ (distance units)
