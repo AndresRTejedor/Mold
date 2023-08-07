@@ -11,13 +11,13 @@ The mW pair style is part of the MANYBODY package. See the [Build package](https
 
 The lattice mold technique consists of 5 different steps. All the steps can be found in {footcite:t}`sanchez2022homogeneous`, and they can be summarized as:  
 
-1. Create an appropriate spherical mold with the perfect structure of the crystal Ih ice and embed it in the liquid at the equilibrium density at the given conditions.
+1. Create an appropriate spherical mold with the perfect structure of the crystal Ih ice and embed it in the liquid at the equilibrium density at the conditions of interest.
 2. Choice of the optimal well radius $r_{w,0}$ for obtaining the nucleation rate, *i.e.* the limit for which two water molecules fit inside the same well.
-3. Calculation of the [well occupancy](#well-occupancy) curves for each well depth below the optimal radius. 
-4. Calculation of the [average nucleation time](#average-nucleation-time) for each well radius to overcome the nucleation free energy barrier.
+3. Calculate the [well occupancy curves](#well-occupancy-curves) for several radii below the optimal one. 
+4. Calculate the [average nucleation time](#average-nucleation-time) for each well radius to overcome the nucleation free energy barrier.
 5. [Extrapolation of the nucleation rate](#extrapolation-of-the-nucleation-rate) to the optimal radius $r_{w,0}$.
 
-The configuration (step 1) can be easily created using the bulk liquid and crystal configuration at the corresponding $(p,T)$ conditions for the desired ice phase (Ih in this example). 
+The configuration (step 1) can be easily created using the bulk liquid and crystal configurations at the corresponding $(p,T)$ conditions for the desired ice phase (Ih in this example). 
 Please note that the perfect crystal structure must be used to generate the mold potential well using the equilibrium density at the given conditions. 
 Here, we provide the system data file of a mold made of 39 wells at $T=220K$ and $p=1bar$ (see the figure below where blue particles represent water molecules and gray particles the mold wells). 
 The number of wells in the mold is chosen so that the system displays induction time to permit reversible thermodynamical integration of the precritical cluster, but still it is able to overcome the free energy nucleation barrier and eventually crystallize in a reasonable computational time.
@@ -25,12 +25,14 @@ The number of wells in the mold is chosen so that the system displays induction 
 ![Step-1](../figs/LatticeMold/Fig1.png "Conf_LM")
 
 The optimal radius is calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of $8k_BT$. 
-The radius above which the occupancy exceeds the 100%, *i.e.* more than one water molecule per potential well, is considered as the optimal radius. For the current example we extrapolate to $r_{w,0}=1.32Å$ (see figure below, red vertical line).
+The largest value of the radius at which the ocuupancy is still below $100\%$ at a depth of $8k_BT$ is considered to be the optimal radius.
+For well radius larger than the optimal one, two or more particles can enter in a well. Please note that for the lattice mold technique a extrapolation is performed to a larger value of the radius than that used in the calculation (in contrast with the [mold integration method](https://andresrtejedor.github.io/Mold/example_MI_lj.html#))
+For the current example we extrapolate to $r_{w,0}=1.32Å$ (see figure below, red vertical line).
 
 ![Step-2](../figs/LatticeMold/Fig2.png "Opt_Rad")
 
 
-## Well occupancy 
+## Well occupancy curves
 
 The calculation of the well occupancy for different well radii under the optimal radius consists of the following steps:
 
@@ -48,7 +50,7 @@ This is a truncated range of values of $\epsilon$ in $k_{B}T$:
 5.0
 8.0
 ```
-Please note that the grid of well depths included in the calculation may need to be increased to capture the transition of well filling with more accuracy. Also, for different well radius the grid may change.
+Please note that the grid of well depths included in the calculation may need to be increased to capture the transition of well filling with more accuracy. Also, for different well radii the grid may change.
 
 2. Copy the LAMMPS script file (`mw_lattmold.in`) in each subdirectory along with the configuration file (`39mold.lmp`) and the mW potential file (`mW.sw`).
 3. The LAMMPS script contains several variables that are important to know to properly perform the simulations:
@@ -59,7 +61,7 @@ variable  nts          equal  99000000   # production number of time-steps
 variable  T            equal  220.0      # Temperature of the system in K
 variable  nkT          equal  8          # Well depth in kT
 variable  ts           equal  1          # length of the ts (in fs units)
-variable  width        equal  0.25       # (reduced) width of the square well potential
+variable  width        equal  0.25       # (reduced LJ) width of the square well potential
 variable  alpha        equal  0.017025   # Parameter for the slope of the square well potential (0.005*3.405)
 variable  seed         equal  23782      # velocity seed
 variable  NtsTdamp     equal  100        # Number of ts to damp temperature
@@ -109,7 +111,7 @@ Thus, the calculation of the mold occupancy for each well depth can be estimated
   
 $$\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)$$
 
-Please note that the temperature must be recalculated to consider only the water molecules in the system, since the LAMMPS `thermo` considers all the particles to evaluate the global temperature. This only applies for calculations inn real units.
+Please note that the temperature must be recalculated to consider only the water molecules in the simulation box, since the LAMMPS `thermo` considers all the particles to evaluate the system temperature. This only applies for calculations in real units.
 
 7. Plot the different curves of mold occupancy as a function of the well depth for the different radii. The result should look similar to the figure below
 
@@ -140,7 +142,7 @@ To estimate the average nucleation time, one must follow these steps:
 2. For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.
 3. Copy the LAMMPS script file (`mw_lattmold.in`) in each subdirectory along with the configuration file (`39mold.lmp`) and the mW potential file (`mW.sw`).
 4. The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step and this particular system, the typical run must be of the order of $100ns$ (with `dt=1fs`), controlled by the parameter `nts` which must be set to `nts=10000000`. 
-The well depth `nkT` must be set to 8. Importantly, for this step the `seed` variable must be change for every independent run.
+The well depth `nkT` must be set to 8. Importantly, for this step the `seed` variable must be changed for every independent run.
 5. Launch the simulation for each radius and independent velocity seed.
 6. The `thermos_style` provides the potential energy (`pe`) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example. 
 Plot the variable `pe` vs the time that correspond to multiply the `step` variable (column 1 in `thermo`) by the `timestep` (1fs). 
@@ -151,6 +153,7 @@ The sharp decay in the curves determine the nucleation time that averaged over a
 
 ````{warning}
 Some seeds may need to run longer times in case the mold has not been able to nucleate. 
+Also, when not all trajectories exhibit complete freezing after long runs, one could used the half life reaction time (*i.e.* the time required to have halfe of the 10 trajectories with complete freezing).
 ````
 
 
