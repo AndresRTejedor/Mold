@@ -7,7 +7,7 @@ variable  nts          equal  99000000   # production number of time-steps
 variable  T            equal  220.0      # Temperature of the system in K
 variable  nkT          equal  8          # Well depth in kT
 variable  ts           equal  1          # length of the ts (in fs units)
-variable  width        equal  0.25       # (reduced) width of the square well potential
+variable  width        equal  0.25       # (reduced LJ) width of the square well potential
 variable  alpha        equal  0.017025   # Parameter for the slope of the square well potential (0.005*3.405)
 variable  seed         equal  23782      # velocity seed
 variable  NtsTdamp     equal  100        # Number of ts to damp temperature
