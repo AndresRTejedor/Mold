@@ -2,8 +2,8 @@
 
 Here we provide a detailed set of instructions to calculate the nucleation rate of ice Ih with the mW coarse-grained water model at $T=220K$ and $p=1bar$ using the Lattice Mold technique (see {footcite:t}`espinosa2016lattice` and {footcite:t}`sanchez2022homogeneous`) that requires the `square/well pair_style` available in LAMMPS.
 
-The data file (`39mold.xyz`), the potential file for mW (`mW.sw`) and LAMMPS script (`mw_lattmold.in`) are provided in the directory `/examples/mw_mold/` (see [here](https://github.com/AndresRTejedor/Mold/tree/main/example/mw_mold)). 
-In this work example we will navigate through these files to explain them in detail.
+The data file (`39mold.lmp`), the potential file for mW (`mW.sw`) and LAMMPS script (`mw_lattmold.in`) are provided in the directory `/examples/mw_mold/` (see [here](https://github.com/AndresRTejedor/Mold/tree/main/example/mw_mold)). 
+In this worked example we will navigate through these files to explain them in detail.
 
 ````{note}
 The mW pair style is part of the MANYBODY package. See the [Build package](https://docs.lammps.org/Build_package.html) page for more info.
@@ -50,7 +50,7 @@ This is a truncated range of values of $\epsilon$ in $k_{B}T$:
 ```
 Please note that the grid of well depths included in the calculation may need to be increased to capture the transition of well filling with more accuracy. Also, for different well radius the grid may change.
 
-2. Copy the LAMMPS script file (`mw_lattmold.in`) in each subdirectory along with the configuration file (`39mold.xyz `) and the mW potential file (`mW.sw`).
+2. Copy the LAMMPS script file (`mw_lattmold.in`) in each subdirectory along with the configuration file (`39mold.lmp`) and the mW potential file (`mW.sw`).
 3. The LAMMPS script contains several variables that are important to know to properly perform the simulations:
 
 ```
@@ -75,7 +75,7 @@ variable cutoff_well equal  ${rw}*4.0              # Well potential cutoff (real
 
 
 ####   Define Mold   ####
-read_data      39mold.xyz  # contains the positions and masses and other information
+read_data      39mold.lmp  # contains the positions and masses and other information
 group freeze type 2 
 group unfrozen subtract all freeze
 
@@ -138,7 +138,7 @@ To estimate the average nucleation time, one must follow these steps:
 
 1. Create the directory for sweeping different radii ($r_w=0.85,0.99,1.12Å$).
 2. For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.
-3. Copy the LAMMPS script file (`mw_lattmold.in`) in each subdirectory along with the configuration file (`39mold.xyz `) and the mW potential file (`mW.sw`).
+3. Copy the LAMMPS script file (`mw_lattmold.in`) in each subdirectory along with the configuration file (`39mold.lmp`) and the mW potential file (`mW.sw`).
 4. The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step and this particular system, the typical run must be of the order of $100ns$ (with `dt=1fs`), controlled by the parameter `nts` which must be set to `nts=10000000`. 
 The well depth `nkT` must be set to 8. Importantly, for this step the `seed` variable must be change for every independent run.
 5. Launch the simulation for each radius and independent velocity seed.

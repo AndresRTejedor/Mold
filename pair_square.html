@@ -187,21 +187,21 @@
 <p>The square/well style computes a continuous version of the square-well potential given by:</p>
 <div class="math notranslate nohighlight">
 \[
-	U_{wp} (r)=-\frac{1}{2} \epsilon\left[1-\tanh\left(\frac{r-r_w}{\alpha}\right)\right]   \quad \text{for} \quad r&lt;r_{c}
+	U_{wp} (r)=-\frac{1}{2} \epsilon_w\left[1-\tanh\left(\frac{r-r_w}{\alpha}\right)\right]   \quad \text{for} \quad r&lt;r_{c}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(r_{c}\)</span> is the cutoff.</p>
 <p>The following coefficients must be defined for each pair of atoms types via the pair_coeff command as in the example above, or in the data file or restart files read by the read_data or read_restart commands:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\epsilon\)</span> (energy units)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon_w\)</span> (energy units)</p></li>
 <li><p><span class="math notranslate nohighlight">\(r_{w}\)</span> (distance units)</p></li>
-<li><p><span class="math notranslate nohighlight">\(\alpha\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span> (distance units)</p></li>
 <li><p><span class="math notranslate nohighlight">\(r_{c}\)</span> (distance units)</p></li>
 </ul>
 <p>This continuous square-well potential can be used to calculate liquid-crystal interfacial free energies through the mold integration (Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id1">1</a>) or the lattice mold techniques (Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2016lattice" id="id2">2</a> and Sanchez-Burgos <em>et al.</em><a class="footnote-reference brackets" href="#footcite-sanchez2022homogeneous" id="id3">3</a>). Also, it can be used to simulate attractive patches distributed along the surface of a sphere, known as “patchy particles” (Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2019breakdown" id="id4">4</a>).</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The value of <span class="math notranslate nohighlight">\(\alpha\)</span> cannot be too large to avoid strong forces acting on the particles trapped inside the wells.
-If large values are needed, the simulation timestep must be reduced (Sanchez-Burgos and Espinosa<a class="footnote-reference brackets" href="#footcite-sanchez2023direct" id="id5">5</a>).</p>
+<p>The value of <span class="math notranslate nohighlight">\(\alpha\)</span> cannot be too small to avoid strong forces acting on the particles trapped inside the wells.
+If small values are needed (steep potential), the simulation timestep must be reduced (Sanchez-Burgos and Espinosa<a class="footnote-reference brackets" href="#footcite-sanchez2023direct" id="id5">5</a>).</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>

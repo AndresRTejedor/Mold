@@ -1,8 +1,8 @@
 # Mold integration for 100 plane of the fcc crystal for the Lennard-Jones potential
 
-Here we provide a detailed set of instructions to reproduce the crystal fluid interfacial free energy using the Broughton and Gilmer Lennard-Jones potential and `square/well pair_style` available in LAMMPS.
+Here we provide a detailed set of instructions to reproduce the crystal fluid interfacial free energy using the Broughton and Gilmer Lennard-Jones potential (CELAVING package available [here](https://github.com/demonico85/cleaving/tree/master)) and `square/well pair_style` available in LAMMPS.
 
-The data file (`mold_100.lmp`) and LAMMPS script (`lj_moldint.in`) are provided in the directory `/examples/lj_mold/` (see [here](https://github.com/AndresRTejedor/Mold/tree/main/example/lj_mold)), but in this work example we will navigate through these files to explain them in detail.
+The data file (`mold_100.lmp`) and LAMMPS script (`lj_moldint.in`) are provided in the directory `/examples/lj_mold/` (see [here](https://github.com/AndresRTejedor/Mold/tree/main/example/lj_mold)), but in this worked example we will navigate through these files to explain them in detail.
 
 The mold integration technique consists of different steps and here we only discuss the last two steps to obtain the interfacial free energy of the 100 plane for the LJ particles at $T^\ast=0.617$ and $p^\ast=-0.02$. All the steps can be found in {footcite:t}`espinosa2014mold`, and they can be summarized as: 
 
@@ -159,7 +159,8 @@ In the following figure the curves of well occupancy vs. well depth for the diff
 After the analysis in the previous step, one can obtain a curve of well occupancy vs well depth for each radius so that the interfacial free energy is calculated as
 
 $$\gamma(r_w )=\frac{1}{2l^2 } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, \langle N_w(\epsilon)\rangle \right],$$
-where $N_w$ is the total number of wells and $l$ is the short side of the box that can be obtained from the thermo (`lx`, `ly`, columns 7 and 8 int the `thermo`). The resulting values for the integrals are provided in the following table (please note that the energy is now expressed in LJ units instead of $KBT$ ($\epsilon_{LJ}=0.617\cdot\epsilon_{k_BT}$)):
+where $N_w$ is the total number of wells and $l$ is the short side of the box that can be obtained from the thermo (`lx`, `ly`, columns 7 and 8 int the `thermo`, as $l_x=l_y$ in this example). The resulting values for the integrals are provided in the following table (please note that the energy is now expressed in LJ units instead of $k_BT$ ($\epsilon_{LJ}=0.617\cdot\epsilon_{k_BT}$)):
+
 
 |         $r_w/\sigma$)        |  0.33 |  0.34 |  0.35 |
 |:----------------------------:|:-----:|:-----:|:-----:|

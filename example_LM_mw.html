@@ -166,8 +166,8 @@
   <div class="tex2jax_ignore mathjax_ignore section" id="lattice-mold-calculations-of-mw-ice-ih-nucleation-rate-at-t-220k">
 <h1>Lattice mold calculations of mW Ice Ih nucleation rate at T=220K<a class="headerlink" href="#lattice-mold-calculations-of-mw-ice-ih-nucleation-rate-at-t-220k" title="Permalink to this headline">¶</a></h1>
 <p>Here we provide a detailed set of instructions to calculate the nucleation rate of ice Ih with the mW coarse-grained water model at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span> using the Lattice Mold technique (see Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2016lattice" id="id1">1</a> and Sanchez-Burgos <em>et al.</em><a class="footnote-reference brackets" href="#footcite-sanchez2022homogeneous" id="id2">2</a>) that requires the <code class="docutils literal notranslate"><span class="pre">square/well</span> <span class="pre">pair_style</span></code> available in LAMMPS.</p>
-<p>The data file (<code class="docutils literal notranslate"><span class="pre">39mold.xyz</span></code>), the potential file for mW (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>) and LAMMPS script (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) are provided in the directory <code class="docutils literal notranslate"><span class="pre">/examples/mw_mold/</span></code> (see <a class="reference external" href="https://github.com/AndresRTejedor/Mold/tree/main/example/mw_mold">here</a>).
-In this work example we will navigate through these files to explain them in detail.</p>
+<p>The data file (<code class="docutils literal notranslate"><span class="pre">39mold.lmp</span></code>), the potential file for mW (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>) and LAMMPS script (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) are provided in the directory <code class="docutils literal notranslate"><span class="pre">/examples/mw_mold/</span></code> (see <a class="reference external" href="https://github.com/AndresRTejedor/Mold/tree/main/example/mw_mold">here</a>).
+In this worked example we will navigate through these files to explain them in detail.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>The mW pair style is part of the MANYBODY package. See the <a class="reference external" href="https://docs.lammps.org/Build_package.html">Build package</a> page for more info.</p>
@@ -208,7 +208,7 @@ This is a truncated range of values of <span class="math notranslate nohighlight
 </div>
 <p>Please note that the grid of well depths included in the calculation may need to be increased to capture the transition of well filling with more accuracy. Also, for different well radius the grid may change.</p>
 <ol class="arabic simple" start="2">
-<li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">39mold.xyz</span> </code>) and the mW potential file (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>).</p></li>
+<li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">39mold.lmp</span></code>) and the mW potential file (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>).</p></li>
 <li><p>The LAMMPS script contains several variables that are important to know to properly perform the simulations:</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># ---------------------------- Define variables --------------------------------
@@ -232,7 +232,7 @@ variable cutoff_well equal  ${rw}*4.0              # Well potential cutoff (real
 
 
 ####   Define Mold   ####
-read_data      39mold.xyz  # contains the positions and masses and other information
+read_data      39mold.lmp  # contains the positions and masses and other information
 group freeze type 2 
 group unfrozen subtract all freeze
 
@@ -290,7 +290,7 @@ The free energy difference is used to calculate the probability per unit volume 
 <ol class="arabic simple">
 <li><p>Create the directory for sweeping different radii (<span class="math notranslate nohighlight">\(r_w=0.85,0.99,1.12Å\)</span>).</p></li>
 <li><p>For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.</p></li>
-<li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">39mold.xyz</span> </code>) and the mW potential file (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>).</p></li>
+<li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">39mold.lmp</span></code>) and the mW potential file (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>).</p></li>
 <li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step and this particular system, the typical run must be of the order of <span class="math notranslate nohighlight">\(100ns\)</span> (with <code class="docutils literal notranslate"><span class="pre">dt=1fs</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code> which must be set to <code class="docutils literal notranslate"><span class="pre">nts=10000000</span></code>.
 The well depth <code class="docutils literal notranslate"><span class="pre">nkT</span></code> must be set to 8. Importantly, for this step the <code class="docutils literal notranslate"><span class="pre">seed</span></code> variable must be change for every independent run.</p></li>
 <li><p>Launch the simulation for each radius and independent velocity seed.</p></li>
