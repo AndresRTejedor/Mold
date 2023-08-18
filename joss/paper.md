@@ -1,21 +1,22 @@
 ---
-title: 'Cleaving: a LAMMPS package to compute surface free energies'
+title: 'Mold: the square-like potential LAMMPS package to compute surface free energies and nucleation rates'
 tags:
   - C++
   - LAMMPS
   - Molecular simulations
   - Phase Transitions
+  - Nucleation theory
 authors:
+  - name: Andres R. Tejedor
+    orcid:  0000-0001-5676-8527
+    affiliation: 1
   - name: Nicodemo Di Pasquale^[Corresponding author]
     orcid:  0000-0001-5676-8527
     affiliation: 1
   - name: Ruslan Davidchack
     orcid: 0000-0001-9418-5322
     affiliation: 4
-  - name: Lorenzo Rovigatti
-    orcid: 0000-0001-5017-2829
-    affiliation: "2,3"
-affiliations:
+  affiliations:
  - name: Department of Chemical Engineering, Brunel University London, United Kingdom
    index: 1
  - name: Department of Physics, Sapienza University of Rome, Italy
