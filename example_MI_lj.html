@@ -185,9 +185,9 @@ The following figure shows a 2D projection of the configuration file:</p>
 <p>The calculation of the optimal well radius for extrapolation of the interfacial free energy includes the following steps:</p>
 <ol class="arabic simple">
 <li><p>Create a directory sweeping different radii (<span class="math notranslate nohighlight">\(r_w=0.27,\ 0.28,\ \ldots,0.33,0.34\sigma\)</span>).</p></li>
-<li><p>For each radius one needs to run independent trajectories with different initial velocities. Create 10 directories for each radius directory (1 for each trajectory).</p></li>
+<li><p>For each radius one needs to run independent trajectories with different initial velocities. Create 10 directories for each radius directory (1 for each trajectory). This is included in the bash file (see dot 5).</p></li>
 <li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>).</p></li>
-<li><p>The LAMMPS script contains several variables that it is important to know to properly perform the simulations:</p></li>
+<li><p>The LAMMPS script contains several variables that are important to know to properly perform the simulations:</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span># ---------------------------- Define variables --------------------------------
 variable  nts          equal  400000     # production number of time-steps
@@ -199,7 +199,7 @@ variable  cut2         equal  2.5        # external cut-off for BG pair-style
 variable  rw           equal  0.33       # (reduced) width of the square well potential
 variable  alpha        equal  0.005      # (reduced units) parameter for the slope of the square well potential
 variable  nkT          equal  8.0        # well depth (kB*T units) 
-variable  seed         equal  23782      # velocity seed
+variable  seed         equal  12345      # velocity seed
 variable  Tsyst        equal  0.617      # (reduced) temperature of the system
 variable  Psyst        equal  -0.02      # (reduced) press of the system
 variable  NtsTdamp     equal  100        # Number of ts to damp temperature
@@ -235,7 +235,27 @@ Also, there are some variables that might be interesting to know:</p>
 <li><p><code class="docutils literal notranslate"><span class="pre">dumpSteps</span></code> is the number of steps to save the trajectory in the dump file and for this step it is recommended to be set to 2000 (be aware that low values of this parameter can produce large trajectory files).</p></li>
 </ul>
 <ol class="arabic simple" start="5">
-<li><p>Launch the simulation for each radius and seed. That means a total of 80 simulations, but they are quite short.</p></li>
+<li><p>Launch the simulation for each radius and seed. That means a total of 80 simulations, but they are quite short.
+We provide a bash file <code class="docutils literal notranslate"><span class="pre">/examples/lj_mold/1.Optimal_radius/Run.sh</span></code> that creates the directory for each velocity seed and run the simulations with independent trajectories, reading the file <code class="docutils literal notranslate"><span class="pre">/examples/lj_mold/1.Optimal_radius/list</span></code> that contains the number of seeds to run from 0 to 9.
+The bash script contains the following variables:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">T</span><span class="o">=</span><span class="s1">&#39;0.617&#39;</span>
+<span class="n">P</span><span class="o">=</span><span class="s1">&#39;-0.02&#39;</span>
+<span class="n">rw</span><span class="o">=</span><span class="s1">&#39;0.30&#39;</span>
+<span class="n">steps</span><span class="o">=</span><span class="mi">250000</span>
+<span class="n">kT</span><span class="o">=</span><span class="s1">&#39;8&#39;</span>
+<span class="n">dump</span><span class="o">=</span><span class="mi">5000</span>
+<span class="n">path</span><span class="o">=</span><span class="s1">&#39;../../&#39;</span>
+</pre></div>
+</div>
+<p>-T: temperature of the system
+-P: pressure of the system
+-rw: well radius
+-steps: number of steps (the timestep can be changed manually in the LAMMPS script)
+-kT: well depth in <span class="math notranslate nohighlight">\(k_BT\)</span> units
+-path: path to <code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code> and <code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>. Absolute path is highly recommended.
+Also,  the bash file includes a submission command <code class="docutils literal notranslate"><span class="pre">sbatch</span> <span class="pre">LAMMPS.job</span></code>, but LAMMPS.job is not provided as it depends on the user machine.</p>
+<ol class="arabic simple" start="6">
 <li><p>The analysis of this step consists in determining if there is induction time, <em>i.e.</em> further energy is required for the formation of the interface (see Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id2">1</a>).
 To do so, we recommend analyzing the resulting trajectory using the order parameter <span class="math notranslate nohighlight">\({\bar{q}}_6\)</span> (Lechner and Dellago<a class="footnote-reference brackets" href="#footcite-lechner2008accurate" id="id3">2</a>) to determine the number of crystal-like particles in the slab.
 The recommended values for such analysis is a threshold of <span class="math notranslate nohighlight">\({\bar{q}}_6=0.34\)</span>, and the particles are considered neighbours if they are at a distance of <span class="math notranslate nohighlight">\(1.35\sigma\)</span> or less from the central molecule. This distance is also used to identify molecules of solid that belong to the same solid cluster.
