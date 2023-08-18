@@ -5,7 +5,6 @@ tags:
   - LAMMPS
   - Molecular simulations
   - Phase Transitions
-  - Nucleation theory
 authors:
   - name: Nicodemo Di Pasquale^[Corresponding author]
     orcid:  0000-0001-5676-8527
