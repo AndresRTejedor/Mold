@@ -10,6 +10,9 @@ authors:
   - name: Andres R. Tejedor^[Corresponding author]
     orcid:  0000-0001-5676-8527
     affiliation: 1
+  - name: Nicodemo Di Pascuale
+    orcid:  0000-0001-5676-8527
+    affiliation: 1
   - name: Ruslan Davidchack
     orcid: 0000-0001-9418-5322
     affiliation: 4
