@@ -7,9 +7,6 @@ tags:
   - Phase Transitions
   - Nucleation theory
 authors:
-  - name: Andres R. Tejedor
-    orcid:  0000-0001-5676-8527
-    affiliation: 1
   - name: Nicodemo Di Pasquale^[Corresponding author]
     orcid:  0000-0001-5676-8527
     affiliation: 1
