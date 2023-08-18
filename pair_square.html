@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pair_style square/well &mdash; SIFT  documentation</title>
+  <title>pair_style square/well &mdash; SurFEC  documentation</title>
   
 
   
@@ -52,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> SIFT
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> SurFEC
           
 
           
@@ -112,7 +112,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">SIFT</a>
+          <a href="index.html">SurFEC</a>
         
       </nav>
 
@@ -184,24 +184,23 @@
 </div>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
-<p>The square/well style computes a continuous version of the square-well potential given by:</p>
+<p>The square/well style computes continuous version of the square-well potential given by:</p>
 <div class="math notranslate nohighlight">
 \[
-	U_{wp} (r)=-\frac{1}{2} \epsilon_w\left[1-\tanh\left(\frac{r-r_w}{\alpha}\right)\right]   \quad \text{for} \quad r&lt;r_{c}
+	U_{wp} (r)=-\frac{1}{2} \epsilon\left[1-\tanh\left(\frac{r-r_w}{\alpha}\right)\right]     r&lt;r_{c}
 \]</div>
 <p>where <span class="math notranslate nohighlight">\(r_{c}\)</span> is the cutoff.</p>
 <p>The following coefficients must be defined for each pair of atoms types via the pair_coeff command as in the example above, or in the data file or restart files read by the read_data or read_restart commands:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\epsilon_w\)</span> (energy units)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\epsilon\)</span> (energy units)</p></li>
 <li><p><span class="math notranslate nohighlight">\(r_{w}\)</span> (distance units)</p></li>
-<li><p><span class="math notranslate nohighlight">\(\alpha\)</span> (distance units)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span></p></li>
 <li><p><span class="math notranslate nohighlight">\(r_{c}\)</span> (distance units)</p></li>
 </ul>
-<p>This continuous square-well potential can be used to calculate liquid-crystal interfacial free energies through the mold integration (Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id1">1</a>) or the lattice mold techniques (Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2016lattice" id="id2">2</a> and Sanchez-Burgos <em>et al.</em><a class="footnote-reference brackets" href="#footcite-sanchez2022homogeneous" id="id3">3</a>). Also, it can be used to simulate attractive patches distributed along the surface of a sphere, known as “patchy particles” (Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2019breakdown" id="id4">4</a>).</p>
+<p>This continuous square-well potential can be used to calculate liquid-crystal interfacial energies through the mold integration (Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id1">1</a>) or the lattice mold techniques (Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2016lattice" id="id2">2</a> and Sanchez-Burgos <em>et al.</em><a class="footnote-reference brackets" href="#footcite-sanchez2022homogeneous" id="id3">3</a>). Also, it can simulate attractive patches distributed along the surface of a sphere, known as “patchy particles” (Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2019breakdown" id="id4">4</a>).</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
-<p>The value of <span class="math notranslate nohighlight">\(\alpha\)</span> cannot be too small to avoid strong forces acting on the particles trapped inside the wells.
-If small values are needed (steep potential), the simulation timestep must be reduced (Sanchez-Burgos and Espinosa<a class="footnote-reference brackets" href="#footcite-sanchez2023direct" id="id5">5</a>).</p>
+<p>The value of <span class="math notranslate nohighlight">\(\alpha\)</span> cannot be too large to avoid strong forces acting on the particles trapped inside the wells.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -210,8 +209,8 @@ If small values are needed (steep potential), the simulation timestep must be re
 </div>
 <div class="section" id="restrictions">
 <h2>Restrictions<a class="headerlink" href="#restrictions" title="Permalink to this headline">¶</a></h2>
-<p>This pair style can only be used if LAMMPS was built with the <a class="reference external" href="https://github.com/AndresRTejedor/Mold">Mold package</a>. See the Build package doc page for more info.</p>
-<div class="docutils container" id="id6">
+<p>This pair style can only be used if LAMMPS was built with the EXTRA-MOLD package. See the Build package doc page for more info.</p>
+<div class="docutils container" id="id5">
 <dl class="footnote brackets">
 <dt class="label" id="footcite-espinosa2014mold"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
 <dd><p>JR Espinosa, C Vega, and E Sanz. The mold integration method for the calculation of the crystal-fluid interfacial free energy from simulations. <em>The Journal of chemical physics</em>, 141(13):134709, 2014.</p>
@@ -224,9 +223,6 @@ If small values are needed (steep potential), the simulation timestep must be re
 </dd>
 <dt class="label" id="footcite-espinosa2019breakdown"><span class="brackets"><a class="fn-backref" href="#id4">4</a></span></dt>
 <dd><p>Jorge R Espinosa, Adiran Garaizar, Carlos Vega, Daan Frenkel, and Rosana Collepardo-Guevara. Breakdown of the law of rectilinear diameter and related surprises in the liquid-vapor coexistence in systems of patchy particles. <em>The Journal of chemical physics</em>, 150(22):224510, 2019.</p>
-</dd>
-<dt class="label" id="footcite-sanchez2023direct"><span class="brackets"><a class="fn-backref" href="#id5">5</a></span></dt>
-<dd><p>Ignacio Sanchez-Burgos and Jorge R Espinosa. Direct calculation of the interfacial free energy between nacl crystal and its aqueous solution at the solubility limit. <em>Physical Review Letters</em>, 130(11):118001, 2023.</p>
 </dd>
 </dl>
 </div>
@@ -255,7 +251,7 @@ If small values are needed (steep potential), the simulation timestep must be re
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2023, Andres R. Tejedor, Ignacio Sanchez-Burgos, Felipe J. Blas, Eduardo Sanz, Carlos Vega, Nicodemo Di Pasquale, Jorge Ramírez, and Jorge R. Espinosa
+        &copy; Copyright 2023, Andres R. Tejedor, Jorge Ramírez, Nicodemo Di Pasquale, and Jorge R. Espinosa
 
     </p>
   </div>

@@ -1,9 +1,8 @@
 # Mold
 
-Lammps Package for Mold calculations MOLD
+Lammps Package for Mold calculations USER-MOLD
 
-The package contains a square-like well potential between fluid and frozen mold, 
-and examples to calculate the Surface Free Energy using Mold Integration and the Nucleation Rate using Lattice Mold.
+The package contains the square-like well potential and examples to calculate the Surface Free Energy using Mold Integration and the Nucleation Rate using Lattice Mold.
 
 
 ```{eval-rst}
