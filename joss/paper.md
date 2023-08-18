@@ -1,10 +1,11 @@
 ---
-title: 'Cleaving: a LAMMPS package to compute surface free energies'
+title: 'Mold: a LAMMPS package to compute surface free energies'
 tags:
   - C++
   - LAMMPS
   - Molecular simulations
   - Phase Transitions
+  - Nucleation theory
 authors:
   - name: Andres R. Tejedor^[Corresponding author]
     orcid:  0000-0001-5676-8527
