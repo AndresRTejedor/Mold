@@ -1,19 +1,20 @@
 kT='8'
+path='../../'
 while read s lista; do
         echo kT${kT}_seed${s}
-        cd ${kT}kT_${s}seed/order
-        cp  ~/rds/rds-t2-cs092/andres/5_Mold_integration/set_up/Simulations/Radius_sweep/Results/order_parameter/a.out .
-        cp  ~/rds/rds-t2-cs092/andres/5_Mold_integration/set_up/Simulations/Radius_sweep/Results/order_parameter/prepara-todas-WITH-BOX.sh .
-        cp  ~/rds/rds-t2-cs092/andres/5_Mold_integration/set_up/Simulations/Radius_sweep/Results/order_parameter/* .
+        cd ${kT}kT_${s}seed/
+        cp  ${path}a.out .
+        cp  ${path}prepara-todas-WITH-BOX.sh .
+        cp  ${path}* .
         sh prepara-todas-WITH-BOX.sh > kk2supreme
 	echo run_app
 	./a.out > kkpi
 	sh dobi.sh
-	cd ../../
+	cd ../
 done <lista
 while read s lista; do
-        cd ${kT}kT_${s}seed/order
+        cd ${kT}kT_${s}seed/
 	sh dobi.sh
-	cp nbig.dat ../../results/nbig_${s}seed.dat 
-	cd ../../
+	cp nbig.dat nbig_${s}seed.dat 
+	cd ../
 done <lista

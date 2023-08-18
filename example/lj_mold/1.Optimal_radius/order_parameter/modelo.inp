@@ -1,0 +1,33 @@
+1.0001    !sigma de oxigeno e hidrógeno (amstrons)
+
+0.      !epsilon de O y H (K*atomo)
+
+0.    !carga de O y H  (electrones)
+
+2.         de cut off Angs 
+
+0.                   !alfa 
+
+1                 !ntipmol
+
+1960  1 1
+
+1              !hay un oxígeno tipo 1 y dos hidrógenos tipo 2
+
+0.
+0.                !coordenadas del oxígeno (ams)
+0.
+ 
+1.             !core duro
+ 
+0. 1. 0. 0. 0. 0. 0.  
+0. 1. 0. 0. 0. 0. 0.  
+0. 1. 0. 0. 0. 0. 0.  
+0. 1. 0. 0. 0. 0. 0.  
+0. 1. 0. 0. 0. 0. 0.  
+0. 1. 0. 0. 0. 0. 0.  
+0. 1. 0. 0. 0. 0. 0.  
+0. 1. 0. 0. 0. 0. 0.  
+0. 1. 0. 0. 0. 0. 0.  
+0. 1. 0. 0. 0. 0. 0.  
+0. 1. 0. 0. 0. 0. 1.  
