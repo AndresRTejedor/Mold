@@ -1,5 +1,5 @@
 ---
-title: 'Mold: a LAMMPS package to compute surface free energies'
+title: 'Mold: the square-like potential in a LAMMPS package to compute interfacial free energies and nucleation rates'
 tags:
   - C++
   - LAMMPS
