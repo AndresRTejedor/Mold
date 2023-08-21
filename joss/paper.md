@@ -49,15 +49,13 @@ affiliations:
    index: 6
  - name: Department of Chemical Engineering, Universidad Politécnica de Madrid, Spain
    index: 7
-date: 06 Apr 2023
+date: 01 Sep 2023
 bibliography: paper.bib
 ---
 
 # Summary
 
-The numerical calculation of the properties of the interface between different materials or different phases of the same material has always been an important problem due to the insight it can bring into understanding the mechanisms underlying various interfacial phenomena, but also because of the challenges of measuring such properties experimentally.
-
-While the free energy of liquid-liquid and liquid-vapour interfaces is directly linked to the surface tension, which can be calculated from the anisotropy of the pressure tensor at the interface, the same approach cannot be used when a solid phase is present, since the interface introduces residual stress in the nearby solid which, in turn, changes the interfacial tension relative to the excess free energy [@DiPasquale2020shuttleworth]. As a result, a direct calculation of the free energy change during the formation of an interface from two separate bulk phases is required. While free energy calculation methods in general, and Thermodynamic Integration (TI) in particular, have been widely available in various molecular simulation packages, their use in conjunction with the complex geometry of an interfacial system is quite challenging and therefore much less common. Here we present a package for the calculation of the Interfacial Free Energy (IFE) of solid-vapour, solid-liquid and solid-solid interfaces for the widely used MD package LAMMPS (Large-Scale Atomic/Molecular Massively Parallel Simulator)[@Thompson2022].
+The precise knowledge of the structure and thermodynamical properties of interfaces between two coexisting phases is crucial for many physical phenomena. In particular, the coexistence of solid with other phase raises lot of attention due to the presence in many processes such as freezing, nucleation, or confinement. In that respect, a direct coexistence system with a solid presents key differences that impedes using some methods to calculate interfacial free energy that are valid for liquid-liquid or liquid-vapour interfaces. Additionally, the liquid-to-solid phase transition is a dynamical process that relies on a detailed knowledge of the crystal structure of the solid. The thermodynamical methods that we present here to tackle both problems use the presence of static well potentials with a square-like profile. On the one hand, the mold integration [@espinosa2014mold], to calculate interfacial free energies of liquid-solid or vapour-solid interfaces. On the other hand, the lattice mold method, that allows effective calculation of nucleation rates [@espinosa2016lattice]. The package we introduce here implements the square-like potential for the usage of such methods through the widely employed MD package LAMMPS (Large-Scale Atomic/Molecular Massively Parallel Simulator)[@Thompson2022].
 
 # Statement of need
 
