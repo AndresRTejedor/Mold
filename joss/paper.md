@@ -59,6 +59,9 @@ The precise knowledge of the structure and thermodynamical properties of interfa
 
 # Statement of need
 
+Phase transition and coexistence of phases is present in many physical as well as industrial processes such as freezing, nucleation, casting or welding. A profound knowledge of the underlying thermodynamics is fundamental to understand and control such phenomena. In particular, 
+
+
 Interest in the study of the properties of interfaces with solid phases arises from the fact that many physical phenomena (*e.g.*, freezing, nucleation, confinement) and technological processes (*e.g.*, casting, welding, formulation) involving solid phases are governed by the structure and thermodynamics properties of the interface between a solid and other phases.  Even though the definitions of various interfacial properties have been established a long time ago, starting with the works by Willard Gibbs [@GibbsCollectedWorks], their exact determination in experiments remains very difficult due to the fact that the interface is surrounded by dense bulk phases, as well as to the need for a strict control of the experimental conditions required for precise measurements (*e.g.*, ensuring constant irregularity or porosity in all the samples on which the measurement is carried out). 
 
 Given these difficulties, *in silico* experiments offer a viable way to obtain interfacial properties directly from their definitions in terms of intermolecular interactions, giving access to complete structural and thermodynamic characterisation of the interface.  One of the fundamental thermodynamic properties of the interface is its excess free energy, which is defined as the amount of reversible work required to create a unit area of the interface between two bulk phases at coexistence conditions. Several indirect methods for the determination of this quantity exist, thanks to its link with the rate of nucleation (via, *e.g.*, classical nucleation theory), with contact angles between three or more phases (via, *e.g.*, the Young equation), or with capillary fluctuations of a diffuse interface. However, the accuracy of these methods is limited by the approximations inherent to the relevant theories.  
@@ -70,7 +73,7 @@ Direct determination of the IFE from the reversible work of creating an interfac
 3. rearrange the boundary conditions to merge the systems while maintaining the cleaving potentials;
 4. remove the cleaving potentials. 
 
-![The thermodynamic path used to compute the interfacial free energy between phases $\alpha$ and $\beta$ with the cleaving method\label{fig:cleaving}](Fig/joss.png){ width=30% }
+![The thermodynamic path used to compute the interfacial free energy between phases $\alpha$ and $\beta$ with the cleaving method\label{fig:cleaving}](figs/joss.png){ width=30% }
 
 A sketch of the cleaving path to obtain the IFE between two generic phases $\alpha$ and $\beta$ is shown in Fig.\autoref{fig:example}. The reversible work in each step can be determined by different free energy computation methods, but those based on Thermodynamic Integration are the most straightfoward and provide accurate and direct results. With TI methods the free energy difference between two thermodynamic states connected by a transformation path is calculated by integrating the ensemble average of some configuration dependent function (*e.g.*, the potential energy) with respect to a parameter defining the path from the initial to the final thermodynamic state.
 
@@ -78,7 +81,7 @@ To date, the cleaving method has been used to calculate the solid-liquid IFE in 
 
 # Functionality
 
-CLEAVING is a LAMMPS package for the calculation of IFE using Thermodynamic Integration. The package includes several new additional functions written in the style suited to be directly patched into LAMMPS, comprising interactions between atoms needed to run the MD simulation with the cleaving model and some auxiliary functionalities (in LAMMPS terms, new "fix" and "compute") needed to perform the operations required to carry out the different steps of the calculation. 
+MOLD is a LAMMPS package for the calculation of IFE using Thermodynamic Integration. The package includes several new additional functions written in the style suited to be directly patched into LAMMPS, comprising interactions between atoms needed to run the MD simulation with the cleaving model and some auxiliary functionalities (in LAMMPS terms, new "fix" and "compute") needed to perform the operations required to carry out the different steps of the calculation. 
 
 The version of the code we present here is hosted on GitHub, where a detailed instruction manual is complemented by some step-by-step examples reproducing some of the published results on the topic. 
 The package includes new definitions of pair potentials not included in LAMMPS, as the Broughton-Gilmer modified Lennard-Jones potential [@Broughton1983] and modifications of some of the already existing pair_styles in LAMMPS. In particular, we included a modified version of the `lj/cut` and `coul/dsf` potentials. These modifications allow to execute the third step of the cleaving method, where the interactions between the phases are switched on and off. The difficulty in this case is to keep track of the interactions between atoms involved in the switching, since the work performed during this particular step depends on them. Moreover, these new `pair_style`s support different scaling (*i.e.*, different powers of the coupling parameter $\lambda$, see *e.g.*, [@DiPasquale2022cleaving]).
