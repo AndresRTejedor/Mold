@@ -7,27 +7,48 @@ tags:
   - Phase Transitions
   - Nucleation theory
 authors:
-  - name: Andres R. Tejedor^[Corresponding author]
-    orcid:  0000-0001-5676-8527
-    affiliation: 1
-  - name: Nicodemo Di Pascuale
-    orcid:  0000-0001-5676-8527
-    affiliation: 1
+  - name: Andres R. Tejedor
+    orcid:  0000-0002-9437-6169
+    affiliation: "1,2"
+  - name: Ignacio Sanchez-Burgos
+    orcid: 0000-0002-1160-3945
+    affiliation: 3
+  - name: Eduardo Sanz
+    orcid: 0000-0001-6474-5835
+    affiliation: 2
+  - name: Carlos Vega
+    orcid: 0000-0002-2417-9645
+    affiliation: 2
+  - name: Felipe J. Blas
+    orcid: 0000-0001-9030-040X
+    affiliation: 4
   - name: Ruslan Davidchack
     orcid: 0000-0001-9418-5322
-    affiliation: 4
-  - name: Lorenzo Rovigatti
-    orcid: 0000-0001-5017-2829
-    affiliation: "2,3"
+    affiliation: 5
+  - name: Nicodemo Di Pascuale
+    orcid:  0000-0001-5676-8527
+    affiliation: 6
+  - name: Jorge Ramirez^[Corresponding author]
+    orcid: 0000-0002-8946-3786
+    affiliation: 7
+  - name: Jorge R. Espinosa^[Corresponding author]
+    orcid: 0000-0001-9530-2658
+    affiliation: 2
 affiliations:
- - name: Department of Chemical Engineering, Brunel University London, United Kingdom
+ - name: Yusuf Hamied Department of Chemistry, University of Cambridge, United Kingdom
    index: 1
- - name: Department of Physics, Sapienza University of Rome, Italy
+ - name: Departamento de Química Física, Facultad de Ciencias Químicas, Universidad Complutense de Madrid, Spain
    index: 2
- - name: CNR-ISC UoS Sapienza, Rome, Italy
+ - name: Cavendish Laboratory, Department of Physics, University of Cambridge, United Kingdom
    index: 3
- - name: Department of Mathematics, University of Leicester, United Kingdom
+ - name: Laboratorio de Simulacion Molecular y Quimica Computacional, CIQSO-Centro de Investigacion en Quimica Sostenible and Departamento de Ciencias Integradas, Universidad de Huelva, Spain
    index: 4
+ - name: Department of Mathematics, University of Leicester, United Kingdom
+   index: 5
+ - name: Department of Chemical Engineering, Brunel University London, United Kingdom
+   index: 6
+ - name: Department of Chemical Engineering, Universidad Politécnica de Madrid, Spain
+   index: 7
 date: 06 Apr 2023
 bibliography: paper.bib
 ---
