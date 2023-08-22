@@ -94,6 +94,6 @@ The pair potential presented in this work can be utilized not only on the two me
 
 # Acknowledgements
 
-We acknowledge support from the CECAM and CCP5 through the CECAM/CCP5 sandpit grant (2022) awarded to Nicodemo Di Pasquale and Lorenzo Rovigatti.
+We acknowledge stuff.
 
 # References
