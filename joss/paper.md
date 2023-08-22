@@ -59,7 +59,7 @@ The precise knowledge of the structure and thermodynamical properties of interfa
 
 # Statement of need
 
-Phase transition and coexistence of phases is present in many physical as well as industrial processes such as freezing, nucleation, casting or welding. A profound knowledge of the underlying thermodynamics is fundamental to understand and control such phenomena. In particular, the interfacial free energy is crucial to characterize the stability of a coexistence, understood as the amount of reversible work that allows creating a unit area of the interface between the two coexisting phases. 
+Phase transition and coexistence of phases is present in many physical as well as industrial processes such as freezing, nucleation, casting or welding. A profound knowledge of the underlying thermodynamics is fundamental to understand and manipulate such phenomena. In particular, the interfacial free energy is crucial to characterize the stability of a coexistence, understood as the amount of reversible work that allows creating a unit area of the interface between the two coexisting phases. 
 
 
 Several indirect methods for the determination of this quantity exist, thanks to its link with the rate of nucleation (via, *e.g.*, classical nucleation theory), with contact angles between three or more phases (via, *e.g.*, the Young equation), or with capillary fluctuations of a diffuse interface. However, the accuracy of these methods is limited by the approximations inherent to the relevant theories.  
