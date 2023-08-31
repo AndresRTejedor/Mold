@@ -7,8 +7,6 @@ This package is presented as part of the consortium Simulation Interfacial Free 
   - [USER-CLEAVING](https://github.com/demonico85/cleaving/tree/master)
   - [Einstein IFE](https://github.com/syeandel/Einstein_IFE)
 
-![SIFT group](./docs/figs/final_logo.png)
-
 ## Documentation
 
 The documentation can be browsed online at [this link](https://andresrtejedor.github.io/Mold/) The documentation can also be generated locally through the following procedure, which requires a working python3 installation and an active internet connection.
