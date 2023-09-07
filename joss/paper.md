@@ -25,7 +25,7 @@ authors:
   - name: Ruslan Davidchack
     orcid: 0000-0001-9418-5322
     affiliation: 5
-  - name: Nicodemo Di Pascuale
+  - name: Nicodemo Di Pasquale
     orcid:  0000-0001-5676-8527
     affiliation: 6
   - name: Jorge Ramirez^[Corresponding author]
