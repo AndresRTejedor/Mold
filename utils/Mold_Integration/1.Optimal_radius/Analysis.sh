@@ -4,9 +4,9 @@ while read s lista; do
         echo kT${kT}_seed${s}
         cd ${kT}kT_${s}seed/
         cp  ${path}a.out .
-        cp  ${path}prepara-todas-WITH-BOX.sh .
+        cp  ${path}prepare-all-WITH-BOX.sh .
         cp  ${path}* .
-        sh prepara-todas-WITH-BOX.sh > kk2supreme
+        sh prepare-all-WITH-BOX.sh > kk2supreme
 	echo run_app
 	./a.out > kkpi
 	sh dobi.sh
