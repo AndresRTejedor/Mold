@@ -83,12 +83,12 @@ kT='8'
 dump=5000
 path='../../'
 ```
-- T: temperature of the system
-- P: pressure of the system
-- rw: well radius
-- steps: number of steps 
-- kT: well depth in $k_BT$ units (8 $k_B T$ for this step) 
-- path: path to `lj_mold.in` and `mold_100.lmp`. Absolute path is highly recommended.
+- `T`: temperature of the system
+- `Pv: pressure of the system
+- `rw`: well radius
+- `steps`: number of steps 
+- `kT`: well depth in $k_BT$ units (8 $k_B T$ for this step) 
+- `path`: path to `lj_mold.in` and `mold_100.lmp`. Absolute path is highly recommended.
 Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but LAMMPS.job is not provided as it depends on the user machine. 
 
 
