@@ -1,20 +1,22 @@
 kT='8'
 path='../../'
-while read s lista; do
+while read s list; do
         echo kT${kT}_seed${s}
         cd ${kT}kT_${s}seed/
         cp  ${path}a.out .
-        cp  ${path}prepare-all-WITH-BOX.sh .
-        cp  ${path}* .
+        cp  ${path}*.sh .
+        cp  ${path}*inc .
+        cp  ${path}*inp .
         sh prepare-all-WITH-BOX.sh > kk2supreme
-	echo run_app
 	./a.out > kkpi
-	sh dobi.sh
 	cd ../
-done <lista
-while read s lista; do
+done <list
+while read s list; do
         cd ${kT}kT_${s}seed/
 	sh dobi.sh
-	cp nbig.dat nbig_${s}seed.dat 
+	cp nbig.dat nbig_${s}seed.data
+	rm *dat
+	rm fort*
+	rm *xyz
 	cd ../
-done <lista
+done <list
