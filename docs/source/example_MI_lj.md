@@ -24,7 +24,7 @@ The following figure shows a 2D projection of the configuration file:
 The calculation of the optimal well radius for extrapolation of the interfacial free energy includes the following steps:
 
 1. Create a directory sweeping different radii ($r_w=0.27,\ 0.28,\ \ldots,0.33,0.34\sigma$).
-2. For each radius one needs to run independent trajectories with different initial velocities. Create 10 directories for each radius directory (1 for each trajectory). This is included in the bash file (see dot 5).
+2. For each radius one needs to run independent trajectories with different initial velocities. Create 10 directories for each radius directory (1 for each trajectory). This is included in the bash file (see bullet point 5).
 3. Copy the LAMMPS script file (`lj_mold.in`) in each subdirectory along with the configuration file (`mold_100.lmp`).
 4. The LAMMPS script contains several variables that are important to know to properly perform the simulations:
 ```
@@ -83,16 +83,16 @@ kT='8'
 dump=5000
 path='../../'
 ```
--T: temperature of the system
--P: pressure of the system
--rw: well radius
--steps: number of steps (the timestep can be changed manually in the LAMMPS script)
--kT: well depth in $k_BT$ units
--path: path to `lj_mold.in` and `mold_100.lmp`. Absolute path is highly recommended.
+- T: temperature of the system
+- P: pressure of the system
+- rw: well radius
+- steps: number of steps 
+- kT: well depth in $k_BT$ units (8 $k_B T$ for this step) 
+- path: path to `lj_mold.in` and `mold_100.lmp`. Absolute path is highly recommended.
 Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but LAMMPS.job is not provided as it depends on the user machine. 
 
 
-6. The analysis of this step consists in determining if there is induction time, *i.e.* further energy is required for the formation of the interface (see {footcite:t}`espinosa2014mold`). 
+6. The analysis for this step consists in determining if there is induction time, *i.e.* further energy is required for the formation of the interface (see {footcite:t}`espinosa2014mold`). 
 To do so, we recommend analyzing the resulting trajectory using the order parameter ${\bar{q}}_6$ ({footcite:t}`lechner2008accurate`) to determine the number of crystal-like particles in the slab. 
 The recommended values for such analysis is a threshold of ${\bar{q}}_6=0.34$, and the particles are considered neighbours if they are at a distance of $1.35\sigma$ or less from the central molecule. This distance is also used to identify molecules of solid that belong to the same solid cluster.
 As a result, one obtains different curves for the order parameter as a function of time for the different well radii:

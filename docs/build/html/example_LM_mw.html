@@ -1,0 +1,423 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Lattice mold calculations of mW Ice Ih nucleation rate at T=220K &mdash; SIFT  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+        <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"processClass": "tex2jax_process|mathjax_process|math|output_area"}})</script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Mold integration for 100 plane of the fcc crystal for the Lennard-Jones potential" href="example_MI_lj.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> SIFT
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <p class="caption"><span class="caption-text">Table of Contents</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="lammps.html">LAMMPS commands</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="example.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="example_MI_lj.html">Mold integration for 100 plane of the fcc crystal for the Lennard-Jones potential</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Lattice mold calculations of mW Ice Ih nucleation rate at T=220K</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#well-occupancy-curves">Well occupancy curves</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#average-nucleation-time">Average nucleation time</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#extrapolation-of-the-nucleation-rate">Extrapolation of the nucleation rate</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">SIFT</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="example.html">Examples</a> &raquo;</li>
+        
+      <li>Lattice mold calculations of mW Ice Ih nucleation rate at T=220K</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/example_LM_mw.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="tex2jax_ignore mathjax_ignore section" id="lattice-mold-calculations-of-mw-ice-ih-nucleation-rate-at-t-220k">
+<h1>Lattice mold calculations of mW Ice Ih nucleation rate at T=220K<a class="headerlink" href="#lattice-mold-calculations-of-mw-ice-ih-nucleation-rate-at-t-220k" title="Permalink to this headline">¶</a></h1>
+<p>Here we provide a detailed set of instructions to calculate the nucleation rate of ice Ih with the mW coarse-grained water model at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span> using the Lattice Mold technique (see Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2016lattice" id="id1">1</a> and Sanchez-Burgos <em>et al.</em><a class="footnote-reference brackets" href="#footcite-sanchez2022homogeneous" id="id2">2</a>) that requires the <code class="docutils literal notranslate"><span class="pre">square/well</span> <span class="pre">pair_style</span></code> available in LAMMPS.</p>
+<p>The data file (<code class="docutils literal notranslate"><span class="pre">39mold.lmp</span></code>), the potential file for mW (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>) and LAMMPS script (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) are provided in the directory <code class="docutils literal notranslate"><span class="pre">/examples/mw_mold/</span></code> (see <a class="reference external" href="https://github.com/AndresRTejedor/Mold/tree/main/example/mw_mold">here</a>).
+In this worked example we will navigate through these files to explain them in detail.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The mW pair style is part of the MANYBODY package. See the <a class="reference external" href="https://docs.lammps.org/Build_package.html">Build package</a> page for more info.</p>
+</div>
+<p>The lattice mold technique consists of 5 different steps. All the steps can be found in Sanchez-Burgos <em>et al.</em><a class="footnote-reference brackets" href="#footcite-sanchez2022homogeneous" id="id3">2</a>, and they can be summarized as:</p>
+<ol class="arabic simple">
+<li><p>Create an appropriate spherical mold with the perfect structure of the crystal Ih ice and embed it in the liquid at the equilibrium density at the conditions of interest.</p></li>
+<li><p>Choice of the optimal well radius <span class="math notranslate nohighlight">\(r_{w,0}\)</span> for obtaining the nucleation rate, <em>i.e.</em> the limit for which two water molecules fit inside the same well.</p></li>
+<li><p>Calculate the <a class="reference internal" href="#well-occupancy-curves"><span class="std std-doc">well occupancy curves</span></a> for several radii below the optimal one.</p></li>
+<li><p>Calculate the <a class="reference internal" href="#average-nucleation-time"><span class="std std-doc">average nucleation time</span></a> for each well radius to overcome the nucleation free energy barrier.</p></li>
+<li><p><a class="reference internal" href="#extrapolation-of-the-nucleation-rate"><span class="std std-doc">Extrapolation of the nucleation rate</span></a> to the optimal radius <span class="math notranslate nohighlight">\(r_{w,0}\)</span>.</p></li>
+</ol>
+<p>The configuration (step 1) can be easily created using the bulk liquid and crystal configurations at the corresponding <span class="math notranslate nohighlight">\((p,T)\)</span> conditions for the desired ice phase (Ih in this example).
+Please note that the perfect crystal structure must be used to generate the mold potential well using the equilibrium density at the given conditions.
+Here, we provide the system data file of a mold made of 39 wells at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span> (see the figure below where blue particles represent water molecules and gray particles the mold wells).
+The number of wells in the mold is chosen so that the system displays induction time to permit reversible thermodynamical integration of the precritical cluster, but still it is able to overcome the free energy nucleation barrier and eventually crystallize in a reasonable computational time.</p>
+<p><img alt="Step-1" src="_images/Fig1.png" /></p>
+<p>The optimal radius is calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of <span class="math notranslate nohighlight">\(8k_BT\)</span>.
+The largest value of the radius at which the ocuupancy is still below <span class="math notranslate nohighlight">\(100\%\)</span> at a depth of <span class="math notranslate nohighlight">\(8k_BT\)</span> is considered to be the optimal radius.
+For well radius larger than the optimal one, two or more particles can enter in a well. Please note that for the lattice mold technique a extrapolation is performed to a larger value of the radius than that used in the calculation (in contrast with the <a class="reference external" href="https://andresrtejedor.github.io/Mold/example_MI_lj.html#">mold integration method</a>)
+For the current example we extrapolate to <span class="math notranslate nohighlight">\(r_{w,0}=1.32Å\)</span> (see figure below, red vertical line).</p>
+<p><img alt="Step-2" src="_images/Fig2.png" /></p>
+<div class="section" id="well-occupancy-curves">
+<h2>Well occupancy curves<a class="headerlink" href="#well-occupancy-curves" title="Permalink to this headline">¶</a></h2>
+<p>The calculation of the well occupancy for different well radii under the optimal radius consists of the following steps:</p>
+<ol class="arabic simple">
+<li><p>Create the directory for sweeping different radii (<span class="math notranslate nohighlight">\(r_w=0.85,0.99,1.12Å\)</span>), and within each directory, create a directory for each well depth considered for the calculation.
+This is a truncated range of values of <span class="math notranslate nohighlight">\(\epsilon\)</span> in <span class="math notranslate nohighlight">\(k_{B}T\)</span>:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.00001</span>
+<span class="mf">0.10</span>
+<span class="mf">0.20</span>
+<span class="o">...</span>
+<span class="mf">2.4</span>
+<span class="mf">2.5</span>
+<span class="mf">3.5</span>
+<span class="mf">5.0</span>
+<span class="mf">8.0</span>
+</pre></div>
+</div>
+<p>Please note that the grid of well depths included in the calculation may need to be increased to capture the transition of well filling with more accuracy. Also, for different well radii the grid may change.</p>
+<ol class="arabic simple" start="2">
+<li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">39mold.lmp</span></code>) and the mW potential file (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>).</p></li>
+<li><p>The LAMMPS script contains several variables that are important to know to properly perform the simulations:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># ---------------------------- Define variables --------------------------------
+variable  nts          equal  99000000   # production number of time-steps
+variable  T            equal  220.0      # Temperature of the system in K
+variable  nkT          equal  8          # Well depth in kT
+variable  ts           equal  1          # length of the ts (in fs units)
+variable  width        equal  0.25       # (reduced LJ) width of the square well potential
+variable  alpha        equal  0.017025   # Parameter for the slope of the square well potential (0.005*3.405)
+variable  seed         equal  23782      # velocity seed
+variable  NtsTdamp     equal  100        # Number of ts to damp temperature
+variable  thermoSteps  equal  1000       # Number of ts to write properties on screen
+variable  restartSteps equal  1000000    # Number of ts before write restart file
+variable  dumpSteps    equal  250000     # Number of ts before write dump file
+
+
+# --------------------- Derivate variables -------------------------------------
+variable D           equal ${nkT}*8.314*$T/4184    # Depth of well (real units)
+variable rw          equal ${width}*3.405          # Width of the well (real units)
+variable cutoff_well equal  ${rw}*4.0              # Well potential cutoff (real units)
+
+
+####   Define Mold   ####
+read_data      39mold.lmp  # contains the positions and masses and other information
+group freeze type 2 
+group unfrozen subtract all freeze
+
+</pre></div>
+</div>
+<p>For this step, the typical run must be approximately 5 ns (with <code class="docutils literal notranslate"><span class="pre">dt=1</span> <span class="pre">fs</span></code>), and that can be controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code> which must be set to <code class="docutils literal notranslate"><span class="pre">nts=5000000</span></code>.
+Regarding the interaction potential, the parameter <code class="docutils literal notranslate"><span class="pre">width</span></code> stands for the well radius so this must be changed for the different studied radii during this step <code class="docutils literal notranslate"><span class="pre">width=0.25,0.29,0.33</span></code> in reduced units (please note that for using reduced units of distance we employ <span class="math notranslate nohighlight">\(\sigma=3.405\)</span> which does not necessarily correspond to the <span class="math notranslate nohighlight">\(\sigma\)</span> in the water model).
+The parameter <code class="docutils literal notranslate"><span class="pre">nkT</span></code> gives the well depth in <span class="math notranslate nohighlight">\(k_BT\)</span>  and must sweep the values presented above.
+Regarding the velocity seed, the variable <code class="docutils literal notranslate"><span class="pre">seed</span></code> controls the initial velocity seed.
+Also, there are some variables that might be interesting to know:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">thermoSteps</span></code> gives the number of timesteps to print the thermos.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">restartSteps</span></code> indicates the frequency of saving the restart files.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dumpSteps</span></code> is the number of steps to save the trajectory in the dump file and for this step can be set above 200000 as it is not required in this step.</p></li>
+</ul>
+<ol class="arabic simple" start="5">
+<li><p>Launch the simulation for each radius and well depth.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves.
+We need to get the average number of well occupancy for each value of <code class="docutils literal notranslate"><span class="pre">nkT</span></code> so that we print the potential contribution due to mW-well interaction (<code class="docutils literal notranslate"><span class="pre">c_1</span></code>, column 8):</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># ------------- Output thermo information and averaged variables ---------------
+compute 1 all pair square/well
+compute 2 all pair sw
+compute mytemp unfrozen temp
+thermo_style   custom step c_mytemp pe etotal press vol enthalpy c_1 c_2 spcpu  # energy and thermo properties printed to output
+thermo_modify  flush yes  # flush the buffer and write the output in real time
+thermo         ${thermoSteps}      # how often (in steps) will write the properties of thermo_style to the output
+</pre></div>
+</div>
+<p>Thus, the calculation of the mold occupancy for each well depth can be estimated by taking the average over the production (after equilibration) simulation time through this equation:</p>
+<div class="math notranslate nohighlight">
+\[\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)\]</div>
+<p>Please note that the temperature must be recalculated to consider only the water molecules in the simulation box, since the LAMMPS <code class="docutils literal notranslate"><span class="pre">thermo</span></code> considers all the particles to evaluate the system temperature. This only applies for calculations in real units.</p>
+<ol class="arabic simple" start="7">
+<li><p>Plot the different curves of mold occupancy as a function of the well depth for the different radii. The result should look similar to the figure below</p></li>
+</ol>
+<p><img alt="Step-3" src="_images/Fig3.png" /></p>
+<p>The free energy difference between the liquid and the liquid with the precritical cluster is calculated as</p>
+<div class="math notranslate nohighlight">
+\[\Delta G^*=N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon_{sw}\, \langle N_{sw}(\epsilon_{sw})\rangle,\]</div>
+<p>where <span class="math notranslate nohighlight">\(N_{w}\)</span> is the total number of wells in the mold (<span class="math notranslate nohighlight">\(39\)</span>), <span class="math notranslate nohighlight">\(\epsilon_{max}\)</span> is the maximum well depth to evaluate this integral (<span class="math notranslate nohighlight">\(8k_BT\)</span>),
+<span class="math notranslate nohighlight">\(\langle N_{sw}(\epsilon_{sw})\rangle\)</span> is the average number of mold sites occupied by liquid molecules as a function of <span class="math notranslate nohighlight">\(\epsilon_{sw}\)</span>,
+and <span class="math notranslate nohighlight">\(\epsilon_0\)</span> is the minimum value of epsilon considered in the calculation.
+The final calculation of the free energy difference must include the rotational and translational degrees of freedom such that</p>
+<div class="math notranslate nohighlight">
+\[\Delta G/k_B T=\Delta G^*/k_B T + \ln(\rho_f V_w)- \ln(8\pi^2),\]</div>
+<p>where <span class="math notranslate nohighlight">\(\rho_f\)</span> is the fluid number density, and <span class="math notranslate nohighlight">\(V_w\)</span> is the volume of a single well.
+The free energy difference is used to calculate the probability per unit volume of finding a crystal cluster of the size of the one induced by the mold as dictated by the following equation:</p>
+<div class="math notranslate nohighlight">
+\[P=\rho_f \exp(-\Delta G/(k_B T)) .\]</div>
+</div>
+<div class="section" id="average-nucleation-time">
+<h2>Average nucleation time<a class="headerlink" href="#average-nucleation-time" title="Permalink to this headline">¶</a></h2>
+<p>To estimate the average nucleation time, one must follow these steps:</p>
+<ol class="arabic simple">
+<li><p>Create the directory for sweeping different radii (<span class="math notranslate nohighlight">\(r_w=0.85,0.99,1.12Å\)</span>).</p></li>
+<li><p>For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.</p></li>
+<li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">39mold.lmp</span></code>) and the mW potential file (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>).</p></li>
+<li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step and this particular system, the typical run must be of the order of <span class="math notranslate nohighlight">\(100ns\)</span> (with <code class="docutils literal notranslate"><span class="pre">dt=1fs</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code> which must be set to <code class="docutils literal notranslate"><span class="pre">nts=10000000</span></code>.
+The well depth <code class="docutils literal notranslate"><span class="pre">nkT</span></code> must be set to 8. Importantly, for this step the <code class="docutils literal notranslate"><span class="pre">seed</span></code> variable must be changed for every independent run.</p></li>
+<li><p>Launch the simulation for each radius and independent velocity seed.</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">thermos_style</span></code> provides the potential energy (<code class="docutils literal notranslate"><span class="pre">pe</span></code>) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example.
+Plot the variable <code class="docutils literal notranslate"><span class="pre">pe</span></code> vs the time that correspond to multiply the <code class="docutils literal notranslate"><span class="pre">step</span></code> variable (column 1 in <code class="docutils literal notranslate"><span class="pre">thermo</span></code>) by the <code class="docutils literal notranslate"><span class="pre">timestep</span></code> (1fs).
+The sharp decay in the curves determine the nucleation time that averaged over all seeds provides the estimation for all the seeds as shown in the figure below</p></li>
+</ol>
+<p><img alt="Step-4" src="_images/Fig4.png" /></p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Some seeds may need to run longer times in case the mold has not been able to nucleate.
+Also, when not all trajectories exhibit complete freezing after long runs, one could used the half life reaction time (<em>i.e.</em> the time required to have halfe of the 10 trajectories with complete freezing).</p>
+</div>
+</div>
+<div class="section" id="extrapolation-of-the-nucleation-rate">
+<h2>Extrapolation of the nucleation rate<a class="headerlink" href="#extrapolation-of-the-nucleation-rate" title="Permalink to this headline">¶</a></h2>
+<p>The extrapolation of the nucleation rate is straitghforward.</p>
+<ul class="simple">
+<li><p>The nucleation rate is calculated as</p></li>
+</ul>
+<div class="math notranslate nohighlight">
+\[J=P/\langle t\rangle,\]</div>
+<p>where <span class="math notranslate nohighlight">\(P\)</span> is the probability calculated in <span class="xref myst">Step 3</span> and <span class="math notranslate nohighlight">\(\langle t\rangle \)</span> is the average nucleation time obtained in <a class="reference internal" href="#average-nucleation-time"><span class="std std-doc">Step 4</span></a> for each well radius.</p>
+<ul class="simple">
+<li><p>Plot the nucleation rates vs the well radii using logarithmic scale in the y-axis as in the figure below.</p></li>
+</ul>
+<p><img alt="Step-5" src="_images/Fig5.png" /></p>
+<ul class="simple">
+<li><p>Fit the data to a linear function</p></li>
+<li><p>Use the resulting fit equation to extrapolate the nucleation rate to the optimal radius (<span class="math notranslate nohighlight">\(J(r_{w,0}=1.32Å)\)</span>)
+The table below provides the obtained free energy, average nucleation time and nucleation rate for each well radius.</p></li>
+</ul>
+<table class="colwidths-auto docutils align-default">
+<thead>
+<tr class="row-odd"><th class="text-center head"><p><span class="math notranslate nohighlight">\(r_w/Å\)</span>)</p></th>
+<th class="text-center head"><p>0.85</p></th>
+<th class="text-center head"><p>0.99</p></th>
+<th class="text-center head"><p>1.12</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(\Delta G/k_B T\)</span></p></td>
+<td class="text-center"><p>31.21(25)</p></td>
+<td class="text-center"><p>28.80(23)</p></td>
+<td class="text-center"><p>27.38(22)</p></td>
+</tr>
+<tr class="row-odd"><td class="text-center"><p><span class="math notranslate nohighlight">\(\langle t\rangle (ns)\)</span></p></td>
+<td class="text-center"><p>9.8(8)</p></td>
+<td class="text-center"><p>16.2(8)</p></td>
+<td class="text-center"><p>29.1(9)</p></td>
+</tr>
+<tr class="row-even"><td class="text-center"><p><span class="math notranslate nohighlight">\(\log_{10}(J\cdot m^{3}s)\)</span></p></td>
+<td class="text-center"><p>23.0(2)</p></td>
+<td class="text-center"><p>23.8(2)</p></td>
+<td class="text-center"><p>24.2(3)</p></td>
+</tr>
+</tbody>
+</table>
+<p>Extrapolating the nucleation rate to the optimal radius gives <span class="math notranslate nohighlight">\(\log_{10}J(r_{w,0}=1.32Å)=25.3(2.5)\)</span> for ice Ih of mW at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span>.</p>
+<div class="docutils container" id="id4">
+<dl class="footnote brackets">
+<dt class="label" id="footcite-espinosa2016lattice"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
+<dd><p>Jorge R Espinosa, Pablo Sampedro, Chantal Valeriani, Carlos Vega, and Eduardo Sanz. Lattice mold technique for the calculation of crystal nucleation rates. <em>Faraday discussions</em>, 195:569–582, 2016.</p>
+</dd>
+<dt class="label" id="footcite-sanchez2022homogeneous"><span class="brackets">2</span><span class="fn-backref">(<a href="#id2">1</a>,<a href="#id3">2</a>)</span></dt>
+<dd><p>Ignacio Sanchez-Burgos, Andres R Tejedor, Carlos Vega, Maria M Conde, Eduardo Sanz, Jorge Ramirez, and Jorge R Espinosa. Homogeneous ice nucleation rates for mw and tip4p/ice models through lattice mold calculations. <em>The Journal of Chemical Physics</em>, 157(9):094503, 2022.</p>
+</dd>
+</dl>
+</div>
+<hr class="footnotes docutils" />
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="example_MI_lj.html" class="btn btn-neutral float-left" title="Mold integration for 100 plane of the fcc crystal for the Lennard-Jones potential" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2023, Andres R. Tejedor, Ignacio Sanchez-Burgos, Felipe J. Blas, Eduardo Sanz, Carlos Vega, Nicodemo Di Pasquale, Jorge Ramírez, and Jorge R. Espinosa
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
