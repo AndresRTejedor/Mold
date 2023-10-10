@@ -185,7 +185,7 @@ The following figure shows a 2D projection of the configuration file:</p>
 <p>The calculation of the optimal well radius for extrapolation of the interfacial free energy includes the following steps:</p>
 <ol class="arabic simple">
 <li><p>Create a directory sweeping different radii (<span class="math notranslate nohighlight">\(r_w=0.27,\ 0.28,\ \ldots,0.33,0.34\sigma\)</span>).</p></li>
-<li><p>For each radius one needs to run independent trajectories with different initial velocities. Create 10 directories for each radius directory (1 for each trajectory). This is included in the bash file (see dot 5).</p></li>
+<li><p>For each radius one needs to run independent trajectories with different initial velocities. Create 10 directories for each radius directory (1 for each trajectory). This is included in the bash file (see bullet point 5).</p></li>
 <li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>).</p></li>
 <li><p>The LAMMPS script contains several variables that are important to know to properly perform the simulations:</p></li>
 </ol>
@@ -248,15 +248,17 @@ The bash script contains the following variables:</p></li>
 <span class="n">path</span><span class="o">=</span><span class="s1">&#39;../../&#39;</span>
 </pre></div>
 </div>
-<p>-T: temperature of the system
--P: pressure of the system
--rw: well radius
--steps: number of steps (the timestep can be changed manually in the LAMMPS script)
--kT: well depth in <span class="math notranslate nohighlight">\(k_BT\)</span> units
--path: path to <code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code> and <code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>. Absolute path is highly recommended.
-Also,  the bash file includes a submission command <code class="docutils literal notranslate"><span class="pre">sbatch</span> <span class="pre">LAMMPS.job</span></code>, but LAMMPS.job is not provided as it depends on the user machine.</p>
+<ul class="simple">
+<li><p>T: temperature of the system</p></li>
+<li><p>P: pressure of the system</p></li>
+<li><p>rw: well radius</p></li>
+<li><p>steps: number of steps</p></li>
+<li><p>kT: well depth in <span class="math notranslate nohighlight">\(k_BT\)</span> units (8 <span class="math notranslate nohighlight">\(k_B T\)</span> for this step)</p></li>
+<li><p>path: path to <code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code> and <code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>. Absolute path is highly recommended.
+Also,  the bash file includes a submission command <code class="docutils literal notranslate"><span class="pre">sbatch</span> <span class="pre">LAMMPS.job</span></code>, but LAMMPS.job is not provided as it depends on the user machine.</p></li>
+</ul>
 <ol class="arabic simple" start="6">
-<li><p>The analysis of this step consists in determining if there is induction time, <em>i.e.</em> further energy is required for the formation of the interface (see Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id2">1</a>).
+<li><p>The analysis for this step consists in determining if there is induction time, <em>i.e.</em> further energy is required for the formation of the interface (see Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id2">1</a>).
 To do so, we recommend analyzing the resulting trajectory using the order parameter <span class="math notranslate nohighlight">\({\bar{q}}_6\)</span> (Lechner and Dellago<a class="footnote-reference brackets" href="#footcite-lechner2008accurate" id="id3">2</a>) to determine the number of crystal-like particles in the slab.
 The recommended values for such analysis is a threshold of <span class="math notranslate nohighlight">\({\bar{q}}_6=0.34\)</span>, and the particles are considered neighbours if they are at a distance of <span class="math notranslate nohighlight">\(1.35\sigma\)</span> or less from the central molecule. This distance is also used to identify molecules of solid that belong to the same solid cluster.
 As a result, one obtains different curves for the order parameter as a function of time for the different well radii:</p></li>
