@@ -249,18 +249,20 @@ The bash script contains the following variables:</p></li>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>T: temperature of the system</p></li>
-<li><p>P: pressure of the system</p></li>
-<li><p>rw: well radius</p></li>
-<li><p>steps: number of steps</p></li>
-<li><p>kT: well depth in <span class="math notranslate nohighlight">\(k_BT\)</span> units (8 <span class="math notranslate nohighlight">\(k_B T\)</span> for this step)</p></li>
-<li><p>path: path to <code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code> and <code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>. Absolute path is highly recommended.
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: temperature of the system</p></li>
+<li><p>`Pv: pressure of the system</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rw</span></code>: well radius</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">steps</span></code>: number of steps</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kT</span></code>: well depth in <span class="math notranslate nohighlight">\(k_BT\)</span> units (8 <span class="math notranslate nohighlight">\(k_B T\)</span> for this step)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: path to <code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code> and <code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>. Absolute path is highly recommended.
 Also,  the bash file includes a submission command <code class="docutils literal notranslate"><span class="pre">sbatch</span> <span class="pre">LAMMPS.job</span></code>, but LAMMPS.job is not provided as it depends on the user machine.</p></li>
 </ul>
 <ol class="arabic simple" start="6">
 <li><p>The analysis for this step consists in determining if there is induction time, <em>i.e.</em> further energy is required for the formation of the interface (see Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id2">1</a>).
 To do so, we recommend analyzing the resulting trajectory using the order parameter <span class="math notranslate nohighlight">\({\bar{q}}_6\)</span> (Lechner and Dellago<a class="footnote-reference brackets" href="#footcite-lechner2008accurate" id="id3">2</a>) to determine the number of crystal-like particles in the slab.
 The recommended values for such analysis is a threshold of <span class="math notranslate nohighlight">\({\bar{q}}_6=0.34\)</span>, and the particles are considered neighbours if they are at a distance of <span class="math notranslate nohighlight">\(1.35\sigma\)</span> or less from the central molecule. This distance is also used to identify molecules of solid that belong to the same solid cluster.
+We provide a fortran program to apply the <span class="math notranslate nohighlight">\({\bar{q}}_6\)</span> order parameter to the resulting trajectories. You must compile the program <code class="docutils literal notranslate"><span class="pre">utils/Mold_Integration/1.Optimal_radius/order_parameter/analysisNPT_clusterKoos_vec_rhodist_dellago_pressloc.10.f</span></code> to get the executable <code class="docutils literal notranslate"><span class="pre">a.out</span></code>.
+Then, we provide a bash file <code class="docutils literal notranslate"><span class="pre">utils/Mold_Integration/1.Optimal_radius/Analysis.sh</span></code> to run the analysis and get the evolution of the largest cluster throughout the simulation. #HERE
 As a result, one obtains different curves for the order parameter as a function of time for the different well radii:</p></li>
 </ol>
 <p><img alt="Step-1\label{kk}" src="_images/Fig21.png" /></p>
