@@ -250,7 +250,7 @@ The bash script contains the following variables:</p></li>
 </div>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: temperature of the system</p></li>
-<li><p>`Pv: pressure of the system</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P</span></code>: pressure of the system</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">rw</span></code>: well radius</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">steps</span></code>: number of steps</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">kT</span></code>: well depth in <span class="math notranslate nohighlight">\(k_BT\)</span> units (8 <span class="math notranslate nohighlight">\(k_B T\)</span> for this step)</p></li>
@@ -262,8 +262,9 @@ Also,  the bash file includes a submission command <code class="docutils literal
 To do so, we recommend analyzing the resulting trajectory using the order parameter <span class="math notranslate nohighlight">\({\bar{q}}_6\)</span> (Lechner and Dellago<a class="footnote-reference brackets" href="#footcite-lechner2008accurate" id="id3">2</a>) to determine the number of crystal-like particles in the slab.
 The recommended values for such analysis is a threshold of <span class="math notranslate nohighlight">\({\bar{q}}_6=0.34\)</span>, and the particles are considered neighbours if they are at a distance of <span class="math notranslate nohighlight">\(1.35\sigma\)</span> or less from the central molecule. This distance is also used to identify molecules of solid that belong to the same solid cluster.
 We provide a fortran program to apply the <span class="math notranslate nohighlight">\({\bar{q}}_6\)</span> order parameter to the resulting trajectories. You must compile the program <code class="docutils literal notranslate"><span class="pre">utils/MI/1.Optimal_r/order/analysisNPT_clusterKoos_vec_rhodist_dellago_pressloc.10.f</span></code> to get the executable <code class="docutils literal notranslate"><span class="pre">a.out</span></code>.
-Then, we provide a bash file <code class="docutils literal notranslate"><span class="pre">utils/Mold_Integration/1.Optimal_radius/Analysis.sh</span></code> to run the analysis and get the evolution of the largest cluster throughout the simulation. #HERE
-As a result, one obtains different curves for the order parameter as a function of time for the different well radii:</p></li>
+Then, we provide a bash file <code class="docutils literal notranslate"><span class="pre">utils/MI/1.Optimal_r/Analysis.sh</span></code> to run the analysis and get the evolution of the largest cluster throughout the simulation. This script must be run for each well radius in the directory above the simulations directory.
+The program enters the directory for each seed (e.g. <code class="docutils literal notranslate"><span class="pre">8kT_0seed</span></code>), and the user must provide the well depth (variable <code class="docutils literal notranslate"><span class="pre">kT</span></code>) and the path to access all the files provide in <code class="docutils literal notranslate"><span class="pre">utils/MI/1.Optimal_r/order/</span></code> (variable <code class="docutils literal notranslate"><span class="pre">path</span></code>).
+As a result, one obtains different curves for the biggest cluster as a function of time for the different well radii in the file nbig.data tha can be plotted to get the following figure:</p></li>
 </ol>
 <p><img alt="Step-1\label{kk}" src="_images/Fig21.png" /></p>
 <p>The dashed black line in the latter figure indicates the number of wells in the system. Following Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id4">1</a>, one equivalent analysis consist in calculating the free energy profile:</p>
@@ -279,13 +280,13 @@ As a result, one obtains different curves for the order parameter as a function 
 <ol class="arabic simple">
 <li><p>Create a directory for each radius to be integrated (<span class="math notranslate nohighlight">\(r_w=0.33,0.34,0.35\sigma\)</span>) and in each directory, create a folder for each well depth considered for the calculation.
 This is a truncated range of values of <span class="math notranslate nohighlight">\(\epsilon\)</span> in <span class="math notranslate nohighlight">\(k_{B}T\)</span>.
-A certain value of <span class="math notranslate nohighlight">\(r_w\)</span> can be considered to be valid for thermodynamic integration only in case the the trajectory does not show signs of irreverisble growth of the solid (<em>e.g.</em> <span class="math notranslate nohighlight">\(r_w\geq 0.33\)</span>).</p></li>
+A certain value of <span class="math notranslate nohighlight">\(r_w\)</span> can be considered to be valid for thermodynamic integration only in case the the trajectory does not show signs of irreverisble growth of the solid (e.g. <span class="math notranslate nohighlight">\(r_w\geq 0.33\)</span>).</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.00001</span>
-<span class="mf">0.1</span>
 <span class="mf">0.2</span>
+<span class="mf">0.4</span>
 <span class="o">...</span>
-<span class="mf">1.9</span>
+<span class="mf">1.8</span>
 <span class="mf">2.0</span>
 <span class="mf">2.3</span>
 <span class="mf">2.6</span>
@@ -301,11 +302,31 @@ A certain value of <span class="math notranslate nohighlight">\(r_w\)</span> can
 </div>
 <ol class="arabic simple" start="2">
 <li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>).</p></li>
-<li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of hundreds of thousands time-steps (with <code class="docutils literal notranslate"><span class="pre">dt=1e-3</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code> (<em>e.g.</em> <code class="docutils literal notranslate"><span class="pre">nts=500000</span></code>).
+<li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of hundreds of thousands time-steps (with <code class="docutils literal notranslate"><span class="pre">dt=1e-3</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">nts=500000</span></code>).
 Regarding the interaction potential, the parameter <code class="docutils literal notranslate"><span class="pre">rw</span></code> that controls the well radius must be changed for the different radii <code class="docutils literal notranslate"><span class="pre">rw=0.33,0.34,0.35</span></code> (in <span class="math notranslate nohighlight">\(\sigma\)</span>).
 The parameter <code class="docutils literal notranslate"><span class="pre">nkT</span></code> (well depth) must be changed for each simulation with the corresponding value.
 Also, the <code class="docutils literal notranslate"><span class="pre">thermoSteps</span></code> should have a reasonable value (1000 is recommended), and <code class="docutils literal notranslate"><span class="pre">dumpSteps</span></code> can be set above 50000 timesteps as the trajectory is not needed for this step.</p></li>
-<li><p>Launch the simulation for each radius and well depth.</p></li>
+<li><p>Launch the simulation for each radius and well depth.
+We provide a bash file <code class="docutils literal notranslate"><span class="pre">/utils/MI/2.Integration/Run.sh</span></code> that creates the directory for each well depth and run the simulations with independent trajectories, reading the file <code class="docutils literal notranslate"><span class="pre">/utils/MI/2-Integration/list</span></code> that contains all the well depths.
+The bash script contains the following variables:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">T</span><span class="o">=</span><span class="s1">&#39;0.617&#39;</span>
+<span class="n">P</span><span class="o">=</span><span class="s1">&#39;-0.02&#39;</span>
+<span class="n">rw</span><span class="o">=</span><span class="s1">&#39;0.30&#39;</span>
+<span class="n">steps</span><span class="o">=</span><span class="mi">400000</span>
+<span class="n">dump</span><span class="o">=</span><span class="mi">50000</span>
+<span class="n">path</span><span class="o">=</span><span class="s1">&#39;../../&#39;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: temperature of the system</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">P</span></code>: pressure of the system</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rw</span></code>: well radius</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">steps</span></code>: number of steps</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: path to <code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code> and <code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>. Absolute path is highly recommended.
+Also,  the bash file includes a submission command <code class="docutils literal notranslate"><span class="pre">sbatch</span> <span class="pre">LAMMPS.job</span></code>, but LAMMPS.job is not provided as it depends on the user machine.</p></li>
+</ul>
+<ol class="arabic simple" start="5">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the thermodynamic integration.
 We need to get the average number of well occupancy for each value of <code class="docutils literal notranslate"><span class="pre">nkT</span></code> so that we print the potential contribution due to LJ particle-well interaction (<code class="docutils literal notranslate"><span class="pre">c_1</span></code>, column 13), but also the number of particles in the system (<code class="docutils literal notranslate"><span class="pre">v_nall</span></code>, column 15) since the energy is expressed in reduced LJ units, <em>i.e.</em> energy per particle instead of energy of the total system:</p></li>
 </ol>
@@ -330,7 +351,9 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 <p class="admonition-title">Note</p>
 <p>Please note that the system requires a time to equilibrate so that the analysis must be performed after <span class="math notranslate nohighlight">\(t\approx10\tau\)</span>. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…).</p>
 </div>
-<p>In the following figure the curves of well occupancy vs. well depth for the different radii are presented.</p>
+<p>In <code class="docutils literal notranslate"><span class="pre">/utils/MI/2.Integration/</span></code>, we provide the python program <code class="docutils literal notranslate"><span class="pre">PyIntegral.py</span></code> that can be run to get the well occupancy curve for each well depth.
+The script must be run in the directory where you run the <code class="docutils literal notranslate"><span class="pre">Run.sh</span></code> bash file and only the temperature is included in <code class="docutils literal notranslate"><span class="pre">PyIntegral.py</span></code>. The program outcome is a file called <code class="docutils literal notranslate"><span class="pre">fill.txt</span></code> that contains the results.
+In the following figure the curves of well occupancy vs. well depth for the different radii are presented.</p>
 <p><img alt="Step-2\label{Occupancy}" src="_images/Fig31.png" /></p>
 </div>
 <div class="section" id="extrapolation-for-calculating-the-interfacial-free-energy">

@@ -84,7 +84,7 @@ dump=5000
 path='../../'
 ```
 - `T`: temperature of the system
-- `Pv: pressure of the system
+- `P`: pressure of the system
 - `rw`: well radius
 - `steps`: number of steps 
 - `kT`: well depth in $k_BT$ units (8 $k_B T$ for this step) 
@@ -96,8 +96,9 @@ Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but LAMM
 To do so, we recommend analyzing the resulting trajectory using the order parameter ${\bar{q}}_6$ ({footcite:t}`lechner2008accurate`) to determine the number of crystal-like particles in the slab. 
 The recommended values for such analysis is a threshold of ${\bar{q}}_6=0.34$, and the particles are considered neighbours if they are at a distance of $1.35\sigma$ or less from the central molecule. This distance is also used to identify molecules of solid that belong to the same solid cluster.
 We provide a fortran program to apply the ${\bar{q}}_6$ order parameter to the resulting trajectories. You must compile the program `utils/MI/1.Optimal_r/order/analysisNPT_clusterKoos_vec_rhodist_dellago_pressloc.10.f` to get the executable `a.out`.
-Then, we provide a bash file `utils/Mold_Integration/1.Optimal_radius/Analysis.sh` to run the analysis and get the evolution of the largest cluster throughout the simulation. #HERE
-As a result, one obtains different curves for the order parameter as a function of time for the different well radii:
+Then, we provide a bash file `utils/MI/1.Optimal_r/Analysis.sh` to run the analysis and get the evolution of the largest cluster throughout the simulation. This script must be run for each well radius in the directory above the simulations directory. 
+The program enters the directory for each seed (e.g. `8kT_0seed`), and the user must provide the well depth (variable `kT`) and the path to access all the files provide in `utils/MI/1.Optimal_r/order/` (variable `path`).
+As a result, one obtains different curves for the biggest cluster as a function of time for the different well radii in the file nbig.data tha can be plotted to get the following figure:
 
 ![Step-1\label{kk}](../figs/Fig2.png "q6_time")
 
@@ -117,14 +118,14 @@ Once the optimal well radius is estimated, the next step consists in performing 
 
 1. Create a directory for each radius to be integrated ($r_w=0.33,0.34,0.35\sigma$) and in each directory, create a folder for each well depth considered for the calculation. 
 This is a truncated range of values of $\epsilon$ in $k_{B}T$. 
-A certain value of $r_w$ can be considered to be valid for thermodynamic integration only in case the the trajectory does not show signs of irreverisble growth of the solid (*e.g.* $r_w\geq 0.33$).
+A certain value of $r_w$ can be considered to be valid for thermodynamic integration only in case the the trajectory does not show signs of irreverisble growth of the solid (e.g. $r_w\geq 0.33$).
 
 ```
 0.00001
-0.1
 0.2
+0.4
 ...
-1.9
+1.8
 2.0
 2.3
 2.6
@@ -140,12 +141,28 @@ A certain value of $r_w$ can be considered to be valid for thermodynamic integra
 
 2. Copy the LAMMPS script file (`lj_mold.in`) in each subdirectory along with the configuration file (`mold_100.lmp`).
 
-3. The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of hundreds of thousands time-steps (with `dt=1e-3`), controlled by the parameter `nts` (*e.g.* `nts=500000`). 
+3. The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step, the typical run must be of the order of hundreds of thousands time-steps (with `dt=1e-3`), controlled by the parameter `nts` (e.g. `nts=500000`). 
 Regarding the interaction potential, the parameter `rw` that controls the well radius must be changed for the different radii `rw=0.33,0.34,0.35` (in $\sigma$). 
 The parameter `nkT` (well depth) must be changed for each simulation with the corresponding value. 
 Also, the `thermoSteps` should have a reasonable value (1000 is recommended), and `dumpSteps` can be set above 50000 timesteps as the trajectory is not needed for this step.
 
 4. Launch the simulation for each radius and well depth. 
+We provide a bash file `/utils/MI/2.Integration/Run.sh` that creates the directory for each well depth and run the simulations with independent trajectories, reading the file `/utils/MI/2-Integration/list` that contains all the well depths. 
+The bash script contains the following variables:
+```
+T='0.617'
+P='-0.02'
+rw='0.30'
+steps=400000
+dump=50000
+path='../../'
+```
+- `T`: temperature of the system
+- `P`: pressure of the system
+- `rw`: well radius
+- `steps`: number of steps 
+- `path`: path to `lj_mold.in` and `mold_100.lmp`. Absolute path is highly recommended.
+Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but LAMMPS.job is not provided as it depends on the user machine. 
 
 5. The `thermo_style` is configured to show some magnitudes that are crucial for the thermodynamic integration. 
 We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to LJ particle-well interaction (`c_1`, column 13), but also the number of particles in the system (`v_nall`, column 15) since the energy is expressed in reduced LJ units, *i.e.* energy per particle instead of energy of the total system:
@@ -176,6 +193,9 @@ $$\langle N_w \rangle=c_1\cdot n_{all}/(nkT\cdot T)$$
 Please note that the system requires a time to equilibrate so that the analysis must be performed after $t\approx10\tau$. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…).
 ````
 
+
+In `/utils/MI/2.Integration/`, we provide the python program `PyIntegral.py` that can be run to get the well occupancy curve for each well depth. 
+The script must be run in the directory where you run the `Run.sh` bash file and only the temperature is included in `PyIntegral.py`. The program outcome is a file called `fill.txt` that contains the results.
 In the following figure the curves of well occupancy vs. well depth for the different radii are presented.
 
 ![Step-2\label{Occupancy}](../figs/Fig3.png)
