@@ -72,7 +72,7 @@ Also, there are some variables that might be interesting to know:
 - `dumpSteps` is the number of steps to save the trajectory in the dump file and for this step it is recommended to be set to 2000 (be aware that low values of this parameter can produce large trajectory files).
 
 5. Launch the simulation for each radius and seed. That means a total of 80 simulations, but they are quite short. 
-We provide a bash file `/examples/lj_mold/1.Optimal_radius/Run.sh` that creates the directory for each velocity seed and run the simulations with independent trajectories, reading the file `/examples/lj_mold/1.Optimal_radius/list` that contains the number of seeds to run from 0 to 9. 
+We provide a bash file `/utils/MI/1.Optimal_r/Run.sh` that creates the directory for each velocity seed and run the simulations with independent trajectories, reading the file `/utils/MI/1.Optimal_r/list` that contains the number of seeds to run from 0 to 9. 
 The bash script contains the following variables:
 ```
 T='0.617'
@@ -95,7 +95,7 @@ Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but LAMM
 6. The analysis for this step consists in determining if there is induction time, *i.e.* further energy is required for the formation of the interface (see {footcite:t}`espinosa2014mold`). 
 To do so, we recommend analyzing the resulting trajectory using the order parameter ${\bar{q}}_6$ ({footcite:t}`lechner2008accurate`) to determine the number of crystal-like particles in the slab. 
 The recommended values for such analysis is a threshold of ${\bar{q}}_6=0.34$, and the particles are considered neighbours if they are at a distance of $1.35\sigma$ or less from the central molecule. This distance is also used to identify molecules of solid that belong to the same solid cluster.
-We provide a fortran program to apply the ${\bar{q}}_6$ order parameter to the resulting trajectories. You must compile the program `utils/Mold_Integration/1.Optimal_radius/order_parameter/analysisNPT_clusterKoos_vec_rhodist_dellago_pressloc.10.f` to get the executable `a.out`.
+We provide a fortran program to apply the ${\bar{q}}_6$ order parameter to the resulting trajectories. You must compile the program `utils/MI/1.Optimal_r/order/analysisNPT_clusterKoos_vec_rhodist_dellago_pressloc.10.f` to get the executable `a.out`.
 Then, we provide a bash file `utils/Mold_Integration/1.Optimal_radius/Analysis.sh` to run the analysis and get the evolution of the largest cluster throughout the simulation. #HERE
 As a result, one obtains different curves for the order parameter as a function of time for the different well radii:
 
