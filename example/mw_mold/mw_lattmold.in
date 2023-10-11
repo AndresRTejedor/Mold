@@ -3,7 +3,6 @@ atom_style     full   # do not change
 boundary       p p p  # periodic boundary conditions in x y z 
 
 # ---------------------------- Define variables --------------------------------
-variable  nts          equal  99000000   # production number of time-steps
 variable  T            equal  220.0      # Temperature of the system in K
 variable  nkT          equal  8          # Well depth in kT
 variable  ts           equal  1          # length of the ts (in fs units)
@@ -13,7 +12,8 @@ variable  seed         equal  23782      # velocity seed
 variable  NtsTdamp     equal  100        # Number of ts to damp temperature
 variable  thermoSteps  equal  1000       # Number of ts to write properties on screen
 variable  restartSteps equal  1000000    # Number of ts before write restart file
-variable  dumpSteps    equal  250000     # Number of ts before write dump file
+variable  dumpSteps    equal  50000      # Number of ts before write dump file
+variable  nts          equal  100000     # production number of time-steps
 
 
 # --------------------- Derivate variables -------------------------------------

@@ -25,7 +25,7 @@ The number of wells in the mold is chosen so that the system displays induction 
 ![Step-1](../figs/LatticeMold/Fig1.png "Conf_LM")
 
 The optimal radius is calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of $8k_BT$. 
-The largest value of the radius at which the ocuupancy is still below $100\%$ at a depth of $8k_BT$ is considered to be the optimal radius.
+The largest value of the radius at which the occupancy is still below $100\%$ at a depth of $8k_BT$ is considered to be the optimal radius.
 For well radius larger than the optimal one, two or more particles can enter in a well. Please note that for the lattice mold technique a extrapolation is performed to a larger value of the radius than that used in the calculation (in contrast with the [mold integration method](https://andresrtejedor.github.io/Mold/example_MI_lj.html#))
 For the current example we extrapolate to $r_{w,0}=1.32Å$ (see figure below, red vertical line).
 
@@ -44,9 +44,13 @@ This is a truncated range of values of $\epsilon$ in $k_{B}T$:
 0.10
 0.20
 ...
-2.4
+1.4
+1.5
+1.75
+2.0
 2.5
-3.5
+3.0
+4.0
 5.0
 8.0
 ```
@@ -57,7 +61,6 @@ Please note that the grid of well depths included in the calculation may need to
 
 ```
 # ---------------------------- Define variables --------------------------------
-variable  nts          equal  99000000   # production number of time-steps
 variable  T            equal  220.0      # Temperature of the system in K
 variable  nkT          equal  8          # Well depth in kT
 variable  ts           equal  1          # length of the ts (in fs units)
@@ -67,7 +70,8 @@ variable  seed         equal  23782      # velocity seed
 variable  NtsTdamp     equal  100        # Number of ts to damp temperature
 variable  thermoSteps  equal  1000       # Number of ts to write properties on screen
 variable  restartSteps equal  1000000    # Number of ts before write restart file
-variable  dumpSteps    equal  250000     # Number of ts before write dump file
+variable  dumpSteps    equal  50000      # Number of ts before write dump file
+variable  nts          equal  100000     # production number of time-steps
 
 
 # --------------------- Derivate variables -------------------------------------
@@ -94,6 +98,24 @@ Also, there are some variables that might be interesting to know:
 
 
 5. Launch the simulation for each radius and well depth.
+We provide a bash file `/utils/LM/1.Integral/Runwsh` that creates the directory for each well depth and run the simulations, reading the file `/utils/LM/1.Integral/list` that contains all the well depths. 
+The bash script contains the following variables:
+```
+T='240'
+Nw='39'
+rw='0.25'
+steps=5000000
+dump='200000'
+path='../../'
+```
+- `T`: temperature of the system
+- `Nw`: number of wells in the mold
+- `rw`: well radius
+- `steps`: number of steps 
+- `dump`: frequency to save the trajectory (in simulation steps) 
+- `path`: path to `mw_latt mold.in`, mW.sw, and `39mold.lmp`. Absolute path is highly recommended.
+Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but LAMMPS.job is not provided as it depends on the user machine. 
+
 6. The `thermo_style` is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves. 
 We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to mW-well interaction (`c_1`, column 8):
 
@@ -113,6 +135,10 @@ $$\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)$$
 
 Please note that the temperature must be recalculated to consider only the water molecules in the simulation box, since the LAMMPS `thermo` considers all the particles to evaluate the system temperature. This only applies for calculations in real units.
 
+In `/utils/LM/1.Integration/`, we provide the python program `PyIntegral.py` that can be run to get the well occupancy curve for each well depth. 
+The script must be run in the directory where you run the `Run.sh` bash file. The program outcome is a file called `fill.txt` that contains the results for the well occupancy.
+
+
 7. Plot the different curves of mold occupancy as a function of the well depth for the different radii. The result should look similar to the figure below
 
 ![Step-3](../figs/LatticeMold/Fig3.png "Well_ocu")
@@ -129,6 +155,7 @@ The final calculation of the free energy difference must include the rotational 
 $$\Delta G/k_B T=\Delta G^*/k_B T + \ln(\rho_f V_w)- \ln(8\pi^2),$$
 
 where $\rho_f$ is the fluid number density, and $V_w$ is the volume of a single well.
+This magnitude can be calculated with the program `utils/LM/1.Integral/post.py`, that reads the file `fill.txt` obtained by running the script `PyIntegral.py`. Only the value of $rho_f$ must be adjusted for each system.
 The free energy difference is used to calculate the probability per unit volume of finding a crystal cluster of the size of the one induced by the mold as dictated by the following equation:
 
 $$P=\rho_f \exp(-\Delta G/(k_B T)) .$$
