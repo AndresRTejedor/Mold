@@ -223,7 +223,7 @@ variable  nkT          equal  8          # Well depth in kT
 variable  ts           equal  1          # length of the ts (in fs units)
 variable  width        equal  0.25       # (reduced LJ) width of the square well potential
 variable  alpha        equal  0.017025   # Parameter for the slope of the square well potential (0.005*3.405)
-variable  seed         equal  23782      # velocity seed
+variable  seed         equal  12345      # velocity seed
 variable  NtsTdamp     equal  100        # Number of ts to damp temperature
 variable  thermoSteps  equal  1000       # Number of ts to write properties on screen
 variable  restartSteps equal  1000000    # Number of ts before write restart file
@@ -256,13 +256,13 @@ Also, there are some variables that might be interesting to know:</p>
 </ul>
 <ol class="arabic simple" start="5">
 <li><p>Launch the simulation for each radius and well depth.
-We provide a bash file <code class="docutils literal notranslate"><span class="pre">/utils/LM/1.Integral/Runwsh</span></code> that creates the directory for each well depth and run the simulations, reading the file <code class="docutils literal notranslate"><span class="pre">/utils/LM/1.Integral/list</span></code> that contains all the well depths.
+We provide a bash file <code class="docutils literal notranslate"><span class="pre">/utils/LM/1.Integral/Run.sh</span></code> that creates the directory for each well depth and run the simulations, reading the file <code class="docutils literal notranslate"><span class="pre">/utils/LM/1.Integral/list</span></code> that contains all the well depths.
 The bash script contains the following variables:</p></li>
 </ol>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">T</span><span class="o">=</span><span class="s1">&#39;240&#39;</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">T</span><span class="o">=</span><span class="s1">&#39;220&#39;</span>
 <span class="n">Nw</span><span class="o">=</span><span class="s1">&#39;39&#39;</span>
-<span class="n">rw</span><span class="o">=</span><span class="s1">&#39;0.25&#39;</span>
-<span class="n">steps</span><span class="o">=</span><span class="mi">5000000</span>
+<span class="n">rw</span><span class="o">=</span><span class="s1">&#39;0.31&#39;</span>
+<span class="n">steps</span><span class="o">=</span><span class="mi">8000000</span>
 <span class="n">dump</span><span class="o">=</span><span class="s1">&#39;200000&#39;</span>
 <span class="n">path</span><span class="o">=</span><span class="s1">&#39;../../&#39;</span>
 </pre></div>
@@ -270,7 +270,7 @@ The bash script contains the following variables:</p></li>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: temperature of the system</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">Nw</span></code>: number of wells in the mold</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">rw</span></code>: well radius</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rw</span></code>: well radius in reduced units</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">steps</span></code>: number of steps</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">dump</span></code>: frequency to save the trajectory (in simulation steps)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: path to <code class="docutils literal notranslate"><span class="pre">mw_latt</span> <span class="pre">mold.in</span></code>, mW.sw, and <code class="docutils literal notranslate"><span class="pre">39mold.lmp</span></code>. Absolute path is highly recommended.
@@ -323,16 +323,41 @@ The free energy difference is used to calculate the probability per unit volume 
 <li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">39mold.lmp</span></code>) and the mW potential file (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>).</p></li>
 <li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step and this particular system, the typical run must be of the order of <span class="math notranslate nohighlight">\(100ns\)</span> (with <code class="docutils literal notranslate"><span class="pre">dt=1fs</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code> which must be set to <code class="docutils literal notranslate"><span class="pre">nts=10000000</span></code>.
 The well depth <code class="docutils literal notranslate"><span class="pre">nkT</span></code> must be set to 8. Importantly, for this step the <code class="docutils literal notranslate"><span class="pre">seed</span></code> variable must be changed for every independent run.</p></li>
-<li><p>Launch the simulation for each radius and independent velocity seed.</p></li>
+<li><p>Launch the simulation for each radius and independent velocity seed.
+We provide a bash file <code class="docutils literal notranslate"><span class="pre">/utils/LM/2.Induction_t/Run.sh</span></code> that creates the directory for each seed and run the simulations, reading the file <code class="docutils literal notranslate"><span class="pre">/utils/LM/2.Induction_t/list</span></code> that contains the number of independent velocity seeds.
+The bash script contains the following variables:</p></li>
+</ol>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">T</span><span class="o">=</span><span class="s1">&#39;220&#39;</span>
+<span class="n">Nw</span><span class="o">=</span><span class="s1">&#39;39&#39;</span>
+<span class="n">rw</span><span class="o">=</span><span class="s1">&#39;0.31&#39;</span>
+<span class="n">steps</span><span class="o">=</span><span class="mi">8000000</span>
+<span class="n">dump</span><span class="o">=</span><span class="s1">&#39;200000&#39;</span>
+<span class="n">kT</span><span class="o">=</span><span class="s1">&#39;8&#39;</span>
+<span class="n">path</span><span class="o">=</span><span class="s1">&#39;../../&#39;</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">T</span></code>: temperature of the system</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Nw</span></code>: number of wells in the mold</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">rw</span></code>: well radius in reduced LJ units</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">steps</span></code>: number of steps</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">dump</span></code>: frequency to save the trajectory (in simulation steps)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">kT</span></code>: well depth in <span class="math notranslate nohighlight">\(k_BT\)</span> units</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: path to <code class="docutils literal notranslate"><span class="pre">mw_latt</span> <span class="pre">mold.in</span></code>, mW.sw, and <code class="docutils literal notranslate"><span class="pre">39mold.lmp</span></code>. Absolute path is highly recommended.
+Also,  the bash file includes a submission command <code class="docutils literal notranslate"><span class="pre">sbatch</span> <span class="pre">LAMMPS.job</span></code>, but LAMMPS.job is not provided as it depends on the user machine.</p></li>
+</ul>
+<ol class="arabic simple" start="6">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">thermos_style</span></code> provides the potential energy (<code class="docutils literal notranslate"><span class="pre">pe</span></code>) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example.
 Plot the variable <code class="docutils literal notranslate"><span class="pre">pe</span></code> vs the time that correspond to multiply the <code class="docutils literal notranslate"><span class="pre">step</span></code> variable (column 1 in <code class="docutils literal notranslate"><span class="pre">thermo</span></code>) by the <code class="docutils literal notranslate"><span class="pre">timestep</span></code> (1fs).
-The sharp decay in the curves determine the nucleation time that averaged over all seeds provides the estimation for all the seeds as shown in the figure below</p></li>
+The sharp decay in the curves determine the nucleation time that averaged over all seeds provides the estimation for all the seeds as shown in the figure below
+The program <code class="docutils literal notranslate"><span class="pre">PyTime.py</span></code>, provided in <code class="docutils literal notranslate"><span class="pre">/utils/LM/2.Induction_t/</span></code>, can be used to calculate an estimation of the average induction time. Also, the program indicates if some of the seeds have not crystallized yet and they need more simulaiton time.
+The script must be run in the directory where you run the <code class="docutils literal notranslate"><span class="pre">Run.sh</span></code> bash file.</p></li>
 </ol>
 <p><img alt="Step-4" src="_images/Fig4.png" /></p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Some seeds may need to run longer times in case the mold has not been able to nucleate.
-Also, when not all trajectories exhibit complete freezing after long runs, one could used the half life reaction time (<em>i.e.</em> the time required to have halfe of the 10 trajectories with complete freezing).</p>
+Also, when not all trajectories exhibit complete freezing after long runs, one could used the half life reaction time (i.e. the time required to have half of the 10 trajectories with complete freezing).</p>
 </div>
 </div>
 <div class="section" id="extrapolation-of-the-nucleation-rate">
