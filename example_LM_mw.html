@@ -349,11 +349,11 @@ Also,  the bash file includes a submission command <code class="docutils literal
 <ol class="arabic simple" start="6">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">thermos_style</span></code> provides the potential energy (<code class="docutils literal notranslate"><span class="pre">pe</span></code>) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example.
 Plot the variable <code class="docutils literal notranslate"><span class="pre">pe</span></code> vs the time that correspond to multiply the <code class="docutils literal notranslate"><span class="pre">step</span></code> variable (column 1 in <code class="docutils literal notranslate"><span class="pre">thermo</span></code>) by the <code class="docutils literal notranslate"><span class="pre">timestep</span></code> (1fs).
-The sharp decay in the curves determine the nucleation time that averaged over all seeds provides the estimation for all the seeds as shown in the figure below
-The program <code class="docutils literal notranslate"><span class="pre">PyTime.py</span></code>, provided in <code class="docutils literal notranslate"><span class="pre">/utils/LM/2.Induction_t/</span></code>, can be used to calculate an estimation of the average induction time. Also, the program indicates if some of the seeds have not crystallized yet and they need more simulaiton time.
-The script must be run in the directory where you run the <code class="docutils literal notranslate"><span class="pre">Run.sh</span></code> bash file.</p></li>
+The sharp decay in the curves determine the nucleation time that averaged over all seeds provides the estimation for all the seeds as shown in the figure below</p></li>
 </ol>
 <p><img alt="Step-4" src="_images/Fig4.png" /></p>
+<p>The program <code class="docutils literal notranslate"><span class="pre">PyTime.py</span></code>, provided in <code class="docutils literal notranslate"><span class="pre">/utils/LM/2.Induction_t/</span></code>, can be used to calculate an estimation of the average induction time. Also, the program indicates if some of the seeds have not crystallized yet and they need more simulaiton time.
+The script must be run in the directory where you run the <code class="docutils literal notranslate"><span class="pre">Run.sh</span></code> bash file.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Some seeds may need to run longer times in case the mold has not been able to nucleate.
