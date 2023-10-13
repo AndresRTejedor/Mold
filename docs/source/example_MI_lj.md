@@ -89,7 +89,7 @@ path='../../'
 - `steps`: number of steps 
 - `kT`: well depth in $k_BT$ units (8 $k_B T$ for this step) 
 - `path`: path to `lj_mold.in` and `mold_100.lmp`. Absolute path is highly recommended.
-Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but LAMMPS.job is not provided as it depends on the user machine. 
+Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but `LAMMPS.job` is not provided as it depends on the user machine. 
 
 
 6. The analysis for this step consists in determining if there is induction time, *i.e.* further energy is required for the formation of the interface (see {footcite:t}`espinosa2014mold`). 
@@ -162,7 +162,7 @@ path='../../'
 - `rw`: well radius
 - `steps`: number of steps 
 - `path`: path to `lj_mold.in` and `mold_100.lmp`. Absolute path is highly recommended.
-Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but LAMMPS.job is not provided as it depends on the user machine. 
+Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but `LAMMPS.job` is not provided as it depends on the user machine. 
 
 5. The `thermo_style` is configured to show some magnitudes that are crucial for the thermodynamic integration. 
 We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to LJ particle-well interaction (`c_1`, column 13), but also the number of particles in the system (`v_nall`, column 15) since the energy is expressed in reduced LJ units, *i.e.* energy per particle instead of energy of the total system:
