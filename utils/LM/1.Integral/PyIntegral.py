@@ -19,7 +19,7 @@ for line in open('Run.sh','r'):
         break
 
 i=0
-for line in open('./listaALL','r'):
+for line in open('./list','r'):
     i+=1
     nw = np.loadtxt('{0}nkT/log.lammps'.format(line.split()[0]),skiprows=96,max_rows=int(steps-10),dtype=float)
     wells0=nw[:,7]; time0=nw[:,0]; Epav=np.mean(nw[50:200,3]); Epstd=np.std(nw[50:200,3])

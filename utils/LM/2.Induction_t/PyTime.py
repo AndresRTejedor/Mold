@@ -20,7 +20,7 @@ for line in open('Run.sh','r'):
         SOL = re.findall(match_number,line);   nkT=SOL[0]
         break
 i=0
-for line in open('./lista','r'):
+for line in open('./list','r'):
     i+=1
     try:
         nw = np.loadtxt('{0}kT_{1}seed/log.lammps'.format(nkT,line.split()[0]),skiprows=94,max_rows=int(steps),dtype=float)
