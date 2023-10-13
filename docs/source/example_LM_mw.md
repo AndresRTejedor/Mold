@@ -98,7 +98,7 @@ Also, there are some variables that might be interesting to know:
 
 
 5. Launch the simulation for each radius and well depth.
-We provide a bash file `/utils/LM/1.Integral/Runwsh` that creates the directory for each well depth and run the simulations, reading the file `/utils/LM/1.Integral/list` that contains all the well depths. 
+We provide a bash file `/utils/LM/1.Integral/Run.sh` that creates the directory for each well depth and run the simulations, reading the file `/utils/LM/1.Integral/list` that contains all the well depths. 
 The bash script contains the following variables:
 ```
 T='240'
