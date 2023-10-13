@@ -195,10 +195,12 @@ Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but LAMM
 6. The `thermos_style` provides the potential energy (`pe`) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example. 
 Plot the variable `pe` vs the time that correspond to multiply the `step` variable (column 1 in `thermo`) by the `timestep` (1fs). 
 The sharp decay in the curves determine the nucleation time that averaged over all seeds provides the estimation for all the seeds as shown in the figure below
+
+![Step-4](../figs/LatticeMold/Fig4.png "Time")
+
 The program `PyTime.py`, provided in `/utils/LM/2.Induction_t/`, can be used to calculate an estimation of the average induction time. Also, the program indicates if some of the seeds have not crystallized yet and they need more simulaiton time. 
 The script must be run in the directory where you run the `Run.sh` bash file. 
 
-![Step-4](../figs/LatticeMold/Fig4.png "Time")
 
 
 ````{warning}
