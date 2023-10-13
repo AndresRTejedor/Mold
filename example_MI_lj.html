@@ -255,7 +255,7 @@ The bash script contains the following variables:</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">steps</span></code>: number of steps</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">kT</span></code>: well depth in <span class="math notranslate nohighlight">\(k_BT\)</span> units (8 <span class="math notranslate nohighlight">\(k_B T\)</span> for this step)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: path to <code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code> and <code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>. Absolute path is highly recommended.
-Also,  the bash file includes a submission command <code class="docutils literal notranslate"><span class="pre">sbatch</span> <span class="pre">LAMMPS.job</span></code>, but LAMMPS.job is not provided as it depends on the user machine.</p></li>
+Also,  the bash file includes a submission command <code class="docutils literal notranslate"><span class="pre">sbatch</span> <span class="pre">LAMMPS.job</span></code>, but <code class="docutils literal notranslate"><span class="pre">LAMMPS.job</span></code> is not provided as it depends on the user machine.</p></li>
 </ul>
 <ol class="arabic simple" start="6">
 <li><p>The analysis for this step consists in determining if there is induction time, <em>i.e.</em> further energy is required for the formation of the interface (see Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id2">1</a>).
@@ -324,7 +324,7 @@ The bash script contains the following variables:</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">rw</span></code>: well radius</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">steps</span></code>: number of steps</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: path to <code class="docutils literal notranslate"><span class="pre">lj_mold.in</span></code> and <code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>. Absolute path is highly recommended.
-Also,  the bash file includes a submission command <code class="docutils literal notranslate"><span class="pre">sbatch</span> <span class="pre">LAMMPS.job</span></code>, but LAMMPS.job is not provided as it depends on the user machine.</p></li>
+Also,  the bash file includes a submission command <code class="docutils literal notranslate"><span class="pre">sbatch</span> <span class="pre">LAMMPS.job</span></code>, but <code class="docutils literal notranslate"><span class="pre">LAMMPS.job</span></code> is not provided as it depends on the user machine.</p></li>
 </ul>
 <ol class="arabic simple" start="5">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the thermodynamic integration.

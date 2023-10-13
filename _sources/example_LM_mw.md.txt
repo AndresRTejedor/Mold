@@ -114,7 +114,7 @@ path='../../'
 - `steps`: number of steps 
 - `dump`: frequency to save the trajectory (in simulation steps) 
 - `path`: path to `mw_latt mold.in`, mW.sw, and `39mold.lmp`. Absolute path is highly recommended.
-Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but LAMMPS.job is not provided as it depends on the user machine. 
+Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but `LAMMPS.job` is not provided as it depends on the user machine. 
 
 6. The `thermo_style` is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves. 
 We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to mW-well interaction (`c_1`, column 8):
@@ -189,7 +189,7 @@ path='../../'
 - `dump`: frequency to save the trajectory (in simulation steps) 
 - `kT`: well depth in $k_BT$ units 
 - `path`: path to `mw_latt mold.in`, mW.sw, and `39mold.lmp`. Absolute path is highly recommended.
-Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but LAMMPS.job is not provided as it depends on the user machine. 
+Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but `LAMMPS.job` is not provided as it depends on the user machine. 
 
 
 6. The `thermos_style` provides the potential energy (`pe`) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example. 
