@@ -107,7 +107,7 @@ The dashed black line in the latter figure indicates the number of wells in the 
 
 $$\Delta G/k_B T=-log(P(n_s))+constant,$$
 
-where $P(n_s)$ is the probability distribution of finding the largest cluster with size $n_s$ that can be straightforwardly estimated from the order parameter curves. Please note that these energy profiles have been obtained sampling simulation timescales of $t~500\tau$ (i.e. reduced time in LJ units).
+where $P(n_s)$ is the probability distribution of finding the largest cluster with size $n_s$ that can be straightforwardly estimated from the order parameter curves. Please note that these energy profiles have been obtained sampling simulation timescales of $t\sim 500\tau$ (i.e. reduced time in LJ units).
 
 ![Step-1\label{kk}](../figs/FigDG.png "Denergy")
 
@@ -183,7 +183,7 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 For real units the multiplication by the number of particles in the system is not necessary.
 ````
 
-Please note that using reduced LJ units the temperature must be rescaled so LAMMPS does not consider the well particles to thermalize the system. 
+Please note that, when using reduced LJ units, the temperature must be rescaled so LAMMPS does not consider the well particles to thermalize the system. 
 
 The calculation of the well occupancy for each depth can be easily estimated by taking the average over all the simulation of this value:
 
