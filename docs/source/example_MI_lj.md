@@ -1,11 +1,11 @@
 # Mold integration for the 100 plane of the fcc crystal of the Lennard-Jones potential
 
-Here we provide a detailed set of instructions to reproduce the crystal fluid interfacial free energy using the Broughton and Gilmer (BG) Lennard-Jones potential 
-(CLEAVING package available [here](https://github.com/demonico85/cleaving/tree/master)) and `square/well pair_style` available in LAMMPS.
+Here we provide a detailed set of instructions to reproduce the crystal fluid interfacial free energy using the Broughton and Gilmer (BG) Lennard-Jones (LJ) potential 
+(CLEAVING package available [here](https://github.com/demonico85/cleaving/tree/master)) and `square/well pair_style` available in the current [package](https://github.com/AndresRTejedor/Mold/).
 
-The data file (`mold_100.lmp`) and LAMMPS script (`lj_moldint.in`) are provided in the directory `/examples/lj_mold/` (see [here](https://github.com/AndresRTejedor/Mold/tree/main/example/lj_mold)), but in this worked example we will navigate through these files to explain them in detail.
+The data file (`mold_100.lmp`) and LAMMPS script (`lj_moldint.in`) are provided in the directory `/examples/lj_mold/` (see [here](https://github.com/AndresRTejedor/Mold/tree/main/example/lj_mold)). In this worked example we will navigate through these files to explain them in detail.
 
-The mold integration technique consists of different steps and here we only discuss the last two steps to obtain the interfacial free energy of the 100 plane for the LJ particles at $T^\ast=0.617$ and $p^\ast=-0.02$. All the steps can be found in {footcite:t}`espinosa2014mold`, and they can be summarized as: 
+The Mold Integration technique consists of different steps to obtain the interfacial free energy. Here, we explain the method for the 100 plane using LJ particles at $T^\ast=0.617$ and $p^\ast=-0.02$. All the steps can be found in {footcite:t}`espinosa2014mold`, and they can be summarized as:
 
 1. Preparation of the configuration by embedding the mold coordinates (crystal slab taken from a configuration with the equilibrium density and the perfect crystal lattice) into the fluid at coexistence conditions.
 2. Choice of the [optimal well radius](#optimal-radius-calculation) $r_{w,0}$ to extrapolate the interfacial free energy.
