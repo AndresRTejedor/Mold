@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Lattice mold calculations of mW Ice Ih nucleation rate at T=220K &mdash; SIFT  documentation</title>
+  <title>Lattice mold calculation of Ice Ih nucleation rate at T=220K using the mW model &mdash; SIFT  documentation</title>
   
 
   
@@ -37,7 +37,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Mold integration for 100 plane of the fcc crystal for the Lennard-Jones potential" href="example_MI_lj.html" /> 
+    <link rel="prev" title="Mold integration for the 100 plane of the fcc crystal of the Lennard-Jones potential" href="example_MI_lj.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -87,8 +87,8 @@
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="lammps.html">LAMMPS commands</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="example.html">Examples</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="example_MI_lj.html">Mold integration for 100 plane of the fcc crystal for the Lennard-Jones potential</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Lattice mold calculations of mW Ice Ih nucleation rate at T=220K</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="example_MI_lj.html">Mold integration for the 100 plane of the fcc crystal of the Lennard-Jones potential</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Lattice mold calculation of Ice Ih nucleation rate at T=220K using the mW model</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#well-occupancy-curves">Well occupancy curves</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#average-nucleation-time">Average nucleation time</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#extrapolation-of-the-nucleation-rate">Extrapolation of the nucleation rate</a></li>
@@ -144,7 +144,7 @@
         
           <li><a href="example.html">Examples</a> &raquo;</li>
         
-      <li>Lattice mold calculations of mW Ice Ih nucleation rate at T=220K</li>
+      <li>Lattice mold calculation of Ice Ih nucleation rate at T=220K using the mW model</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -163,8 +163,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="tex2jax_ignore mathjax_ignore section" id="lattice-mold-calculations-of-mw-ice-ih-nucleation-rate-at-t-220k">
-<h1>Lattice mold calculations of mW Ice Ih nucleation rate at T=220K<a class="headerlink" href="#lattice-mold-calculations-of-mw-ice-ih-nucleation-rate-at-t-220k" title="Permalink to this headline">¶</a></h1>
+  <div class="tex2jax_ignore mathjax_ignore section" id="lattice-mold-calculation-of-ice-ih-nucleation-rate-at-t-220k-using-the-mw-model">
+<h1>Lattice mold calculation of Ice Ih nucleation rate at T=220K using the mW model<a class="headerlink" href="#lattice-mold-calculation-of-ice-ih-nucleation-rate-at-t-220k-using-the-mw-model" title="Permalink to this headline">¶</a></h1>
 <p>Here we provide a detailed set of instructions to calculate the nucleation rate of ice Ih with the mW coarse-grained water model at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span> using the Lattice Mold technique (see Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2016lattice" id="id1">1</a> and Sanchez-Burgos <em>et al.</em><a class="footnote-reference brackets" href="#footcite-sanchez2022homogeneous" id="id2">2</a>) that requires the <code class="docutils literal notranslate"><span class="pre">square/well</span> <span class="pre">pair_style</span></code> available in LAMMPS.</p>
 <p>The data file (<code class="docutils literal notranslate"><span class="pre">39mold.lmp</span></code>), the potential file for mW (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>) and LAMMPS script (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) are provided in the directory <code class="docutils literal notranslate"><span class="pre">/examples/mw_mold/</span></code> (see <a class="reference external" href="https://github.com/AndresRTejedor/Mold/tree/main/example/mw_mold">here</a>).
 In this worked example we will navigate through these files to explain them in detail.</p>
@@ -428,7 +428,7 @@ The table below provides the obtained free energy, average nucleation time and n
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="example_MI_lj.html" class="btn btn-neutral float-left" title="Mold integration for 100 plane of the fcc crystal for the Lennard-Jones potential" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="example_MI_lj.html" class="btn btn-neutral float-left" title="Mold integration for the 100 plane of the fcc crystal of the Lennard-Jones potential" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -1,4 +1,4 @@
-# Lattice mold calculations of mW Ice Ih nucleation rate at T=220K
+# Lattice mold calculation of Ice Ih nucleation rate at T=220K using the mW model
 
 Here we provide a detailed set of instructions to calculate the nucleation rate of ice Ih with the mW coarse-grained water model at $T=220K$ and $p=1bar$ using the Lattice Mold technique (see {footcite:t}`espinosa2016lattice` and {footcite:t}`sanchez2022homogeneous`) that requires the `square/well pair_style` available in LAMMPS.
 
