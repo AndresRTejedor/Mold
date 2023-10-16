@@ -13,7 +13,7 @@ The Mold Integration technique consists of different steps to obtain the interfa
   $\gamma(r_{w,0}>r_w)$. 
 4. Extrapolation of the interfacial free energy to the optimal radius $r_{w,0}$.
 
-The configuration (step 1) can be easily created using the bulk liquid and crystal configurations at the corresponding $(p,T)$ conditions. In this example, we provide the system data file for the plane 100 of the fcc crystal lattice for a LJ system containing 98 wells and 1960 in fluid particles at $T^\ast=0.617$ and $p^\ast=-0.02$. 
+The configuration (step 1) can be easily created using the bulk liquid and crystal configurations at the corresponding $(p,T)$ conditions. In this example, we provide the system data file for the plane 100 of the fcc crystal lattice for a LJ system containing 98 wells (blue particles) and 1960 in fluid particles (green) at $T^\ast=0.617$ and $p^\ast=-0.02$. 
 The following figure shows a 2D projection of the configuration file:
 
 ![Step-1](../figs/Fig1.png "Conf_MI")
@@ -62,9 +62,10 @@ group melt type 1
 group mold type 2
 
 ```
-For this step, the typical run must be approximately 200000 time-steps (with dt=1e-3), and that can be controlled by the parameter `nts`. 
+For this step, the typical run must be approximately 200000 time-steps (with dt=1e-3, in reduced LJ units), and that can be controlled by the parameter `nts`. 
 Regarding the interaction potential, the parameter `rw` stands for the well radius so this must be changed for the different studied radii during this step `rw`=$0.27,\ 0.28,\ \ldots,0.33,0.34\sigma$. 
-The parameter `nkT` gives the well depth in $k_{B}T$ units and for this step we use 8$k_BT$, although any value that guarantees that all the wells are filled can be also used. 
+The parameter `nkT` gives the well depth in $k_{B}T$ units and for this step we use 8$k_BT$, although any value that guarantees that all the wells are filled can be also used.
+Please note that very large values of `nkT` (i.e. $>15k_BT$) may require to reduce the integration time-step as the potential may become very steep.
 The variable `seed` controls the velocity seed and thus, it must be changed with a random integer number for each simulation. 
 Also, there are some variables that might be interesting to know:
 - `thermoSteps` gives the number of timesteps to print the thermodynamic variables
@@ -92,10 +93,10 @@ path='../../'
 Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but `LAMMPS.job` is not provided as it depends on the user machine. 
 
 
-6. The analysis for this step consists in determining if there is induction time, *i.e.* further energy is required for the formation of the interface (see {footcite:t}`espinosa2014mold`). 
+6. The analysis for this step consists in determining if there is induction time, i.e. further energy is required for the formation of the interface (see {footcite:t}`espinosa2014mold`). 
 To do so, we recommend analyzing the resulting trajectory using the order parameter ${\bar{q}}_6$ ({footcite:t}`lechner2008accurate`) to determine the number of crystal-like particles in the slab. 
-The recommended values for such analysis is a threshold of ${\bar{q}}_6=0.34$, and the particles are considered neighbours if they are at a distance of $1.35\sigma$ or less from the central molecule. This distance is also used to identify molecules of solid that belong to the same solid cluster.
-We provide a fortran program to apply the ${\bar{q}}_6$ order parameter to the resulting trajectories. You must compile the program `utils/MI/1.Optimal_r/order/analysisNPT_clusterKoos_vec_rhodist_dellago_pressloc.10.f` to get the executable `a.out`.
+The recommended value for such analysis is a threshold of ${\bar{q}}_6=0.34$ to distinguish solid-like from liquid-like particles (solid-like for ${\bar{q}}_6>0.34$, and liquid-like otherwise). The particles are considered neighbours if they are at a distance of $1.35\sigma$ or less from the central molecule. This distance is also used to identify molecules of solid that belong to the same solid cluster.
+We provide a Fortran program to apply the ${\bar{q}}_6$ order parameter to the resulting trajectories. You must compile the program `utils/MI/1.Optimal_r/order/analysisNPT_clusterKoos_vec_rhodist_dellago_pressloc.10.f` to get the executable `a.out`.
 Then, we provide a bash file `utils/MI/1.Optimal_r/Analysis.sh` to run the analysis and get the evolution of the largest cluster throughout the simulation. This script must be run for each well radius in the directory above the simulations directory. 
 The program enters the directory for each seed (e.g. `8kT_0seed`), and the user must provide the well depth (variable `kT`) and the path to access all the files provide in `utils/MI/1.Optimal_r/order/` (variable `path`).
 As a result, one obtains different curves for the biggest cluster as a function of time for the different well radii in the file nbig.data tha can be plotted to get the following figure:
