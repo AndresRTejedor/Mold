@@ -350,19 +350,19 @@ thermo_style  custom step pe epair press ke c_mytemp lx ly lz pxx pyy pzz c_1 v_
 \[\langle N_w \rangle=c_1\cdot n_{all}/(nkT\cdot T)\]</div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Please note that the system requires a time to equilibrate so that the analysis must be performed after <span class="math notranslate nohighlight">\(t\approx10\tau\)</span>. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…).</p>
+<p>Please note that the system requires a time to equilibrate so that the analysis must be performed after <span class="math notranslate nohighlight">\(t\approx10\tau\)</span>. This equilibration time may vary depending on the system under study (water, hard-spheres, NaCl…).</p>
 </div>
 <p>In <code class="docutils literal notranslate"><span class="pre">/utils/MI/2.Integration/</span></code>, we provide the python program <code class="docutils literal notranslate"><span class="pre">PyIntegral.py</span></code> that can be run to get the well occupancy curve for each well depth.
-The script must be run in the directory where you run the <code class="docutils literal notranslate"><span class="pre">Run.sh</span></code> bash file and only the temperature is included in <code class="docutils literal notranslate"><span class="pre">PyIntegral.py</span></code>. The program outcome is a file called <code class="docutils literal notranslate"><span class="pre">fill.txt</span></code> that contains the results.
+The script must be run in the directory where you run the <code class="docutils literal notranslate"><span class="pre">Run.sh</span></code> bash file and only the temperature is included in <code class="docutils literal notranslate"><span class="pre">PyIntegral.py</span></code>. The program output is a file called <code class="docutils literal notranslate"><span class="pre">fill.txt</span></code> that contains the results.
 In the following figure the curves of well occupancy vs. well depth for the different radii are presented.</p>
 <p><img alt="Step-2\label{Occupancy}" src="_images/Fig31.png" /></p>
 </div>
 <div class="section" id="extrapolation-for-calculating-the-interfacial-free-energy">
 <h2>Extrapolation for calculating the interfacial free energy<a class="headerlink" href="#extrapolation-for-calculating-the-interfacial-free-energy" title="Permalink to this headline">¶</a></h2>
-<p>After the analysis in the previous step, one can obtain a curve of well occupancy vs well depth for each radius so that the interfacial free energy is calculated as</p>
+<p>After the analysis in the previous step, one can obtain a curve of well occupancy vs. well depth for each radius so that the interfacial free energy is calculated as</p>
 <div class="math notranslate nohighlight">
 \[\gamma(r_w )=\frac{1}{2l_x\cdot l_y } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, \langle N_w(\epsilon)\rangle \right],\]</div>
-<p>where <span class="math notranslate nohighlight">\(N_w\)</span> is the total number of wells and <span class="math notranslate nohighlight">\(l_x=l_y=l\)</span> is the short side of the box that can be obtained from the thermo (<code class="docutils literal notranslate"><span class="pre">lx</span></code>, <code class="docutils literal notranslate"><span class="pre">ly</span></code>, columns 7 and 8 in the <code class="docutils literal notranslate"><span class="pre">thermo</span></code>, <span class="math notranslate nohighlight">\(l_x=l_y\)</span> in this example).
+<p>where <span class="math notranslate nohighlight">\(N_w\)</span> is the total number of wells and <span class="math notranslate nohighlight">\(l_x=l_y=l\)</span> is the short side of the box that can be obtained from the thermo (<code class="docutils literal notranslate"><span class="pre">lx</span></code>, <code class="docutils literal notranslate"><span class="pre">ly</span></code>, columns 7 and 8 in the <code class="docutils literal notranslate"><span class="pre">thermo</span></code>, <span class="math notranslate nohighlight">\(l_x=l_y\)</span> in this example, but might not be the case for other crystal phases).
 The resulting values for the integrals are provided in the following table (please note that the energy is now expressed in LJ units instead of <span class="math notranslate nohighlight">\(k_BT\)</span> (<span class="math notranslate nohighlight">\(\epsilon_{LJ}=0.617\cdot\epsilon_{k_BT}\)</span>)):</p>
 <table class="colwidths-auto docutils align-default">
 <thead>
@@ -385,8 +385,8 @@ According to the interfacial free energies as a function of the well radii provi
 <div class="math notranslate nohighlight">
 \[\gamma=0.370(8) \epsilon\sigma^{−2}\]</div>
 <p><img alt="Step-3" src="_images/Fig41.png" /></p>
-<p>The calculation from mold integration technique reported for the same system from Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id5">1</a> provided an interfacial free energy of <span class="math notranslate nohighlight">\(\gamma=0.372(8) \epsilon\sigma^{−2}\)</span> extrapolating to an optimal radius of <span class="math notranslate nohighlight">\(r_{w,0}=0.315\sigma\)</span>.
-Additionally, another work using the cleaving technique (Davidchack and Laird<a class="footnote-reference brackets" href="#footcite-davidchack2003direct" id="id6">3</a>) reported a value of <span class="math notranslate nohighlight">\(\gamma=0.371(3) \epsilon\sigma^{−2}\)</span> for the same system.</p>
+<p>The calculation from Mold Integration technique reported for the same system from Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id5">1</a> provided an interfacial free energy of <span class="math notranslate nohighlight">\(\gamma=0.372(8) \epsilon\sigma^{−2}\)</span> extrapolating to an optimal radius of <span class="math notranslate nohighlight">\(r_{w,0}=0.315\sigma\)</span>.
+Additionally, a former work using the Cleaving technique (Davidchack and Laird<a class="footnote-reference brackets" href="#footcite-davidchack2003direct" id="id6">3</a>) reported a value of <span class="math notranslate nohighlight">\(\gamma=0.371(3) \epsilon\sigma^{−2}\)</span> for the same system.</p>
 <div class="docutils container" id="id7">
 <dl class="footnote brackets">
 <dt class="label" id="footcite-espinosa2014mold"><span class="brackets">1</span><span class="fn-backref">(<a href="#id1">1</a>,<a href="#id2">2</a>,<a href="#id4">3</a>,<a href="#id5">4</a>)</span></dt>

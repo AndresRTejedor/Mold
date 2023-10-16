@@ -191,22 +191,22 @@ $$\langle N_w \rangle=c_1\cdot n_{all}/(nkT\cdot T)$$
 
 
 ````{note}
-Please note that the system requires a time to equilibrate so that the analysis must be performed after $t\approx10\tau$. This equilibration time may vary depending on the system under study (water, hard-spheres, salt…).
+Please note that the system requires a time to equilibrate so that the analysis must be performed after $t\approx10\tau$. This equilibration time may vary depending on the system under study (water, hard-spheres, NaCl…).
 ````
 
 
 In `/utils/MI/2.Integration/`, we provide the python program `PyIntegral.py` that can be run to get the well occupancy curve for each well depth. 
-The script must be run in the directory where you run the `Run.sh` bash file and only the temperature is included in `PyIntegral.py`. The program outcome is a file called `fill.txt` that contains the results.
+The script must be run in the directory where you run the `Run.sh` bash file and only the temperature is included in `PyIntegral.py`. The program output is a file called `fill.txt` that contains the results.
 In the following figure the curves of well occupancy vs. well depth for the different radii are presented.
 
 ![Step-2\label{Occupancy}](../figs/Fig3.png)
 
 ## Extrapolation for calculating the interfacial free energy
 
-After the analysis in the previous step, one can obtain a curve of well occupancy vs well depth for each radius so that the interfacial free energy is calculated as
+After the analysis in the previous step, one can obtain a curve of well occupancy vs. well depth for each radius so that the interfacial free energy is calculated as
 
 $$\gamma(r_w )=\frac{1}{2l_x\cdot l_y } \left[N_w\cdot\epsilon_{max}-\int_{\epsilon_0}^{\epsilon_{max}}d\epsilon\, \langle N_w(\epsilon)\rangle \right],$$
-where $N_w$ is the total number of wells and $l_x=l_y=l$ is the short side of the box that can be obtained from the thermo (`lx`, `ly`, columns 7 and 8 in the `thermo`, $l_x=l_y$ in this example). 
+where $N_w$ is the total number of wells and $l_x=l_y=l$ is the short side of the box that can be obtained from the thermo (`lx`, `ly`, columns 7 and 8 in the `thermo`, $l_x=l_y$ in this example, but might not be the case for other crystal phases). 
 The resulting values for the integrals are provided in the following table (please note that the energy is now expressed in LJ units instead of $k_BT$ ($\epsilon_{LJ}=0.617\cdot\epsilon_{k_BT}$)):
 
 
@@ -221,8 +221,8 @@ $$\gamma=0.370(8) \epsilon\sigma^{−2}$$
 
 ![Step-3](../figs/Fig4.png "Extrapolation")
 
-The calculation from mold integration technique reported for the same system from {footcite:t}`espinosa2014mold` provided an interfacial free energy of $\gamma=0.372(8) \epsilon\sigma^{−2}$ extrapolating to an optimal radius of $r_{w,0}=0.315\sigma$. 
-Additionally, another work using the cleaving technique ({footcite:t}`davidchack2003direct`) reported a value of $\gamma=0.371(3) \epsilon\sigma^{−2}$ for the same system.
+The calculation from Mold Integration technique reported for the same system from {footcite:t}`espinosa2014mold` provided an interfacial free energy of $\gamma=0.372(8) \epsilon\sigma^{−2}$ extrapolating to an optimal radius of $r_{w,0}=0.315\sigma$. 
+Additionally, a former work using the Cleaving technique ({footcite:t}`davidchack2003direct`) reported a value of $\gamma=0.371(3) \epsilon\sigma^{−2}$ for the same system.
 
 
 
