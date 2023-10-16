@@ -107,7 +107,7 @@ The dashed black line in the latter figure indicates the number of wells in the 
 
 $$\Delta G/k_B T=-log(P(n_s))+constant,$$
 
-where $P(n_s)$ is the probability distribution of finding the largest cluster with size $n_s$ that can be straightforwardly estimated from the order parameter curves. 
+where $P(n_s)$ is the probability distribution of finding the largest cluster with size $n_s$ that can be straightforwardly estimated from the order parameter curves. Please note that these energy profiles have been obtained sampling simulation timescales of $t~500\tau$ (i.e. reduced time in LJ units).
 
 ![Step-1\label{kk}](../figs/FigDG.png "Denergy")
 
