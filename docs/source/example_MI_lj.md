@@ -95,11 +95,11 @@ Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but `LAM
 
 6. The analysis for this step consists in determining if there is induction time, i.e. further energy is required for the formation of the interface (see {footcite:t}`espinosa2014mold`). 
 To do so, we recommend analyzing the resulting trajectory using the order parameter ${\bar{q}}_6$ ({footcite:t}`lechner2008accurate`) to determine the number of crystal-like particles in the slab. 
-The recommended value for such analysis is a threshold of ${\bar{q}}_6=0.34$ to distinguish solid-like from liquid-like particles (solid-like for ${\bar{q}}_6>0.34$, and liquid-like otherwise). The particles are considered neighbours if they are at a distance of $1.35\sigma$ or less from the central molecule. This distance is also used to identify molecules of solid that belong to the same solid cluster.
+The recommended value for such analysis is a threshold of ${\bar{q}}_6=0.34$ to distinguish solid-like from liquid-like particles (solid-like for ${\bar{q}}_6>0.34$, and liquid-like otherwise). The cut-off distance for such analysis is $1.35\sigma$. This distance is also used to identify molecules of solid that belong to the same solid cluster.
 We provide a Fortran program to apply the ${\bar{q}}_6$ order parameter to the resulting trajectories. You must compile the program `utils/MI/1.Optimal_r/order/analysisNPT_clusterKoos_vec_rhodist_dellago_pressloc.10.f` to get the executable `a.out`.
 Then, we provide a bash file `utils/MI/1.Optimal_r/Analysis.sh` to run the analysis and get the evolution of the largest cluster throughout the simulation. This script must be run for each well radius in the directory above the simulations directory. 
-The program enters the directory for each seed (e.g. `8kT_0seed`), and the user must provide the well depth (variable `kT`) and the path to access all the files provide in `utils/MI/1.Optimal_r/order/` (variable `path`).
-As a result, one obtains different curves for the biggest cluster as a function of time for the different well radii in the file nbig.data tha can be plotted to get the following figure:
+The program enters the directory for each seed (e.g. `8kT_0seed`), and the user must provide the well depth (variable `kT`) and the path to access all the files provided in `utils/MI/1.Optimal_r/order/` (variable `path`).
+As a result, one obtains different curves for the biggest cluster as a function of time for the different well radii in the file `nbig.data` that can be plotted to get the following figure:
 
 ![Step-1\label{kk}](../figs/Fig2.png "q6_time")
 
