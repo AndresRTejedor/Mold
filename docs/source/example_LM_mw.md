@@ -9,18 +9,18 @@ In this worked example we will navigate through these files to explain them in d
 The mW pair style is part of the MANYBODY package. See the [Build package](https://docs.lammps.org/Build_package.html) page for more info.
 ````
 
-The lattice mold technique consists of 5 different steps. All the steps can be found in {footcite:t}`sanchez2022homogeneous`, and they can be summarized as:  
+The Lattice Mold technique consists of 5 different steps. All the steps can be found in {footcite:t}`sanchez2022homogeneous`, and they can be summarized as:  
 
-1. Create an appropriate spherical mold with the perfect structure of the crystal Ih ice and embed it in the liquid at the equilibrium density at the conditions of interest.
-2. Choice of the optimal well radius $r_{w,0}$ for obtaining the nucleation rate, *i.e.* the limit for which two water molecules fit inside the same well.
+1. Create an appropriate spherical mold with the perfect structure of the crystal ice Ih and embed it in the liquid at the equilibrium density at the conditions of interest.
+2. Choice of the optimal well radius $r_{w,0}$ for obtaining the nucleation rate, i.e. the limit for which two water molecules fit inside the same well.
 3. Calculate the [well occupancy curves](#well-occupancy-curves) for several radii below the optimal one. 
 4. Calculate the [average nucleation time](#average-nucleation-time) for each well radius to overcome the nucleation free energy barrier.
 5. [Extrapolation of the nucleation rate](#extrapolation-of-the-nucleation-rate) to the optimal radius $r_{w,0}$.
 
-The configuration (step 1) can be easily created using the bulk liquid and crystal configurations at the corresponding $(p,T)$ conditions for the desired ice phase (Ih in this example). 
+The configuration (step 1) can be easily created using the bulk liquid and crystal (for the desired phase; ice Ih in this example)configurations at the corresponding $(p,T)$ conditions. 
 Please note that the perfect crystal structure must be used to generate the mold potential well using the equilibrium density at the given conditions. 
 Here, we provide the system data file of a mold made of 39 wells at $T=220K$ and $p=1bar$ (see the figure below where blue particles represent water molecules and gray particles the mold wells). 
-The number of wells in the mold is chosen so that the system displays induction time to permit reversible thermodynamical integration of the precritical cluster, but still it is able to overcome the free energy nucleation barrier and eventually crystallize in a reasonable computational time.
+The number of wells in the mold is chosen so that the system displays induction time to permit reversible thermodynamic integration of the cluster (which has to be precritical for being reversible), but still it is able to overcome the free energy nucleation barrier and eventually crystallize in a reasonable computational time.
 
 ![Step-1](../figs/LatticeMold/Fig1.png "Conf_LM")
 
