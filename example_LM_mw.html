@@ -172,18 +172,18 @@ In this worked example we will navigate through these files to explain them in d
 <p class="admonition-title">Note</p>
 <p>The mW pair style is part of the MANYBODY package. See the <a class="reference external" href="https://docs.lammps.org/Build_package.html">Build package</a> page for more info.</p>
 </div>
-<p>The lattice mold technique consists of 5 different steps. All the steps can be found in Sanchez-Burgos <em>et al.</em><a class="footnote-reference brackets" href="#footcite-sanchez2022homogeneous" id="id3">2</a>, and they can be summarized as:</p>
+<p>The Lattice Mold technique consists of 5 different steps. All the steps can be found in Sanchez-Burgos <em>et al.</em><a class="footnote-reference brackets" href="#footcite-sanchez2022homogeneous" id="id3">2</a>, and they can be summarized as:</p>
 <ol class="arabic simple">
-<li><p>Create an appropriate spherical mold with the perfect structure of the crystal Ih ice and embed it in the liquid at the equilibrium density at the conditions of interest.</p></li>
-<li><p>Choice of the optimal well radius <span class="math notranslate nohighlight">\(r_{w,0}\)</span> for obtaining the nucleation rate, <em>i.e.</em> the limit for which two water molecules fit inside the same well.</p></li>
+<li><p>Create an appropriate spherical mold with the perfect structure of the crystal ice Ih and embed it in the liquid at the equilibrium density at the conditions of interest.</p></li>
+<li><p>Choice of the optimal well radius <span class="math notranslate nohighlight">\(r_{w,0}\)</span> for obtaining the nucleation rate, i.e. the limit for which two water molecules fit inside the same well.</p></li>
 <li><p>Calculate the <a class="reference internal" href="#well-occupancy-curves"><span class="std std-doc">well occupancy curves</span></a> for several radii below the optimal one.</p></li>
 <li><p>Calculate the <a class="reference internal" href="#average-nucleation-time"><span class="std std-doc">average nucleation time</span></a> for each well radius to overcome the nucleation free energy barrier.</p></li>
 <li><p><a class="reference internal" href="#extrapolation-of-the-nucleation-rate"><span class="std std-doc">Extrapolation of the nucleation rate</span></a> to the optimal radius <span class="math notranslate nohighlight">\(r_{w,0}\)</span>.</p></li>
 </ol>
-<p>The configuration (step 1) can be easily created using the bulk liquid and crystal configurations at the corresponding <span class="math notranslate nohighlight">\((p,T)\)</span> conditions for the desired ice phase (Ih in this example).
+<p>The configuration (step 1) can be easily created using the bulk liquid and crystal (for the desired phase; ice Ih in this example)configurations at the corresponding <span class="math notranslate nohighlight">\((p,T)\)</span> conditions.
 Please note that the perfect crystal structure must be used to generate the mold potential well using the equilibrium density at the given conditions.
 Here, we provide the system data file of a mold made of 39 wells at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span> (see the figure below where blue particles represent water molecules and gray particles the mold wells).
-The number of wells in the mold is chosen so that the system displays induction time to permit reversible thermodynamical integration of the precritical cluster, but still it is able to overcome the free energy nucleation barrier and eventually crystallize in a reasonable computational time.</p>
+The number of wells in the mold is chosen so that the system displays induction time to permit reversible thermodynamic integration of the cluster (which has to be precritical for being reversible), but still it is able to overcome the free energy nucleation barrier and eventually crystallize in a reasonable computational time.</p>
 <p><img alt="Step-1" src="_images/Fig1.png" /></p>
 <p>The optimal radius is calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of <span class="math notranslate nohighlight">\(8k_BT\)</span>.
 The largest value of the radius at which the occupancy is still below <span class="math notranslate nohighlight">\(100\%\)</span> at a depth of <span class="math notranslate nohighlight">\(8k_BT\)</span> is considered to be the optimal radius.
