@@ -208,7 +208,7 @@ The script must be run in the directory where you run the `Run.sh` bash file.
 
 ````{warning}
 Some seeds may need to run longer times in case the mold has not been able to nucleate. 
-Also, when not all trajectories exhibit complete freezing after long runs, one could used the half life nucleation time $t_{1/2}$ (i.e. the time required to have half of the 10 trajectories with complete freezing) $\langle t\rangle$\approx t_{1/2}/ln(2)$.
+Also, when not all trajectories exhibit complete freezing after long runs, one could used the half life nucleation time $t_{1/2}$ (i.e. the time required to have half of the 10 trajectories with complete freezing) $\langle t\rangle\approx t_{1/2}/ln(2)$.
 ````
 
 
