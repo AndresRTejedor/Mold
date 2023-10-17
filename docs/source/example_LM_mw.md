@@ -236,7 +236,7 @@ The table below provides the obtained free energy, average nucleation time and n
 | $\log_{10}(J\cdot m^{3}s)$  |  23.0(2) |  23.8(2)  |  24.2(3) |
 
 
-Extrapolating the nucleation rate to the optimal radius gives $\log_{10}J(r_{w,0}=1.32Å)=25.3(2.5)$ for ice Ih of mW at $T=220K$ and $p=1bar$. Please note that $J$ is in $ m^{-3}\cdot s^{-1}$
+Extrapolating the nucleation rate to the optimal radius gives $\log_{10}J(r_{w,0}=1.32Å)=25.3(2.5)$ for ice Ih of mW at $T=220K$ and $p=1bar$. Please note that $J$ is in $ m^{-3}\cdot s^{-1}$. This value is compatible with previous calculations of the nucleation rate for this system using other methods ([@haji2018forward],[@li2011homogeneous],[@haji2014suppression]).
 
 
 ```{footbibliography}
