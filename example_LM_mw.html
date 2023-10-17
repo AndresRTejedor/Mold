@@ -293,10 +293,10 @@ thermo         ${thermoSteps}      # how often (in steps) will write the propert
 <p>Thus, the calculation of the mold occupancy for each well depth can be estimated by taking the average over the production (after equilibration) simulation time through this equation:</p>
 <div class="math notranslate nohighlight">
 \[\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)\]</div>
-<p>The two provided constants account for the conversion factor from <span class="math notranslate nohighlight">\(kcal\)</span> to <span class="math notranslate nohighlight">\(J\)</span> (4184), and the ideal gas constant in <span class="math notranslate nohighlight">\(R=8.314 J\cdot mol^{-1}\cdot K^{-1}\)</span>.</p>
-<p>Please note that the temperature must be recalculated to consider only the water molecules in the simulation box, since the LAMMPS <code class="docutils literal notranslate"><span class="pre">thermo</span></code> considers all the particles to evaluate the system temperature. This only applies for calculations in real units.</p>
+<p>The two provided constants account for the conversion factor from <span class="math notranslate nohighlight">\(kcal\)</span> to <span class="math notranslate nohighlight">\(J\)</span> (<span class="math notranslate nohighlight">\(4184\)</span>), and the ideal gas constant in <span class="math notranslate nohighlight">\(R=8.314 J\cdot mol^{-1}\cdot K^{-1}\)</span>.</p>
+<p>Please note that the temperature must be recalculated to consider only the water molecules in the simulation box, since the LAMMPS <code class="docutils literal notranslate"><span class="pre">thermo</span></code> considers all the particles to evaluate the system temperature. The <code class="docutils literal notranslate"><span class="pre">compute</span> <span class="pre">mytemp</span></code> performs this calculation. This correction only applies when simulating systems in real units.</p>
 <p>In <code class="docutils literal notranslate"><span class="pre">/utils/LM/1.Integration/</span></code>, we provide the python program <code class="docutils literal notranslate"><span class="pre">PyIntegral.py</span></code> that can be run to get the well occupancy curve for each well depth.
-The script must be run in the directory where you run the <code class="docutils literal notranslate"><span class="pre">Run.sh</span></code> bash file. The program outcome is a file called <code class="docutils literal notranslate"><span class="pre">fill.txt</span></code> that contains the results for the well occupancy.</p>
+The script must be run in the directory where you run the <code class="docutils literal notranslate"><span class="pre">Run.sh</span></code> bash file. The program output is a file called <code class="docutils literal notranslate"><span class="pre">fill.txt</span></code> that contains the results for the well occupancy.</p>
 <ol class="arabic simple" start="7">
 <li><p>Plot the different curves of mold occupancy as a function of the well depth for the different radii. The result should look similar to the figure below</p></li>
 </ol>
@@ -311,7 +311,7 @@ The final calculation of the free energy difference must include the rotational 
 <div class="math notranslate nohighlight">
 \[\Delta G/k_B T=\Delta G^*/k_B T + \ln(\rho_f V_w)- \ln(8\pi^2),\]</div>
 <p>where <span class="math notranslate nohighlight">\(\rho_f\)</span> is the fluid number density, and <span class="math notranslate nohighlight">\(V_w\)</span> is the volume of a single well.
-This magnitude can be calculated with the program <code class="docutils literal notranslate"><span class="pre">utils/LM/1.Integral/post.py</span></code>, that reads the file <code class="docutils literal notranslate"><span class="pre">fill.txt</span></code> obtained by running the script <code class="docutils literal notranslate"><span class="pre">PyIntegral.py</span></code>. Only the value of <span class="math notranslate nohighlight">\(rho_f\)</span> must be adjusted for each system.
+This magnitude can be calculated with the program <code class="docutils literal notranslate"><span class="pre">utils/LM/1.Integral/post.py</span></code>, that reads the file <code class="docutils literal notranslate"><span class="pre">fill.txt</span></code> obtained by running the script <code class="docutils literal notranslate"><span class="pre">PyIntegral.py</span></code>. Only the value of <span class="math notranslate nohighlight">\(\rho_f\)</span> must be adjusted for each system if any other conditions are considered.
 The free energy difference is used to calculate the probability per unit volume of finding a crystal cluster of the size of the one induced by the mold as dictated by the following equation:</p>
 <div class="math notranslate nohighlight">
 \[P=\rho_f \exp(-\Delta G/(k_B T)) .\]</div>
@@ -323,7 +323,7 @@ The free energy difference is used to calculate the probability per unit volume 
 <li><p>Create the directory for sweeping different radii (<span class="math notranslate nohighlight">\(r_w=0.85,0.99,1.12Å\)</span>).</p></li>
 <li><p>For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.</p></li>
 <li><p>Copy the LAMMPS script file (<code class="docutils literal notranslate"><span class="pre">mw_lattmold.in</span></code>) in each subdirectory along with the configuration file (<code class="docutils literal notranslate"><span class="pre">39mold.lmp</span></code>) and the mW potential file (<code class="docutils literal notranslate"><span class="pre">mW.sw</span></code>).</p></li>
-<li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step and this particular system, the typical run must be of the order of <span class="math notranslate nohighlight">\(100ns\)</span> (with <code class="docutils literal notranslate"><span class="pre">dt=1fs</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code> which must be set to <code class="docutils literal notranslate"><span class="pre">nts=10000000</span></code>.
+<li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step and this particular system, the typical run must be of the order of <span class="math notranslate nohighlight">\(100 ns\)</span> (with <code class="docutils literal notranslate"><span class="pre">dt=1fs</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code> which must be set to <code class="docutils literal notranslate"><span class="pre">nts=10000000</span></code>.
 The well depth <code class="docutils literal notranslate"><span class="pre">nkT</span></code> must be set to 8. Importantly, for this step the <code class="docutils literal notranslate"><span class="pre">seed</span></code> variable must be changed for every independent run.</p></li>
 <li><p>Launch the simulation for each radius and independent velocity seed.
 We provide a bash file <code class="docutils literal notranslate"><span class="pre">/utils/LM/2.Induction_t/Run.sh</span></code> that creates the directory for each seed and run the simulations, reading the file <code class="docutils literal notranslate"><span class="pre">/utils/LM/2.Induction_t/list</span></code> that contains the number of independent velocity seeds.
@@ -349,9 +349,9 @@ The bash script contains the following variables:</p></li>
 Also,  the bash file includes a submission command <code class="docutils literal notranslate"><span class="pre">sbatch</span> <span class="pre">LAMMPS.job</span></code>, but <code class="docutils literal notranslate"><span class="pre">LAMMPS.job</span></code> is not provided as it depends on the user machine.</p></li>
 </ul>
 <ol class="arabic simple" start="6">
-<li><p>The <code class="docutils literal notranslate"><span class="pre">thermos_style</span></code> provides the potential energy (<code class="docutils literal notranslate"><span class="pre">pe</span></code>) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example.
-Plot the variable <code class="docutils literal notranslate"><span class="pre">pe</span></code> vs the time that correspond to multiply the <code class="docutils literal notranslate"><span class="pre">step</span></code> variable (column 1 in <code class="docutils literal notranslate"><span class="pre">thermo</span></code>) by the <code class="docutils literal notranslate"><span class="pre">timestep</span></code> (1fs).
-The sharp decay in the curves determine the nucleation time that averaged over all seeds provides the estimation for all the seeds as shown in the figure below</p></li>
+<li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> provides the potential energy (<code class="docutils literal notranslate"><span class="pre">pe</span></code>) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example.
+Plot the variable <code class="docutils literal notranslate"><span class="pre">pe</span></code> vs. the time that correspond to multiply the <code class="docutils literal notranslate"><span class="pre">step</span></code> variable (column 1 in <code class="docutils literal notranslate"><span class="pre">thermo</span></code>) by the <code class="docutils literal notranslate"><span class="pre">timestep</span></code> (1fs).
+The sharp decay in the curves indicate the nucleation time, that averaged provides <span class="math notranslate nohighlight">\(\langle t\rangle\)</span>. The representation of this calculatin is shown in the figure below</p></li>
 </ol>
 <p><img alt="Step-4" src="_images/Fig4.png" /></p>
 <p>The program <code class="docutils literal notranslate"><span class="pre">PyTime.py</span></code>, provided in <code class="docutils literal notranslate"><span class="pre">/utils/LM/2.Induction_t/</span></code>, can be used to calculate an estimation of the average induction time. Also, the program indicates if some of the seeds have not crystallized yet and they need more simulaiton time.
@@ -359,7 +359,7 @@ The script must be run in the directory where you run the <code class="docutils 
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>Some seeds may need to run longer times in case the mold has not been able to nucleate.
-Also, when not all trajectories exhibit complete freezing after long runs, one could used the half life reaction time (i.e. the time required to have half of the 10 trajectories with complete freezing).</p>
+Also, when not all trajectories exhibit complete freezing after long runs, one could used the half life nucleation time <span class="math notranslate nohighlight">\(t_{1/2}\)</span> (i.e. the time required to have half of the 10 trajectories with complete freezing) <span class="math notranslate nohighlight">\(\langlet\rangle\)</span>\approx t_{1/2}/ln(2).</p>
 </div>
 </div>
 <div class="section" id="extrapolation-of-the-nucleation-rate">
@@ -372,7 +372,7 @@ Also, when not all trajectories exhibit complete freezing after long runs, one c
 \[J=P/\langle t\rangle,\]</div>
 <p>where <span class="math notranslate nohighlight">\(P\)</span> is the probability calculated in <span class="xref myst">Step 3</span> and <span class="math notranslate nohighlight">\(\langle t\rangle \)</span> is the average nucleation time obtained in <a class="reference internal" href="#average-nucleation-time"><span class="std std-doc">Step 4</span></a> for each well radius.</p>
 <ul class="simple">
-<li><p>Plot the nucleation rates vs the well radii using logarithmic scale in the y-axis as in the figure below.</p></li>
+<li><p>Plot the nucleation rates vs. the well radii using logarithmic scale in the y-axis as in the figure below.</p></li>
 </ul>
 <p><img alt="Step-5" src="_images/Fig5.png" /></p>
 <ul class="simple">
@@ -406,7 +406,7 @@ The table below provides the obtained free energy, average nucleation time and n
 </tr>
 </tbody>
 </table>
-<p>Extrapolating the nucleation rate to the optimal radius gives <span class="math notranslate nohighlight">\(\log_{10}J(r_{w,0}=1.32Å)=25.3(2.5)\)</span> for ice Ih of mW at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span>.</p>
+<p>Extrapolating the nucleation rate to the optimal radius gives <span class="math notranslate nohighlight">\(\log_{10}J(r_{w,0}=1.32Å)=25.3(2.5)\)</span> for ice Ih of mW at <span class="math notranslate nohighlight">\(T=220K\)</span> and <span class="math notranslate nohighlight">\(p=1bar\)</span>. Please note that <span class="math notranslate nohighlight">\(J\)</span> is in <span class="math notranslate nohighlight">\( m^{-3}\cdot s^{-1}\)</span></p>
 <div class="docutils container" id="id4">
 <dl class="footnote brackets">
 <dt class="label" id="footcite-espinosa2016lattice"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
