@@ -26,13 +26,14 @@ The number of wells in the mold is chosen so that the system displays induction 
 
 The optimal radius is calculated by running a simulation of a single well and sweeping the well radii for a fixed depth of $8k_BT$. 
 The largest value of the radius at which the occupancy is still below $100\%$ at a depth of $8k_BT$ is considered to be the optimal radius.
-For well radius larger than the optimal one, two or more particles can enter in a well. Please note that for the lattice mold technique a extrapolation is performed to a larger value of the radius than that used in the calculation (in contrast with the [mold integration method](https://andresrtejedor.github.io/Mold/example_MI_lj.html#))
+For well radius larger than the optimal one, two or more particles can enter in a well. Please note that for the lattice mold technique a extrapolation is performed to a larger value of the radius than that used in the calculation (in contrast with the [Mold Integration method](https://andresrtejedor.github.io/Mold/example_MI_lj.html#))
 For the current example we extrapolate to $r_{w,0}=1.32Å$ (see figure below, red vertical line).
 
 ![Step-2](../figs/LatticeMold/Fig2.png "Opt_Rad")
 
+Please note that for reproducing this calculation we recommend to use the configuration with a single well. You can manually remove 38 potential wells from the configuration file `39mold.lmp` to generate such configuration.
 
-## Well occupancy curves
+## Well occupancy curves (thermodynamic integration)
 
 The calculation of the well occupancy for different well radii under the optimal radius consists of the following steps:
 
@@ -92,7 +93,7 @@ Regarding the interaction potential, the parameter `width` stands for the well r
 The parameter `nkT` gives the well depth in $k_BT$  and must sweep the values presented above. 
 Regarding the velocity seed, the variable `seed` controls the initial velocity seed. 
 Also, there are some variables that might be interesting to know: 
-- `thermoSteps` gives the number of timesteps to print the thermos. 
+- `thermoSteps` gives the number of timesteps to print the thermo. 
 - `restartSteps` indicates the frequency of saving the restart files.
 - `dumpSteps` is the number of steps to save the trajectory in the dump file and for this step can be set above 200000 as it is not required in this step.
 
@@ -132,6 +133,8 @@ thermo         ${thermoSteps}      # how often (in steps) will write the propert
 Thus, the calculation of the mold occupancy for each well depth can be estimated by taking the average over the production (after equilibration) simulation time through this equation:
   
 $$\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)$$
+
+The two provided constants account for the conversion factor from $kcal$ to $J$ (4184), and the ideal gas constant in $R=8.314 J\cdot mol^{-1}\cdot K^{-1}$.
 
 Please note that the temperature must be recalculated to consider only the water molecules in the simulation box, since the LAMMPS `thermo` considers all the particles to evaluate the system temperature. This only applies for calculations in real units.
 
