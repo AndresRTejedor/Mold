@@ -134,12 +134,12 @@ Thus, the calculation of the mold occupancy for each well depth can be estimated
   
 $$\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)$$
 
-The two provided constants account for the conversion factor from $kcal$ to $J$ (4184), and the ideal gas constant in $R=8.314 J\cdot mol^{-1}\cdot K^{-1}$.
+The two provided constants account for the conversion factor from $kcal$ to $J$ ($4184$), and the ideal gas constant in $R=8.314 J\cdot mol^{-1}\cdot K^{-1}$.
 
-Please note that the temperature must be recalculated to consider only the water molecules in the simulation box, since the LAMMPS `thermo` considers all the particles to evaluate the system temperature. This only applies for calculations in real units.
+Please note that the temperature must be recalculated to consider only the water molecules in the simulation box, since the LAMMPS `thermo` considers all the particles to evaluate the system temperature. The `compute mytemp` performs this calculation. This correction only applies when simulating systems in real units.
 
 In `/utils/LM/1.Integration/`, we provide the python program `PyIntegral.py` that can be run to get the well occupancy curve for each well depth. 
-The script must be run in the directory where you run the `Run.sh` bash file. The program outcome is a file called `fill.txt` that contains the results for the well occupancy.
+The script must be run in the directory where you run the `Run.sh` bash file. The program output is a file called `fill.txt` that contains the results for the well occupancy.
 
 
 7. Plot the different curves of mold occupancy as a function of the well depth for the different radii. The result should look similar to the figure below
@@ -158,7 +158,7 @@ The final calculation of the free energy difference must include the rotational 
 $$\Delta G/k_B T=\Delta G^*/k_B T + \ln(\rho_f V_w)- \ln(8\pi^2),$$
 
 where $\rho_f$ is the fluid number density, and $V_w$ is the volume of a single well.
-This magnitude can be calculated with the program `utils/LM/1.Integral/post.py`, that reads the file `fill.txt` obtained by running the script `PyIntegral.py`. Only the value of $rho_f$ must be adjusted for each system.
+This magnitude can be calculated with the program `utils/LM/1.Integral/post.py`, that reads the file `fill.txt` obtained by running the script `PyIntegral.py`. Only the value of $\rho_f$ must be adjusted for each system if any other conditions are considered.
 The free energy difference is used to calculate the probability per unit volume of finding a crystal cluster of the size of the one induced by the mold as dictated by the following equation:
 
 $$P=\rho_f \exp(-\Delta G/(k_B T)) .$$
@@ -171,7 +171,7 @@ To estimate the average nucleation time, one must follow these steps:
 1. Create the directory for sweeping different radii ($r_w=0.85,0.99,1.12Å$).
 2. For each radius one needs to run different independent velocity seeds. Create 10 directories for each radius directory.
 3. Copy the LAMMPS script file (`mw_lattmold.in`) in each subdirectory along with the configuration file (`39mold.lmp`) and the mW potential file (`mW.sw`).
-4. The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step and this particular system, the typical run must be of the order of $100ns$ (with `dt=1fs`), controlled by the parameter `nts` which must be set to `nts=10000000`. 
+4. The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step and this particular system, the typical run must be of the order of $100 ns$ (with `dt=1fs`), controlled by the parameter `nts` which must be set to `nts=10000000`. 
 The well depth `nkT` must be set to 8. Importantly, for this step the `seed` variable must be changed for every independent run.
 5. Launch the simulation for each radius and independent velocity seed.
 We provide a bash file `/utils/LM/2.Induction_t/Run.sh` that creates the directory for each seed and run the simulations, reading the file `/utils/LM/2.Induction_t/list` that contains the number of independent velocity seeds. 
@@ -195,9 +195,9 @@ path='../../'
 Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but `LAMMPS.job` is not provided as it depends on the user machine. 
 
 
-6. The `thermos_style` provides the potential energy (`pe`) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example. 
-Plot the variable `pe` vs the time that correspond to multiply the `step` variable (column 1 in `thermo`) by the `timestep` (1fs). 
-The sharp decay in the curves determine the nucleation time that averaged over all seeds provides the estimation for all the seeds as shown in the figure below
+6. The `thermo_style` provides the potential energy (`pe`) in column 2 which is the variable used to determine the average nucleation time of the precritical mold used in this example. 
+Plot the variable `pe` vs. the time that correspond to multiply the `step` variable (column 1 in `thermo`) by the `timestep` (1fs). 
+The sharp decay in the curves indicate the nucleation time, that averaged provides $\langle t\rangle$. The representation of this calculatin is shown in the figure below
 
 ![Step-4](../figs/LatticeMold/Fig4.png "Time")
 
@@ -208,7 +208,7 @@ The script must be run in the directory where you run the `Run.sh` bash file.
 
 ````{warning}
 Some seeds may need to run longer times in case the mold has not been able to nucleate. 
-Also, when not all trajectories exhibit complete freezing after long runs, one could used the half life reaction time (i.e. the time required to have half of the 10 trajectories with complete freezing).
+Also, when not all trajectories exhibit complete freezing after long runs, one could used the half life nucleation time $t_{1/2}$ (i.e. the time required to have half of the 10 trajectories with complete freezing) $\langlet\rangle$\approx t_{1/2}/ln(2).
 ````
 
 
@@ -221,7 +221,7 @@ The extrapolation of the nucleation rate is straitghforward.
 $$J=P/\langle t\rangle,$$
 
 where $P$ is the probability calculated in [Step 3](#well-occupancy) and $\langle t\rangle $ is the average nucleation time obtained in [Step 4](#average-nucleation-time) for each well radius. 
-- Plot the nucleation rates vs the well radii using logarithmic scale in the y-axis as in the figure below.
+- Plot the nucleation rates vs. the well radii using logarithmic scale in the y-axis as in the figure below.
 
 ![Step-5](../figs/LatticeMold/Fig5.png "Extrapolation")
  
@@ -236,7 +236,7 @@ The table below provides the obtained free energy, average nucleation time and n
 | $\log_{10}(J\cdot m^{3}s)$  |  23.0(2) |  23.8(2)  |  24.2(3) |
 
 
-Extrapolating the nucleation rate to the optimal radius gives $\log_{10}J(r_{w,0}=1.32Å)=25.3(2.5)$ for ice Ih of mW at $T=220K$ and $p=1bar$.
+Extrapolating the nucleation rate to the optimal radius gives $\log_{10}J(r_{w,0}=1.32Å)=25.3(2.5)$ for ice Ih of mW at $T=220K$ and $p=1bar$. Please note that $J$ is in $ m^{-3}\cdot s^{-1}$
 
 
 ```{footbibliography}
