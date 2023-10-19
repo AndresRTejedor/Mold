@@ -4,5 +4,6 @@
 .. toctree::
    :maxdepth: 2
    
+   pairBG.md
    pair_square.md
 ```

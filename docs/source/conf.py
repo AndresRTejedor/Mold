@@ -18,7 +18,7 @@
 # -- Project information -----------------------------------------------------
 
 project = 'SIFT'
-copyright = '2023, Andres R. Tejedor, Ignacio Sanchez-Burgos, Felipe J. Blas, Eduardo Sanz, Carlos Vega, Nicodemo Di Pasquale, Jorge Ramírez, and Jorge R. Espinosa'
+copyright = '2023, Andres R. Tejedor, Ignacio Sanchez-Burgos, Felipe J. Blas, Eduardo Sanz, Ruslan Davidchack, Carlos Vega, Nicodemo Di Pasquale, Jorge Ramírez, and Jorge R. Espinosa'
 author = 'Andres R. Tejedor'
 
 
