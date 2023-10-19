@@ -1,7 +1,7 @@
 # Mold integration for the 100 plane of the fcc crystal of the Lennard-Jones potential
 
 Here we provide a detailed set of instructions to reproduce the crystal fluid interfacial free energy using the Broughton and Gilmer (BG) Lennard-Jones (LJ) potential 
-(CLEAVING package available [here](https://github.com/demonico85/cleaving/tree/master)) and `square/well pair_style` available in the current [package](https://github.com/AndresRTejedor/Mold/).
+(`pair_style lj/BG` and `pair_style square/well` available in this [package](https://github.com/AndresRTejedor/Mold/).
 
 The data file (`mold_100.lmp`) and LAMMPS script (`lj_moldint.in`) are provided in the directory `/examples/lj_mold/` (see [here](https://github.com/AndresRTejedor/Mold/tree/main/example/lj_mold)). In this worked example we will navigate through these files to explain them in detail.
 
