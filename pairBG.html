@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pair_style lj/BG &mdash; MOLD  documentation</title>
+  <title>pair_style lj/BG &mdash; SIFT  documentation</title>
   
 
   
@@ -37,6 +37,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pair_style square/well" href="pair_square.html" />
     <link rel="prev" title="LAMMPS commands" href="lammps.html" /> 
 </head>
 
@@ -51,7 +52,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> MOLD
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> SIFT
           
 
           
@@ -86,9 +87,15 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="lammps.html">LAMMPS commands</a><ul class="current">
-<li class="toctree-l2 current"><a class="current reference internal" href="#">pair_style lj/BG</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">pair_style lj/BG</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#syntax">Syntax</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#description">Description</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="pair_square.html">pair_style square/well</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="example.html">Examples</a></li>
 </ul>
 
             
@@ -104,7 +111,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">MOLD</a>
+          <a href="index.html">SIFT</a>
         
       </nav>
 
@@ -158,18 +165,19 @@
             
   <div class="tex2jax_ignore mathjax_ignore section" id="pair-style-lj-bg">
 <h1>pair_style lj/BG<a class="headerlink" href="#pair-style-lj-bg" title="Permalink to this headline">¶</a></h1>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pair_style</span> <span class="n">lj</span><span class="o">/</span><span class="n">BG</span> <span class="n">args</span>
+<div class="section" id="syntax">
+<h2>Syntax<a class="headerlink" href="#syntax" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pair_style</span> <span class="n">lj</span><span class="o">/</span><span class="n">BG</span> <span class="n">cutoff1</span> <span class="n">cutoff2</span>
 </pre></div>
 </div>
 <ul class="simple">
-<li><p>args=list of the possible arguments</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cutoff1</span></code> = global internal cut-off</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cutoff2</span></code> = global external cut-off</p></li>
 </ul>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lj</span><span class="o">/</span><span class="n">BG</span> <span class="n">args</span> <span class="o">=</span> <span class="n">cutoff1</span> <span class="n">cutoff2</span> 
-    <span class="n">cutoff1</span> <span class="o">=</span> <span class="k">global</span> <span class="n">internal</span> <span class="n">cut</span><span class="o">-</span><span class="n">off</span>
-    <span class="n">cutoff2</span> <span class="o">=</span> <span class="k">global</span> <span class="n">external</span> <span class="n">cut</span><span class="o">-</span><span class="n">off</span>
-</pre></div>
 </div>
-<p>The Broughton and Gilmer modification to Lennard-Jones potential Broughton and Gilmer<a class="footnote-reference brackets" href="#footcite-broughton1983" id="id1">1</a> is given by:</p>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this headline">¶</a></h2>
+<p>The Broughton and Gilmer<a class="footnote-reference brackets" href="#footcite-broughton1983" id="id1">1</a> modification to Lennard-Jones potential is given by:</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 	U(r_{ln}) =
@@ -180,7 +188,7 @@
 		\end{cases}
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(r_{ln}=|\mathbf{r}_l-\mathbf{r}_n|\)</span> for each couple of atoms <span class="math notranslate nohighlight">\(l,n\)</span> in the system, and <span class="math notranslate nohighlight">\(C_1, C_2, C_3, C_4, C_5\)</span> are constants we used the values reported in Davidchack and Laird<a class="footnote-reference brackets" href="#footcite-davidchack2003direct" id="id2">2</a></p>
-<p>The constants are hardcorded within the pair style and they not need to be defined.</p>
+<p>The constants are hardcorded within the pair style and they do not need to be defined.</p>
 <div class="docutils container" id="id3">
 <dl class="footnote brackets">
 <dt class="label" id="footcite-broughton1983"><span class="brackets"><a class="fn-backref" href="#id1">1</a></span></dt>
@@ -193,6 +201,7 @@
 </div>
 <hr class="footnotes docutils" />
 </div>
+</div>
 
 
            </div>
@@ -201,6 +210,8 @@
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="pair_square.html" class="btn btn-neutral float-right" title="pair_style square/well" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="lammps.html" class="btn btn-neutral float-left" title="LAMMPS commands" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -213,7 +224,7 @@
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2022, NAMES
+        &copy; Copyright 2023, Andres R. Tejedor, Ignacio Sanchez-Burgos, Felipe J. Blas, Eduardo Sanz, Ruslan Davidchack, Carlos Vega, Nicodemo Di Pasquale, Jorge Ramírez, and Jorge R. Espinosa
 
     </p>
   </div>

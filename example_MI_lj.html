@@ -167,7 +167,7 @@
   <div class="tex2jax_ignore mathjax_ignore section" id="mold-integration-for-the-100-plane-of-the-fcc-crystal-of-the-lennard-jones-potential">
 <h1>Mold integration for the 100 plane of the fcc crystal of the Lennard-Jones potential<a class="headerlink" href="#mold-integration-for-the-100-plane-of-the-fcc-crystal-of-the-lennard-jones-potential" title="Permalink to this headline">¶</a></h1>
 <p>Here we provide a detailed set of instructions to reproduce the crystal fluid interfacial free energy using the Broughton and Gilmer (BG) Lennard-Jones (LJ) potential
-(CLEAVING package available <a class="reference external" href="https://github.com/demonico85/cleaving/tree/master">here</a>) and <code class="docutils literal notranslate"><span class="pre">square/well</span> <span class="pre">pair_style</span></code> available in the current <a class="reference external" href="https://github.com/AndresRTejedor/Mold/">package</a>.</p>
+(<code class="docutils literal notranslate"><span class="pre">pair_style</span> <span class="pre">lj/BG</span></code> and <code class="docutils literal notranslate"><span class="pre">pair_style</span> <span class="pre">square/well</span></code> available in this <a class="reference external" href="https://github.com/AndresRTejedor/Mold/">package</a>.</p>
 <p>The data file (<code class="docutils literal notranslate"><span class="pre">mold_100.lmp</span></code>) and LAMMPS script (<code class="docutils literal notranslate"><span class="pre">lj_moldint.in</span></code>) are provided in the directory <code class="docutils literal notranslate"><span class="pre">/examples/lj_mold/</span></code> (see <a class="reference external" href="https://github.com/AndresRTejedor/Mold/tree/main/example/lj_mold">here</a>). In this worked example we will navigate through these files to explain them in detail.</p>
 <p>The Mold Integration technique consists of different steps to obtain the interfacial free energy. Here, we explain the method for the 100 plane using LJ particles at <span class="math notranslate nohighlight">\(T^\ast=0.617\)</span> and <span class="math notranslate nohighlight">\(p^\ast=-0.02\)</span>. All the steps can be found in Espinosa <em>et al.</em><a class="footnote-reference brackets" href="#footcite-espinosa2014mold" id="id1">1</a>, and they can be summarized as:</p>
 <ol class="arabic simple">
@@ -425,7 +425,7 @@ Additionally, a former work using the Cleaving technique (Davidchack and Laird<a
   <div role="contentinfo">
     <p>
         
-        &copy; Copyright 2023, Andres R. Tejedor, Ignacio Sanchez-Burgos, Felipe J. Blas, Eduardo Sanz, Carlos Vega, Nicodemo Di Pasquale, Jorge Ramírez, and Jorge R. Espinosa
+        &copy; Copyright 2023, Andres R. Tejedor, Ignacio Sanchez-Burgos, Felipe J. Blas, Eduardo Sanz, Ruslan Davidchack, Carlos Vega, Nicodemo Di Pasquale, Jorge Ramírez, and Jorge R. Espinosa
 
     </p>
   </div>

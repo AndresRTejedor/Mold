@@ -1,19 +1,17 @@
 # pair_style lj/BG
 
-```
-pair_style lj/BG args
-```
-
-- args=list of the possible arguments
+## Syntax
 
 ```
-lj/BG args = cutoff1 cutoff2 
-    cutoff1 = global internal cut-off
-    cutoff2 = global external cut-off
+pair_style lj/BG cutoff1 cutoff2
 ```
 
+* `cutoff1` = global internal cut-off
+* `cutoff2` = global external cut-off
 
-The Broughton and Gilmer modification to Lennard-Jones potential {footcite:t}`Broughton1983` is given by:
+## Description
+
+The {footcite:t}`Broughton1983` modification to Lennard-Jones potential is given by:
 
 $$
 	U(r_{ln}) =
@@ -26,7 +24,7 @@ $$
 where $r_{ln}=|\mathbf{r}_l-\mathbf{r}_n|$ for each couple of atoms $l,n$ in the system, and $C_1, C_2, C_3, C_4, C_5$ are constants we used the values reported in {footcite:t}`davidchack2003direct`
 
 
-The constants are hardcorded within the pair style and they not need to be defined.
+The constants are hardcorded within the pair style and they do not need to be defined.
 
 ```{footbibliography}
 
