@@ -21,3 +21,9 @@ make html
 At the end of the generation point your browser to `build/html/index.html` to browse the docs.
 
 NOTE: The repository contains a directory `/utils` which includes a miscellanea of programs useful for  mold calculations (e.g., extracting and averaging useful quantities). These simple programs are given without description and without warranty
+
+## Contributing
+
+If you want to add functionalities (or fix issues) to MOLD, you are more than welcome to do so. Feel free to fork the repo and open a pull request: we will do our best to review it. Note that if we accept your changes you will be asked to update the documentation to reflect what you have done.
+
+If you have any questions, find a bug or an issue or want to propose a new feature, please do so by creating a [new issue](https://github.com/AndresRTejedor/Mold/issues). 
