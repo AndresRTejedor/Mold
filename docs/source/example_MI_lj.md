@@ -91,8 +91,9 @@ path='../../'
 - `kT`: well depth in $k_BT$ units (8 $k_B T$ for this step) 
 - `path`: path to `lj_mold.in` and `mold_100.lmp`. Absolute path is highly recommended.
 Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but `LAMMPS.job` is not provided as it depends on the user machine. 
+
 ````{note}
-The basic line to run the simulation In `LAMMPS.job`
+The basic line to run the simulation is `./lmp_serial -i lj_moldint.in` where `lmp_serial` is the LAMMPS executable to run in serial. This line must be include in the submission file `LAMMPS.job` along with the appropiate commands that depend on the machine. This line also allows to run in the command line. Please  see the [LAMMPS documentation](https://docs.lammps.org/Run_basics.html) for further informarion in how to run LAMMPS.
 ````
 
 6. The analysis for this step consists in determining if there is induction time, i.e. further energy is required for the formation of the interface (see {footcite:t}`espinosa2014mold`). 
