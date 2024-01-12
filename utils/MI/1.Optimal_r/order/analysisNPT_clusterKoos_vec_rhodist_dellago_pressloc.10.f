@@ -1,5 +1,177 @@
+c Version anterior 2jul03.f
+c Cambios:
+c   Se lee el parámetro alfa del modelo.inp
+c   Se incluye en parametros_NpT.inc la variable icutfour que
+c   controla el número de vectores de espacio recíproco que 
+c   tendrán en cuenta en las sumas de Ewald.
+c
+c
+c Versión anterior 28feb03.f
+c Cambios:
+c     Se añade un escaling nuevo que respeta la tetragonalidad de los
+c  lados a y b de la caja (iscale=3)
+c     Se cambia el formato de salida de alguna linea del fichero init.dat
+c
+c Versión anterior 6feb03.f
+c Cambios:    Se hace una g(r) promedio para tipo iguales de pares de 
+c          distancias (esto sólo valdrá para el agua SPC/E)
+c             Se posibilita el cálculo del factor de estructura para 
+c          distintos planos hkl (subrrutina order) y además descomentando
+c          una serie de líneas se elige el hkl que da mayor factor de
+c          estructura.
+c
+c Versión anterior: 17dicc.f
+c Cambio: Acumulador de energía Lennard-Jones
+c
+c Vesión anterior:11dicc.f
+c Cambio: quitar los parámetros de las rutinas de ewald
+c         que vengan heredados del programa de Bresme.
+
+c Version del 10-01-2002
+c
+c
+c Como correr un modelo duro ?
+c A) Descomentar las lineas comentadas que tienen la 
+c    palabra duro   c   duro 
+c B) Asignar un valor de sigma distinto de cero (hard diameter)
+c    pero asignar epsilon de todos los atomos igual a cero
+c C) Meter un cutoff pequeño en modelo.inp (si no hay cargas)
+c
+c Cambios que hay que hacer cuando se pasa de unidades reducidas a 
+c absolutas: 
+c A) Descomentar la parte en que las cargas se multiplican
+c por un factor de 408.7 (cargas que se leen en unidades de electrón).
+c B) Descomentar la línea en que la presión se multiplica por un factor
+c que la transforma de bares a kt/sigma**3.
+c C) Descomentar la línea en la que la densidad se pasa de gr/cm**3 a 
+c moléculas por unidad de volumen con cuidado de que la masa molecular 
+c que se utiliza sea la de la sustancia que se desea simular.
+c D) Tener en cuenta que lo mismo que se hace en la subrutina entrada
+c con la presión y la densidad hay que deshacerlo para que salga en las 
+c unidades deseadas. 
+c C) Si se va a hacer un batch es importante revisar que las unidades de las
+c variables que se meten en el fichero init.dat sean las mismas que se utilizan
+c en el simulación.inp. 
+c  
+c    Programa para mezclas pluricomponentes de moleculas lineares 
+c    flexibles
+c y que calcula unas gss ya normalizadas correctamente como en la
+c literatura ,da unos r12mu correctos
+c para el calculo de la presion, lo unico hay que dar el peso de 
+c cada interaccion. Solo calcula la interaccion del 1-2 no la del 2-1
+c
+c   Incluye intercambios de especie quimica entre dos moleculas
+c   
+c   1.) Incorpora cambios en order1
+c       Incorpora carl subroutine order2
+c       Cambio en order2, bucles sobre 
+c       nmmax y nsmax a bucles sobres
+c       nmol  y nsites
+c
+c   2.) En make_cell_map se tomo el valor absoluto de 
+c       coseab. Esto es debido a que para cajas cubicas
+c        el angulo ab es de 90 grados. Con iscale=0 la
+c        caja se distorsiona y un angulo ab de 90.2 grados
+c        es posible. En ese caso cos(90.2) es casi cero pero
+c        es negativo y make_cellmap se vuelve loca.
+c        Un analisis de la situacion demuestra que si tomamos
+c        el valor absoluto de cos(ab) se obtiene el resultado
+c        correcto.
+c
+c   3.  Ojo, las estructura alpha-nitrogeno de dumbbells solo
+c se reproduce si al introducir los sites se colocan en 
+c por ejemplo L*=0.3   en   0,0,-0.15  y 0,0,0.15
+c
+c
+c   4.  Cambie en Termo sangu1, para definir v como 
+c        xa(in)-xa(i1)  y no al reves. De ese modo el 
+c        angulo formado por la molecula y el plano perpendicular
+c        al plano ab, esta entre cero y 90 (salvo posible flipping)
+c 
+c
+c
+c 	(N,p,T) Monte Carlo simulation of rigid and flexible molecules
+c
+c      Extension of a Monte-Carlo Rahman-Parrinello NpT code for
+c      dimers to rigid molecules of arbitrary geometry 
+c       by Luis Gonzalez MacDowell 8-98,8-99
+c
+c
+c        minimum image convention is applyed to atoms, not to molecules.
+c     
+c        Version not accounting for atoms that interact with periodic
+c        images of atoms in the same molecule. This would require adding
+c        an additional routine to measure this sort of 'intramolecular'
+c        interactions
+c
+c        Comprehensive account of changes from version meltingqq3
+c        may be found in file meltingqq0.doc
+c
+c        version 19-10-1999
+c              
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+c Meltingqq 
+c Incorpora :
+c   Cutoff = Cutoff    rcm <  cutoff
+c   Tabla de vecinos   rcm <  cutoff+skin
+c 25-10-92
+c
+c      (N,p,T) Monte Carlo simulation of hard diatomics.
+c
+c      Version incorporating Rahman-Parinello box-shape change.
+c
+c      Version using a rhombohedral starting cell shape.
+c
+c      Includes a check for self overlaps generated by changes in
+c      box shape.
+c
+c      Starts from a choice of four crystal structures.
+c
+c                                          P. A. Monson  (August 1991)
+c
+c  Version del 19-10-91 
+C
+c  Incorpora : Calculo de g(r),gss(r),<r.mu>
+C              de 0 a rmax=ngrid*deltar 
+c
+c  Incorpora funcion de distribucion de volumen 
+c
+c  Incorpora calculo del angulo medio entre :
+c   * vector perpendicular al plano a,b  y eje molecular 
+c   * Vector a ,  proyeccion del eje molecular en el plano a,b
+c
+c  Incorpora : Solo se escriben al final las coordenadas y los 
+c  resultados intermedios (para evitar problemas con tape a las 5.00)
+c
+c  ntot < neq/2   iscale=2 (isotropic npt)
+c  ntot > neq/2   iscale=0 (Parrinello)
+c
+c  Suprimida la parte concerniente a muelles 
+c
+c  Incorpora el calculo de la desviacion estandar en rho , que permite
+c  estimar el error que se comete en la determinacion de la densidad 
+c
+c  Cambios en move:
+c        - sidea,sideb y sidec se readaptan en cada ciclo
+c        - se vigila la longitud minima de la caja de tal modo 
+c          que si existe la posibilidad de solapamientos entre 
+c          imagenes minimas, diferentes de la del cm, el programa
+c          se detiene . 
+c
+c  La subrutina self, esta con comentario y no se utiliza ya que el
+c  test sobre la longitudes de los lados, ya la contiene 
+c
+cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
+c ***
+c *** nmmax    : numero maximo de moleculas
+c     nsmax    : numero maximo de sites por molecula
+c     natmax   : numero maximo de atomos
+
 	include 'parametros_NpT.inc'
 	include 'common.inc'
+
+c     chantal sett 2011      
+c      integer conta
 
       open(2,file='todaslasconf.dat',status='unknown')
       open(3,file='sali1.dat',status='unknown')
@@ -31,6 +203,60 @@
       open(910,file='seguimiento.dat')
       open(219,file='q3bar.dat')
       open(621,file='qmediovst.dat')
+
+C *******************************************************
+c
+c     rlstar - atom to atom bond length
+c     pstar -  p * sigma**3/kt
+c     nmol - no. of particles (4,32,1000)
+c     rhog - initial density
+c
+c     pshift - maximum coordinate displacement
+c     ashift - maximum angle displacement
+c     seed - initial seed for random no. generator
+c
+c     ntot - total no. of passes
+c     neq - no. of passes in equilibration
+c     npr - no. of passes per sub-average
+c     nmax - final no. of passes required
+c     njob - no. of passes per job
+c     kstart - specifies setup of initial configuration
+c            = 0 , start from lattice
+c            = 1 ,   ,,   ,,  old set of coordinates (new run)
+c            = 2 ,   ,,   ,,   ,,  ,,       ,,       (continuation run)
+c                                                    (0 otherwise)
+c
+c     dela - maximum shift in h matrix diagonal elements
+c     dela1 - maximum shift in h matrix off diagonal elements
+c
+c
+c     nx,ny,nz are the numbers of molecules in the a,b,c
+c     directions on the starting lattice
+c
+c     ilatt - determines the crystal structure for the lattice start
+c
+c               0 - gives alpha-nitrogen lattice
+c           1,2,3 - gives one of three close packed lattices
+c
+c     iscale - determines box shape changes
+c
+c           0 - random shifts in all h matrix elements
+c           1 - scales box side lengths but preserves orientations
+c           2 - scales box side lengths but preserves orientations and
+c               ratio of box side lengths
+c 
+c     inpt  - determines the ensemble to be considered
+c
+c             0 - nvt ensemble
+c             1 - npt ensemble
+c
+C ***********************************************
+
+!         call omp_set_num_threads(2)
+
+
+c *** lectura de los ficheros de entrada
+
 
 c	print*,'What is the alpha time?'
 c	read*,rtimealpha
@@ -361,8 +587,7 @@ c      integer conta
 
        IF(ibrownian.eq.0)THEN
  167   do i=1,nmoltot
-	
-        gimove = ranf(seed) 
+        gimove = rand(seed) 
 
 	   if (gimove.lt.frac_cm) then
 	!print*,ufold
@@ -415,7 +640,7 @@ C Solo en caso de que haya estudio de nucleacion se hace lo siguiente:
 	 icontanuc=icontanuc+1
 	 if(mod(icontanuc,npr).ne.0)goto 167
 	
-	 call q6q4q3q2dot(nclbignew)
+	 !call q6q4q3q2dot(nclbignew)
 
 	 atmptnuc=atmptnuc+1.
  
@@ -432,7 +657,7 @@ C Solo en caso de que haya estudio de nucleacion se hace lo siguiente:
          bft=exp(-bfe)
        endif 
 	
-	 aln=ranf(seed)
+	 aln=rand(seed)
 	
 	 if(bft.gt.aln)then
 	   rnucacc=rnucacc+1.
@@ -809,7 +1034,7 @@ c
 
          if(iunbias.eq.1)then
           if(ntot.gt.neq)then
-          call q6q4q3q2dot(nclbignew)
+          !call q6q4q3q2dot(nclbignew)
             nhistoclbig(nclbignew)=nhistoclbig(nclbignew)+1
             nclusters=nclusters+1
           endif
@@ -943,7 +1168,7 @@ c*** lo que los grabamos en memoria por si hay rechazo:
 	endif
 	
 c *** eleccion de una molecula al azar
-      imol = int(nmoltot*ranf(seed)) + 1
+      imol = int(nmoltot*rand(seed)) + 1
       if (imol.gt.nmoltot) imol=nmoltot
 	
 ccj2  hay que saber que tipo de molecula es
@@ -963,9 +1188,9 @@ c *** de prueba
          zato(is)=za(numsite)
       end do
 
-      dx=pshift*(2.0*ranf(seed)-1.0)/sidea
-      dy=pshift*(2.0*ranf(seed)-1.0)/sideb
-      dz=pshift*(2.0*ranf(seed)-1.0)/sidec
+      dx=pshift*(2.0*rand(seed)-1.0)/sidea
+      dy=pshift*(2.0*rand(seed)-1.0)/sideb
+      dz=pshift*(2.0*rand(seed)-1.0)/sidec
 
 c *** calculando las coordenadas de la configuracion tentativa
       do is=1,nsites(ic)
@@ -1071,7 +1296,7 @@ c y criterio metrópolis de aceptación
            endif
        endif
 
-	trial = ranf(seed)
+	trial = rand(seed)
 
 c*****************************************       
 c*** actualizaciones en caso de aceptacion
@@ -1234,7 +1459,7 @@ c*** lo que los grabamos en memoria por si hay rechazo:
 c *** eleccion de una molecula al azar
 
 c Change mixtures 24
- 231  imol = int(nmoltot*ranf(seed)) + 1
+ 231  imol = int(nmoltot*rand(seed)) + 1
       if (imol.gt.nmoltot) imol=nmoltot
       ic=class(imol)
 
@@ -1247,7 +1472,7 @@ cl      call take_outof_list(imol,nsites)
 
 c *** eleccion de un site al azar sobre el que rotar
 
-	isiterot = int(nsites(ic)*ranf(seed)) + 1
+	isiterot = int(nsites(ic)*rand(seed)) + 1
  	if (isiterot.gt.nsites(ic)) isiterot=nsites(ic)
 
 	if(ifree.eq.1)isiterot=1
@@ -1299,7 +1524,7 @@ c ***  1. select a randomly chosen unit vector
 
 c ***  2. select a randomly chosen angle of rotation
 
-         gi=pi2*ashift*ranf(seed)
+         gi=pi2*ashift*rand(seed)
 
 c ***  3. rotate the molecule around the chosen vector
 
@@ -1391,7 +1616,7 @@ c Einstein de mínima energía:
 
 	deleins=0.
 	if(ifree.eq.1)then
-	  call uorientacional(xatn,yatn,zatn,imol,usuma,uresta)
+	  !call uorientacional(xatn,yatn,zatn,imol,usuma,uresta)
 	  deleins=usuma+uresta-ulatrr(imol)-ulatrs(imol)
 	endif
 
@@ -1414,7 +1639,7 @@ C APLICACION DEL CRITERIO METRÓPOLIS PARA LA ACEPTACION DEL MOVIMIENTO
            endif
        endif
 
-	trial = ranf(seed)
+	trial = rand(seed)
 
 c********************************************************************
 c*** actualizaciones en el caso de que se haya aceptado el movimiento
@@ -1505,12 +1730,12 @@ c Salvo variables
 
 c Elegimos 2 iones 
 c     chantal sett 2011: WATCH OUT BECAUSE ntipmolmax=1 in parametros_NpT.inc
-	nions=nmol(2)
+	nions=1
 
-      ion1 = int(nions*ranf(seed)) + 1
+      ion1 = int(nions*rand(seed)) + 1
       if (ion1.gt.nions) ion1=nions
 
-      ion2 = int(nions*ranf(seed)) + 1
+      ion2 = int(nions*rand(seed)) + 1
       if (ion2.gt.nions) ion2=nions
 
 !indices de site
@@ -1631,7 +1856,7 @@ c
        endif
 
 
-      test=ranf(seed)
+      test=rand(seed)
 
 c *** ACEPTACION:
 
@@ -1817,7 +2042,7 @@ c CAMBIO DE LAS DIMENSIONES DE LA CAJA
         ht(i,j)=h(i,j)
 c Julio change number 7
         hinvt(i,j)=hinv(i,j)
-        h(i,j)=h(i,j)+fact*(2.0*ranf(seed)-1.0)
+        h(i,j)=h(i,j)+fact*(2.0*rand(seed)-1.0)
     7 continue
     6 continue
 
@@ -1825,9 +2050,9 @@ c     change all the h elements by a random displacement
 c
       else if(iscale.eq.1) then
 c
-      dside(1)=(sidea+dela*(2.0*ranf(seed)-1.0))/sidea
-      dside(2)=(sideb+dela*(2.0*ranf(seed)-1.0))/sideb
-      dside(3)=(sidec+dela*(2.0*ranf(seed)-1.0))/sidec
+      dside(1)=(sidea+dela*(2.0*rand(seed)-1.0))/sidea
+      dside(2)=(sideb+dela*(2.0*rand(seed)-1.0))/sideb
+      dside(3)=(sidec+dela*(2.0*rand(seed)-1.0))/sidec
 c
       do 15 i=1,3
       do 16 j=1,3
@@ -1842,7 +2067,7 @@ c     scale the box sides but preserve orientations
 c
       else if(iscale.eq.2) then
 c
-      ddd=dela*(2.0*ranf(seed)-1.0)
+      ddd=dela*(2.0*rand(seed)-1.0)
       dside(1)=(sidea+ddd)/sidea
       dside(2)=dside(1)
       dside(3)=dside(1)
@@ -1860,11 +2085,11 @@ c     reescalado que respeta la tetragonalidad de sistemas a=b
 c
       else if(iscale.eq.3) then
 c
-      ddd=dela*(2.0*ranf(seed)-1.0)
+      ddd=dela*(2.0*rand(seed)-1.0)
       dside(1)=(sidea+ddd)/sidea
       dside(2)=dside(1)
 
-      dside(3)=(sidec+dela*(2.0*ranf(seed)-1.0))/sidec
+      dside(3)=(sidec+dela*(2.0*rand(seed)-1.0))/sidec
 
 
       do  i=1,3
@@ -2120,7 +2345,7 @@ c
            endif
        endif
 c
-      test=ranf(seed)
+      test=rand(seed)
 
 c *** ACEPTACION:
 
@@ -2507,6 +2732,13 @@ c-----------------------------------------------------------------------
       common /mt_mask2/ TOPBIT_MASK
       common /mt_mask3/ UPPER_MASK,LOWER_MASK,MATRIX_A,T1_MASK,T2_MASK
       common /mt_mag01/ mag01
+CC    TOPBIT_MASK = Z'80000000'
+CC    ALLBIT_MASK = Z'ffffffff'
+CC    UPPER_MASK  = Z'80000000'
+CC    LOWER_MASK  = Z'7fffffff'
+CC    MATRIX_A    = Z'9908b0df'
+CC    T1_MASK     = Z'9d2c5680'
+CC    T2_MASK     = Z'efc60000'
       TOPBIT_MASK=1073741824
       TOPBIT_MASK=ishft(TOPBIT_MASK,1)
       ALLBIT_MASK=2147483647
@@ -2541,8 +2773,82 @@ c
       tpi=2.0*pi
       fpi=4.0*pi
 
+cc
+c      if(ilatt.ne.0) then
+c        diffx=1.0/nx
+c        diffy=1.0/ny
+c        diffz=1.0/nz
+cc
+c        op=0.0
+c        pq=0.0
+cc
+cc Change mixture 14
+c          do i=1,nmoltot
+c            ic=class(i)
+c            iori=puntero1(ic)+(i-1)*nsites(ic)
+c            i1   = iori +    1
+c            iend = i1+nsites(ic)-1 
+cc Calculo el centro de masas de la molecula
+c            xhelp=(xa(i1)+xa(iend))/2.
+cc Metemos el CM en la caja
+c            xpb = xhelp - anint( (xhelp-half) )
+c            op=op+cos(tpi*xpb/diffx)
+c            pq=pq+sin(tpi*xpb/diffx)
+c          end do
+c1       continue
+c        sl1=(op*op+pq*pq)/nmoltot/nmoltot
+cc
+c        op=0.0
+c        pq=0.0
+cc
+cc Change mixture 15
+c        do 2 i=1,nmoltot
+c          ic=class(i)
+c          iori=puntero1(ic)+(i-1-puntero2(ic))*nsites(ic)
+c          i1   = iori +    1
+c          iend = i1+nsites(ic)-1
+c 
+c          yhelp=(ya(i1)+ya(iend))/2.
+c          ypb = yhelp - anint( (yhelp-half) )
+cc Julio change number 31
+c          op=op+cos(tpi*ypb/diffy)
+c          pq=pq+sin(tpi*ypb/diffy)        
+c2       continue
+c        sl2=(op*op+pq*pq)/nmoltot/nmoltot
+c
+c       op=0.0
+c       pq=0.0
+c
+c Change mixture 16
+c        do 3  i=1,nmoltot
+c          ic=class(i)
+c          iori=puntero1(ic)+(i-1-puntero2(ic))*nsites(ic)
+c          i1   = iori +    1
+c          iend = i1+nsites(ic)-1
+c 
+c          zhelp=(za(i1)+za(iend))/2.
+c          zpb = zhelp - anint( (zhelp-half) )
+c          op=op+cos(tpi*zpb/diffz)
+c          pq=pq+sin(tpi*zpb/diffz)
+c3       continue
+c        sl3=(op*op+pq*pq)/nmoltot/nmoltot
+c
+
        if(ilatt.ne.0) then
 
+
+c ************ Bloque Fhkl *************
+c
+c Utilizar siempre con nxauxi=1,nyauxi=1,nzauxi=1   
+c Bloque 1 busqueda h,k,l optimo    
+c      fbig=0.00 
+c      nbig=20
+c      do 24 ihh=0,nbig
+c      do 23 ikk=0,nbig
+c      do 22 ill=0,nbig
+c
+c      if ((ihh.eq.0).and.(ikk.eq.0).and.(ill.eq.0)) go to 22
+c Fin bloque 1 busqueda h,k,l optimo
 
 c
 c Para el Ice Ih
@@ -2570,6 +2876,8 @@ c Para el hielo VI con 360 moléculas
        ikk=6
        ill=16
 c Para el hielo VII
+c      ihh=6
+c      ikk=0
 c      ill=6
 
 
@@ -2618,6 +2926,25 @@ c
         sl1=(op*op+pq*pq)/nmoltot/nmoltot
 	  sl2=0.
 	  sl3=0.
+
+c        she=0.998*sl1
+c        if (she.gt.fbig) then
+c        fbig=sl1
+c        ihbig=ihh
+c        ikbig=ikk
+c        ilbig=ill
+c        endif 
+c        write(32,*) ihh,ikk,ill, ' Orden =',sl1
+c 22       end do
+c 23       end do
+c 24       end do
+c        write(6,*) ihbig,ikbig,ilbig, ' Orden =',fbig 
+c        write(6,*) ' caca=  Si 1.0 , stop '
+c        read(5,*) caca
+c        if (caca.eq.1.00) then 
+c        stop
+c        endif  
+c  ******* Fin del bloque Fhkl  ***********
 
       else
 c
@@ -2680,6 +3007,18 @@ ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 	include 'parametros_NpT.inc'
 	include 'common.inc'
+
+c     chantal sett 2011
+c      integer conta
+	
+C THIS SUBROUTINE EVALUATE THE CENTER OF MASS AND SITE-SITE 
+C DISTRIBUTION FUNCTION AS WEEL AS THE VIRIAL
+C G(R)     RADIAL DISTRIBUTION FUNCTION
+C GSS(R)   SITE-SITE DISTRIBUTION FUNCTION
+C R12EU(R) R12 . US1S2  WHERE:
+C          R12 =   CENTER OF MASS VECTOR
+C          US1S2 = SITE-SITE UNIT VECTOR 
+C                 
 
 
       IRUN=IRUN+1 
@@ -2965,6 +3304,13 @@ c Change mixtures 14
           i1   = iori +    1
           in   = iori +  nsites(ic)
 ccj2
+cl      do 400 kk=1,nmol
+cl
+cl	   iori = (kk-1)*nsites
+cl	   i1   = iori +    1
+cl	   in   = iori +  nsites
+ccj Julio change number 14
+ccj
       tx=(xa(in)-xa(i1))
       ty=(ya(in)-ya(i1))
       tz=(za(in)-za(i1))
@@ -2978,6 +3324,10 @@ ccj
       vz=tzp
 ccj
 
+	   
+cl         vx=(xa(i1)-xa(in))*sidea
+cl	   vy=(ya(i1)-ya(in))*sideb
+cl	   vz=(za(i1)-za(in))*sidec
 
 	   xnormi = 1./( vx*vx + vy*vy + vz*vz )**0.5
 
@@ -2985,6 +3335,13 @@ ccj
 	   vy=vy*xnormi
 	   vz=vz*xnormi
 
+C TENEMOS LOS VECTORES UNITARIOS AB,A,U  
+C CALCULANDO LA PROYECCION DE U SOBRE EL VECTOR PERPENDICULAR 
+C AL PLANO (A,B)
+   
+      proye=vx*abx+vy*aby+vz*abz
+
+C
       IF ( MOD(KK,2).EQ.0) THEN
       SUMA3=SUMA3+PROYE
       ELSE 
@@ -3154,6 +3511,10 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 	it=itiposite
 	jt=jtiposite
 
+c  rpeso son combinaciones con repeticion tomadas de dos en dos de 
+c  tipos de site. Un tipo de site de cada pareja pertenece a una molécula
+c  tipo it y el otro tipo de site a molécula tipo jt.
+
 
 	if(it.eq.jt)then	
 	rpeso=1./float(nsites(it)*nsites(jt))   
@@ -3223,6 +3584,61 @@ c Change Virial 5 Escribe las gss(r) de todas las posibles parejas de sites.
      >      			gsspro(iii,ikind)
          end do
        end do
+
+c Esta escritura de las g(r) sólo vale para el agua
+
+c	 do iii=1,ngrid
+c	  auxir=(iii-1)*deltar+deltar/2
+c	  gssva=gss(iii,1)
+c	  write(4,889)auxir,gssva
+c	 enddo
+c	 do iii=1,ngrid
+c	  auxir=(iii-1)*deltar+deltar/2
+c	  gssva=(gss(iii,2)+gss(iii,4))/2.
+c	  write(4,899)auxir,gssva
+c	 enddo
+c	 do iii=1,ngrid
+c	  auxir=(iii-1)*deltar+deltar/2
+c	  gssva=(gss(iii,3)+gss(iii,5)+gss(iii,6))/3.
+c	  write(4,999)auxir,gssva
+c	 enddo
+
+
+c Escribe la g(r) promedio de todas las parejas de sites.
+
+
+c	do iii=1,ngrid
+c        auxir=(iii-1)*deltar+deltar/2
+c	write(4,1546) auxir,gssprotot(iii) 
+c        end do
+
+c Ecribe la g(r) promedio para interacciones entre 
+c sites del mismo tipo de 
+c molécula y para interacciones entre sites de moléculas 
+c de distinta clase.
+
+c	do icl=1,ntipmolmax
+c	do jcl=icl,ntipmolmax
+c	do jjj=1,ngrid
+c
+c	auxir=(jjj-1)*deltar+deltar/2
+c	write(4,1548) icl,jcl,auxir,gp(icl,jcl,jjj)
+c
+c	enddo
+c	enddo
+c	enddo
+
+c Escribe la g(r) promedio intramolecular
+
+c	do it=1,ntipmol
+c	do ig=1,ngrid
+c
+c	auxir=(ig-1)*deltar+deltar/2
+c	write(4,1550) it,auxir,GSSinterna(it,ig)
+c	
+c	enddo
+c	enddo
+		  
  
         write(4,*) ' m promedio = ', xmprom
 
@@ -3262,6 +3678,7 @@ c *********************************************************************
 c *********************************************************************
 c *********************************************************************
 c *********************************************************************
+c *** subrutina de inicializado de variables
 
       subroutine inicio(rhog)   
 
@@ -3401,10 +3818,23 @@ c Inicializando las banderas de primera llamada a algunas subrutinas
 	ENDIF
 
 
+ccj Julio change number 15
       if ((ilatt.eq.2).or.(ilatt.eq.3)) then
       write(3,*) 'atencion: version valida para cajas ortogonales y CP1'
       stop
       end if
+
+c *** Version solo valida para cajas de simulacion ortogonales:
+c
+cl      dela1=0.
+cl      if ((iscale.eq.0).or.(ilatt.ne.0)) then
+cl	   write(3,*) 'atencion: version valida para cajas ortogonales'
+cl	   stop
+cl      end if 
+c
+c *** filtros diversos
+c
+c Change mixture 8
       if (nmoltot.gt.nmmax) then
          write(3,*) 'nmmax too small' 
          stop
@@ -3460,6 +3890,8 @@ c     initialize atom coords. in body frame
 c   
       NEQHAL=NEQ/2
 
+c *** inicializando variables de monitorizacion de la tasa de aceptacion
+
 	cacc = 0.
 	racc = 0.
         tiacc = 0.
@@ -3479,12 +3911,34 @@ c
 	atmptvo = 0.
 	atmptcb = 0.
 	atmptnuc=0.
-        
+
+c Change mixture  29
+ccj2  Definimos los punteros 
         i1=0
         i2=0
         i3=0
         i4=0
         i5=0
+
+c*** Hallamos el sumatorio de las cargas al cuadrado de todo el sistema
+c*** e inicializamos los conjuntos epsiatom,sigatom y cargatom.
+        
+      sumaq2=0.
+      do ic=1,ntipmol
+      puntero1(ic)=i1
+      puntero2(ic)=i2
+      puntero3(ic)=i3
+      do j=1,nmol(ic)
+         i4=i4+1
+         class(i4)=ic
+         do i=1,nsites(ic)
+            i5=i5+1
+            sigatom(i5)=sigma(nordcar(ic,i))
+            epsiatom(i5)=epsilon(nordcar(ic,i))
+            cargatom(i5)=carga(nordcar(ic,i))
+	    sumaq2=sumaq2+(cargatom(i5))**2
+         end do
+      end do
 
 	   if(sumaq2.gt.0.000001)iewald=1
 
@@ -3503,6 +3957,29 @@ c
          write(3,*) 'nsmax too small'
          stop
       end if
+
+
+ccj2
+ccj2    class(45) indica que tipo de molecula es la molecula 45
+ccj2
+ccj2    el puntero1(3) indica a partir de que posicion de los arrays de
+ccj2    coordenadas empiezan las moleculas de tipo 3
+ccj2    
+ccj2    el puntero2(3) indica el numero de moleculas que hay antes de 
+ccj2    que empiezen las moleculas de tipo 3.
+ccj2    
+ccj2    el puntero3(3) indica la suma del numero de sites que hay en
+ccj2    moleculas de tipo 1 y 2 (nsites(1)=5,nsites(2)=3,puntero3(3)=8)
+ccj2  
+ccj2    classmol(88) indica a que clase de molecula pertenece el 
+ccj2    atomo 88
+ccj2
+ccj2    classatom(88) indica que clase de atomo es dentro de su
+ccj2    tipo de molecula 
+ccj2    nos puede interesar acabar definiendolo en general (+puntero3)
+ccj2
+ccj2    nsitestot indica la suma del numero de atomos de cada tipo 
+ccj2    de molecula
 
       call init_conf(rhog,rnstep)
 
@@ -3554,6 +4031,37 @@ c *** inicializando variables de control de la proporcion de mvts
 	      frac_cb=1.
 
 	end if
+
+c Calculamos la correcciones de largo alcance:              
+!
+!       rcut=sqrt(rcut2)
+!       ulrtot=0.
+!       do ic=1,ntipmol
+!        do il=1,ntipmol
+!          do ii=1,nsites(ic)
+!          do ij=1,nsites(il)
+!
+!          sigminter=(sigma(nordcar(ic,ii))+sigma(nordcar(il,ij)))/2.
+!
+!	     if(sigminter.gt.0.00001)then
+!            epsinter=sqrt((epsilon(nordcar(ic,ii))
+!     >              *epsilon(nordcar(il,ij))))
+!
+!            ulr=epsinter*16.*PI*(sigminter**3)/3.*
+!     >        (1./3.*1./(rcut/sigminter)**9-
+!     >         1./(rcut/sigminter)**3)
+!
+!            xi=float(nmol(ic))/float(nmoltot)
+!            xj=float(nmol(il))/float(nmoltot)
+!
+!            ulrtot=ulrtot+xi*xj*ulr/2.
+!	     end if
+!
+!          end do
+!          end do
+!        end do
+!       end do
+
 
        rcut=sqrt(rcut2)
        ulrtot=0.
@@ -3696,6 +4204,16 @@ c *** reponiendo la link-cell-list
 	print*,utotreal,'en inicio'
 
 	u_ljinter=u_lj
+
+c filtro de solapamiento en caso de modelo duro
+c       if(iax.eq.1)then    !duro 
+c        print*,'configuracion incial con solapamiento' !duro
+c        stop !duro
+c       endif !duro
+
+c*** Calculamos la energia intramolecular de la configuracion inicial,
+c*** para ello se necesitan las coordenadas cartesianas de las moleculas.
+	
 	  i101=0
         Uintranew=0.0
         do im=1,nmoltot
@@ -3810,6 +4328,13 @@ c*** energía total del sistema en unidades de kT
       
  112  format(f25.15)
 
+c     open(100,file='resultados.dat',position='append')
+c     write(100,98)sqrt(rcut2),alfa*sigma(1),maxvecrun,Ukcalmol,
+c    >  beta*conv*utotreal,beta*conv*ufold
+c98   format(1x,f5.2,2x,f5.2,2x,i6,2x,f13.5,2x,f13.5,2x,E11.4)
+c     stop
+
+
 	if(iwidom.eq.1)then
 	 call widomsetup
 	endif
@@ -3826,6 +4351,7 @@ c*** energía total del sistema en unidades de kT
 
 
 c *****************************************************************
+c *** subrutina para generar la configuracion inicial
 
       subroutine init_conf(rhog,rnstep)
 
@@ -3834,18 +4360,138 @@ c *****************************************************************
 
  
       character*4 otra
+c     chantal sett 2011
+c      integer conta
 
       IF(kstart.eq.0)THEN 
+c
+ccj2
+ccj2    ATENCION :problema esto no lo podemos dejar asi 
+ccj2
       stlatt=rlstar(1)/sqrt(3.0)
       ctlatt=sqrt(1.0-stlatt**2)
        philatt=1.0/12.0
+c
+ccj2  No hemos pensado el cambio para mezclas en estructuras de 
+ccj2  closepacking  poner comentario y filtro
        if((ntipmol.ne.1).and.(ilatt.ne.0)) then
        write(3,*)  'lo siento para mezclas solo acepto alfa-N'
        stop
        end if
+ccj2    
+c678      if(ilatt.eq.1) then
+c
+cl      rside=sqrt(1.0+rlstar**2+2.0*rlstar*(rlstar/3.0+
+cl     *sqrt(2.0/3.0*(1.0-rlstar**2/3.0))))
+c
+c Julio change number 16
+ccj En estas formulas rlstar es la distancia entre dos esferas
+ccj   homonucleares consecutivas 
+ccj
+c678      rside=sqrt(1.0+(nsites-1)**2*rlstar**2
+c678     1  +2.0*(nsites-1)*rlstar*(rlstar/3.0+
+c678     1  sqrt(2.0/3.0*(1.0-rlstar**2/3.0))))
+ccj
+c
+cl      sinba=-(sqrt((1.0-rlstar**2/3.0)/3.0)-sqrt(2.0)*rlstar/3.0)
+cl      sinba=sinba/rside
+cl      cosba=sqrt(1.0-sinba**2)
+cl      calpha=rlstar/sqrt(3.0)
+cl      salpha=sqrt(1.0-calpha**2)
+cl      cthetac=sinba*calpha+cosba*salpha
+cl      sthetac=sqrt(1.0-cthetac**2)
+c Julio change number 17
+c678        calpha=rlstar/sqrt(3.0)
+c678        salpha=sqrt(1.0-calpha**2)
+c678        sthetac=((nsites-1)*rlstar**2/sqrt(3.)+1./sqrt(3.))/rside
+c678        cthetac=sqrt(1.0-sthetac**2)
+c
+c
+c678      else if(ilatt.eq.2) then
+c
+ccj esta lattice esta sin tocar
+c
+c678      sgp=1.0/sqrt(3.0)
+c678      cgp=sqrt(1.0-sgp**2)
+c
+c678      ctgp=ctlatt*cgp-stlatt*sgp
+c678      rside=sqrt(1.0+rlstar**2+2.0*rlstar*ctgp)
+c
+c678      stgp=sgp*ctlatt+stlatt*cgp
+c678      slamda=rlstar*stgp/rside
+c678      clamda=sqrt(1.0-slamda**2)
+c
+c678      cbp=cgp*clamda+sgp*slamda
+c678      sbp=sgp*clamda-cgp*slamda
+c678      cthetac=cbp
+c678      sthetac=sbp
+c
 
+c678      else if(ilatt.eq.3) then
+c
+ccj esta lattice esta sin tocar
+c678      cg=1.0/sqrt(3.0)
+c678      sg=sqrt(1.0-cg**2)
+c678      sgp=cg
+c678      cgp=sg
+c678      stg=stlatt*cg+ctlatt*sg
+c678      ctg=ctlatt*cg-stlatt*sg
+c678      ap2=1.0+rlstar**2/4.0+rlstar*stg
+c678      ap=sqrt(ap2)
+c678      skappa=rlstar*ctg/(2.0*ap)
+c678      ckappa=sqrt(1.0-skappa**2)
+c678      ctgp=ctlatt*cgp-stlatt*sgp
+c678      stgp=sgp*ctlatt+stlatt*cgp
+c
+c678      clamda=-ctgp*ckappa-stgp*skappa
+c678      slamda=stgp*ckappa-ctgp*skappa
+c
+c678      a2=rlstar**2/4.0+ap2-rlstar*ap*clamda
+c678      a=sqrt(a2)
+c678      rside=a
+c678      stbp=ap*slamda/a
+c678     ctbp=sqrt(1.0-stbp**2)
+c678      if(rlstar.gt.1.0e-3) ctbp=(rlstar**2/4.0+a2-ap2)/(rlstar*a)
+c
+c678      cbp=ctlatt*ctbp+stlatt*stbp
+c678      sbp=ctlatt*stbp-stlatt*ctbp
+c678      cthetac=cbp
+c678      sthetac=sbp
+c
+c678      else
+c678      endif
+c
           if(ilatt.ne.0) then
-
+c
+c678      rside=rside*float(nz)/float(nx)
+c678      volg=part/rhog
+c678      sidea3=volg/(rside*cthetac*sqrt(3.0)/2.0)
+c678      sidea=exp(log(sidea3)/3.0)
+c678      sideb=sidea
+c678      sidec=sidea*rside
+c
+c678      cphib=cos(pi/3.0)
+c678      sphib=sin(pi/3.0)
+c678      cphic=cos(pi/6.0)
+c678      sphic=sin(pi/6.0)
+c
+c678      if (ilatt.eq.2) then
+c678      cphic=-cphic
+c678      sphic=-sphic
+c678      endif
+c
+c678      h(1,1)=sidea
+c678      h(2,1)=0.0
+c678      h(3,1)=0.0
+c678      h(1,2)=sideb*cphib
+c678      h(2,2)=sideb*sphib
+c678      h(3,2)=0.0
+c678      h(1,3)=sidec*sthetac*cphic
+c678      h(2,3)=sidec*sthetac*sphic
+c678      h(3,3)=sidec*cthetac
+c
+ccj2     initialize h matrix for rhombohedron of volume nmoltot/rhog
+c
       else
 c
       vol=part/rhog
@@ -4352,6 +4998,28 @@ c      write(3,*) kstart,nmol                  ! modo de comienzo
  	numdesites=nmol(i8)*nsites(i8)+numdesites
  	enddo
 
+!        do ique=1,numdesites
+!           write(2,*) xa(ique),ya(ique),za(ique)
+!        end do
+c
+!        do ique=1,3
+!         write(2,*)h(ique,1),h(ique,2),h(ique,3)
+!        end do
+c
+c        do ique=1,3
+c            write(2,*)ht(ique,1),ht(ique,2),ht(ique,3)
+c        enddo
+c            write(2,*)utot,etot,ngt
+c
+c      subh,toth
+c     *,cacc,racc,vacc,tiacc
+c     *,atmptcm,atmptro,atmptvo,atmptint
+c     *,cdx,cdy,cdz
+c     *,voltot,volsub,RHOTOT,RHO2TOT,rhosub,UNKTTOT,UNKTSUB
+c     *,sotot,sosub
+c     *,sangu1,sangu2,sangu3,sangu4
+c     *,contaro
+
 	open(unit=15,file='init.dat',status='unknown')
 
 c En el fichero init.dat doy la presión en bares 
@@ -4487,6 +5155,8 @@ c
       write(3,*) 'Numero max.de vectores utilizados en espa.recipro'
       write(3,*) 'maxvecrun=',maxvecrun
 
+c Escritura de los resultados relacionados con el cálculo de energías
+c libres:
 
 	if(ifree.eq.1)then
       write(3,*) '       '
@@ -4761,12 +5431,16 @@ c  vecinos
       end
 
 c *******************************************************************
+c *** subrutina de lectura de datos
+c ***
 
       subroutine entrada(seed,rhog)
 
 
 	include 'parametros_NpT.inc'
 	include 'common.inc'
+c     chantal sett 2011
+c      integer conta
        
 c *** lectura del fichero 'simulacion.inp'
 
@@ -5143,8 +5817,8 @@ c *** trivial de calculo al azar de fi y cos(theta)
 
 c *** generate two random numbers in [0,1]
 
-      gi1 = ranf(seed)
-      gi2 = ranf(seed)
+      gi1 = rand(seed)
+      gi2 = rand(seed)
 
 c *** calculate two auxiliary numbers from gi1 and gi2
 
@@ -6384,7 +7058,7 @@ c             endif                      ! duro
         call xyzsome(ishighpress,1)
 	endif
 
-	write(84,*),rnstep,r_p,r_p_an
+	!write(84,*),rnstep,r_p,r_p_an
 	print*,rnstep,r_p,r_p_an,r_px,r_py,r_pz
 	print*,'presion"!""""'
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -7015,7 +7689,7 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
       dimension r_i(3),r_j(3),r_k(3),rt_p(3),rt_o(3),At(3,3)
       dimension semillas(nktrial)
         real*8  sumdis,cre,Wnew,Wold,w,suma,rill,acepta
-        real*8  compara,dis,r2,ranf
+        real*8  compara,dis,r2!,rand
 	real*8 xenl,yenl,zenl,denla,x_o1,y_o1,z_o1
 	real*8 x_o3,y_o3,z_o3,r_i,r_j,r_k,rmod,vec,vect,At
         integer  ic,n,niter,iiii,isite,nflag,ial,j,itrial,ip
@@ -7038,7 +7712,7 @@ cccccccccccccccccccccccccccccccccccccccccc
 c *** eleccion de una molecula al azar
 cccccccccccccccccccccccccccccccccccccccccc
 
-      imol = int(nmoltot*ranf(seed)) + 1
+      imol = int(nmoltot*rand(seed)) + 1
 
       if (imol.gt.nmoltot) imol=nmoltot
 
@@ -7054,7 +7728,7 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccc
 c *** eleccion de un site al azar sobre el que crecer
 cccccccccccccccccccccccccccccccccccccccccccccccccccc
 
-9	isite = int(nsites(ic)*ranf(seed)) + 1
+9	isite = int(nsites(ic)*rand(seed)) + 1
 	if (isite.gt.nsites(ic)) isite=nsites(ic)
 
 
@@ -7064,7 +7738,7 @@ c y asignación de valores que algunas variables toman
 c en función del valor de nflag.  
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
-             cre=ranf(seed)
+             cre=rand(seed)
 
              if(cre.gt.0.5) then 
 
@@ -7304,7 +7978,7 @@ ccccccccccccccccccccccccccccc
 c se generan nktrial semillas:
 
          do ise=1,nktrial
-          rcaca=ranf(seed)
+          rcaca=rand(seed)
           semillas(ise)=seed
          enddo
 
@@ -7331,7 +8005,7 @@ c        if(j.eq.eth)then
 
 c Se genera un vector unitario
 
-             call rnd_sphere(un,semi)
+             !call rnd_sphere(un,semi)
 
 c Vector de módulo igual a la distancia entre los sites j y j-1
 
@@ -7360,9 +8034,9 @@ c
 ccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c     Se elige un angulo al azar entre -180 y +180
 c 
-c             rran=ranf(semi)
+c             rran=rand(semi)
 c             fi=rran*180.
-c             rran=ranf(semi)
+c             rran=rand(semi)
 c 
 c             if(rran.ge.0.5)then
 c              fi=fi*pi/180.
@@ -7411,8 +8085,8 @@ c        del trial itrial del site j
 c        con todos los sites anteriores
 ccccccccccccccccccccccccccccccccccccccccccccccccccc
 
-         call intramol(j,nflag,xtr(itrial),ytr(itrial),ztr(itrial),
-     >    nsites(ic),xtcart,ytcart,ztcart,wintra,numori,energint,kk)
+c         call intramol(j,nflag,xtr(itrial),ytr(itrial),ztr(itrial),
+c     >    nsites(ic),xtcart,ytcart,ztcart,wintra,numori,energint,kk)
 
 cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 c	 ahora hay que calcular el w intermolecular que se evalua
@@ -7477,7 +8151,7 @@ c        Se elige uno de los trial con probabilidad prob(ip)
 
          jup=0
          icon=0
-         rill=ranf(seed)
+         rill=rand(seed)
 
         Do while(jup.ne.1)
          icon=icon+1
@@ -7527,7 +8201,7 @@ c******************************************************************
 c    Tenemos ya calculados los factores de Rosenbluth viejo y nuevo
 c    vamos a ver si se acepta la nueva conformacion generada
 
-        acepta=ranf(seed)
+        acepta=rand(seed)
         compara=Ros(2)/Ros(1)
 
 C******************************************************************
@@ -9195,7 +9869,7 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 ! Direcci�n aleatoria entorno a la que rotar  
        call rnd_sphere(xc,seed)
 ! �ngulo aleatorio que se rota
-       gi=2*acos(-1.)*ranf(seed)
+       gi=2*acos(-1.)*rand(seed)
 ! Matriz de giro en funci�n de la direcci�n y el �ngulo de rotaci�n
        call magiro(xc,gi,ai)
 	 
@@ -9225,9 +9899,9 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 ! Traslación
 
-	dx=ranf(seed)
-	dy=ranf(seed)
-	dz=ranf(seed)
+	dx=rand(seed)
+	dy=rand(seed)
+	dz=rand(seed)
 
 	do i=1,nattest
 	 xatest(i)=xatest(i)+dx
@@ -11003,7 +11677,7 @@ c  nucleation staff
 	rpel=-1. 
 	endif
 
-	ranliq=ranf(seed)
+	ranliq=rand(seed)
 
 	if(ranliq.le.rpel)then 
 	call imprimosimulacioninp(seed)
@@ -11280,7 +11954,7 @@ c________________________________________________________________________
 
 
 c *** eleccion de cluster al azar      
-      iclust = int(nclsistema*ranf(seed)) + 1
+      iclust = int(nclsistema*rand(seed)) + 1
       if (iclust.gt.nclsistema) iclust=nclsistema
 
 c Saco de la lista todas las moleculas del cluster	
@@ -11311,9 +11985,9 @@ c particulas del sistema.
 C Genero aleatoriamente tres desplazamientos
 	factorescaladesp=numpartclust(iclust)**(-1./6.)
 
-      dx=factorescaladesp*(pshift*(2.0*ranf(seed)-1.0)/sidea)
-      dy=factorescaladesp*(pshift*(2.0*ranf(seed)-1.0)/sideb)
-      dz=factorescaladesp*(pshift*(2.0*ranf(seed)-1.0)/sidec)
+      dx=factorescaladesp*(pshift*(2.0*rand(seed)-1.0)/sidea)
+      dy=factorescaladesp*(pshift*(2.0*rand(seed)-1.0)/sideb)
+      dz=factorescaladesp*(pshift*(2.0*rand(seed)-1.0)/sidec)
 
 c *** calculando las posiciones y la energia del nuevo cluster
 	unewcl=0.
@@ -11357,7 +12031,7 @@ C Criterio Metropolis.
            endif
        endif
 
-	trial = ranf(seed)
+	trial = rand(seed)
 
 c Actualizaciones en caso de aceptacion
 
@@ -11431,9 +12105,9 @@ c
 ! Desplazo las particulas
         do i=1,nmoltot
 	 call caja_cart(xa(i),ya(i),za(i),x,y,z)
-	 xnew=x+deltatiempo*fuerzaextxa(i)+fromgaussian(seed,vari)
-	 ynew=y+deltatiempo*fuerzaextya(i)+fromgaussian(seed,vari)
-	 znew=z+deltatiempo*fuerzaextza(i)+fromgaussian(seed,vari)
+	 xnew=x!+deltatiempo*fuerzaextxa(i)+fromgaussian(seed,vari)
+	 ynew=y!+deltatiempo*fuerzaextya(i)+fromgaussian(seed,vari)
+	 znew=z!+deltatiempo*fuerzaextza(i)+fromgaussian(seed,vari)
 	 call cart_caja(xnew,ynew,znew,xa(i),ya(i),za(i))
 	 call acumulodespcuadmed(xnew,ynew,znew,x,y,z,i)
 	enddo
@@ -11452,14 +12126,14 @@ cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc
 
 !Esta formula (de Box-Muller) tambien vale en principio per tiene problemas numericos
         !pi=3.14159265359
-        !a=ranf(seed)
-        !b=ranf(seed)
+        !a=rand(seed)
+        !b=rand(seed)
         !y1=sqrt(-2*log(a))*cos(2.*pi*b)
 
 !Polar form of the Box-Muller transformation
         do
-          x1= 2.0 * ranf(seed) - 1.0
-          x2= 2.0 * ranf(seed) - 1.0
+          x1= 2.0 * rand() - 1.0
+          x2= 2.0 * rand() - 1.0
           w=x1*x1+x2*x2
           if(w.lt.1.0)exit
         enddo
@@ -12108,14 +12782,14 @@ c Incluyendo la molecula en la lista
      >   distkoosorted,listavlt2sor)
 
 	ikoos=3
-	a=rkoos(ikoos,imol,distkoosorted)
+	!a=rkoos(ikoos,imol,distkoosorted)
 
 !!	write(889,*)"before",imol,a,nvecinoslt2(imol)
 
 
 	do i=1,nvecinoslt2(imol)
 
-	b=rkoos(ikoos,imol,distkoosorted)
+	!b=rkoos(ikoos,imol,distkoosorted)
 
 !!	write(889,*)"in",imol,i,nvecinoslt2(imol),a,b
 
@@ -12321,6 +12995,7 @@ c
       dimension datasorted(natmax,50)
       dimension listavlt2(natmax,50)
       dimension listasorted(natmax,50)
+
       dimension listasortt(natmax,50)
 
 
@@ -12376,6 +13051,7 @@ c
 !!!!!!!!!
 
 	listasorted(imol,index) =listasortt(imol,index)
+!!!	write(886,*)imol,index,listasorted(imol,index) 
 !!!!!!!!!!!!
  1010 continue
 
@@ -12407,15 +13083,15 @@ c
 	dimension svircellx(10000),svircelly(10000),svircellz(10000)
 	
 
-	do i=1,ntcell
-	npcell(i)=0
-	namfcell(i)=0
-	nsolcell(i)=0
-	svircell(i)=0.
-	svircellx(i)=0.
-	svircelly(i)=0.
-	svircellz(i)=0.
-	enddo
+c	do i=1,ntcell
+c	npcell(i)=0
+c	namfcell(i)=0
+c	nsolcell(i)=0
+c	svircell(i)=0.
+c	svircellx(i)=0.
+c	svircelly(i)=0.
+c	svircellz(i)=0.
+c	enddo
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	do ii=1,nmoltot	
@@ -12427,7 +13103,7 @@ c
             yar = yar - anint((yar-half) )
             zar = zar - anint((zar-half) )
 
-c ****** calculating in which cell is site i
+c ****** calculando en que celda esta el site i
 
          i = int(xar/xlcell) + 1
          j = int(yar/ylcell) + 1
@@ -12467,15 +13143,15 @@ c ****** calculating in which cell is site i
 	do i=1,ntcell
 
 
-	prescell=1./vcell*(0.5*svircell(i)+npcell(i))
+c	prescell=1./vcell*(0.5*svircell(i)+npcell(i))
 
-	prescellx=1./vcell*(0.5*svircellx(i)+npcell(i))
-	prescelly=1./vcell*(0.5*svircelly(i)+npcell(i))
-	prescellz=1./vcell*(0.5*svircellz(i)+npcell(i))
+c	prescellx=1./vcell*(0.5*svircellx(i)+npcell(i))
+c	prescelly=1./vcell*(0.5*svircelly(i)+npcell(i))
+c	prescellz=1./vcell*(0.5*svircellz(i)+npcell(i))
 	
-	pres_av=1./3.*(prescellx+prescelly+prescellz)
+c	pres_av=1./3.*(prescellx+prescelly+prescellz)
 
-	write(773,*)npcell(i),namfcell(i),nsolcell(i),prescell,pres_av
+c	write(773,*)npcell(i),namfcell(i),nsolcell(i),prescell,pres_av
 
 	
 
