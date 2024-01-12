@@ -117,6 +117,10 @@ path='../../'
 - `path`: path to `mw_latt mold.in`, mW.sw, and `39mold.lmp`. Absolute path is highly recommended.
 Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but `LAMMPS.job` is not provided as it depends on the user machine. 
 
+````{note}
+The basic line to run the simulation is `./lmp_serial -i mw_lattmold.in` where `lmp_serial` is the LAMMPS executable to run in serial. This line must be include in the submission file `LAMMPS.job` along with the appropiate commands that depend on the machine. This line also allows to run in the command line. Please  see the [LAMMPS documentation](https://docs.lammps.org/Run_basics.html) for further informarion in how to run LAMMPS.
+````
+
 6. The `thermo_style` is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves. 
 We need to get the average number of well occupancy for each value of `nkT` so that we print the potential contribution due to mW-well interaction (`c_1`, column 8):
 

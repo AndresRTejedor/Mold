@@ -277,6 +277,10 @@ The bash script contains the following variables:</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">path</span></code>: path to <code class="docutils literal notranslate"><span class="pre">mw_latt</span> <span class="pre">mold.in</span></code>, mW.sw, and <code class="docutils literal notranslate"><span class="pre">39mold.lmp</span></code>. Absolute path is highly recommended.
 Also,  the bash file includes a submission command <code class="docutils literal notranslate"><span class="pre">sbatch</span> <span class="pre">LAMMPS.job</span></code>, but <code class="docutils literal notranslate"><span class="pre">LAMMPS.job</span></code> is not provided as it depends on the user machine.</p></li>
 </ul>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The basic line to run the simulation is <code class="docutils literal notranslate"><span class="pre">./lmp_serial</span> <span class="pre">-i</span> <span class="pre">mw_lattmold.in</span></code> where <code class="docutils literal notranslate"><span class="pre">lmp_serial</span></code> is the LAMMPS executable to run in serial. This line must be include in the submission file <code class="docutils literal notranslate"><span class="pre">LAMMPS.job</span></code> along with the appropiate commands that depend on the machine. This line also allows to run in the command line. Please  see the <a class="reference external" href="https://docs.lammps.org/Run_basics.html">LAMMPS documentation</a> for further informarion in how to run LAMMPS.</p>
+</div>
 <ol class="arabic simple" start="6">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves.
 We need to get the average number of well occupancy for each value of <code class="docutils literal notranslate"><span class="pre">nkT</span></code> so that we print the potential contribution due to mW-well interaction (<code class="docutils literal notranslate"><span class="pre">c_1</span></code>, column 8):</p></li>
