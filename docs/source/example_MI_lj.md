@@ -204,6 +204,11 @@ In the following figure the curves of well occupancy vs. well depth for the diff
 
 ![Step-2\label{Occupancy}](../figs/Fig3.png)
 
+````{Unit test}
+The values of occupancy for these well widths can be used to 
+````
+
+
 ## Extrapolation for calculating the interfacial free energy
 
 After the analysis in the previous step, one can obtain a curve of well occupancy vs. well depth for each radius so that the interfacial free energy is calculated as
