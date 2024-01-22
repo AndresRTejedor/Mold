@@ -205,7 +205,7 @@ In the following figure the curves of well occupancy vs. well depth for the diff
 ![Step-2\label{Occupancy}](../figs/Fig3.png)
 
 ````{note}
-*Unit test*: The average occupancy for these well widths can be used as a unit test. The values of the integrals for each well radius are .
+**Unit test**: The average occupancy for these well widths can be used as a unit test. The user can reproduce the following values: $\langle N_{rw=0.33}(\varepsilon=1.1106)=54.33$, $\langle N_{rw=0.33}(\varepsilon=1.851)=93.266$, $\langle N_{rw=0.34}(\varepsilon=1.1106)=57.10$, $\langle N_{rw=0.35}(\varepsilon=1.1106)=59.12$.
 ````
 
 
