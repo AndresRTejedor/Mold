@@ -205,7 +205,7 @@ In the following figure the curves of well occupancy vs. well depth for the diff
 ![Step-2\label{Occupancy}](../figs/Fig3.png)
 
 ````{note}
-**Unit test**: The average occupancy for these well widths can be used as a unit test. The user can reproduce the following values: $\langle N_{rw=0.33}(\varepsilon=1.1106)=54.33$, $\langle N_{rw=0.33}(\varepsilon=1.851)=93.266$, $\langle N_{rw=0.34}(\varepsilon=1.1106)=57.10$, $\langle N_{rw=0.35}(\varepsilon=1.1106)=59.12$.
+**Unit test**: The average occupancy for these well widths can be used as a unit test. The user can reproduce the following values: $\langle N_{rw=0.33}(\varepsilon=1.1106)\rangle=54.33$, $\langle N_{rw=0.33}(\varepsilon=1.851)\rangle=93.266$, $\langle N_{rw=0.34}(\varepsilon=1.1106)\rangle=57.10$, $\langle N_{rw=0.35}(\varepsilon=1.1106)\rangle=59.12$.
 ````
 
 
@@ -221,6 +221,10 @@ The resulting values for the integrals are provided in the following table (plea
 |         $r_w/\sigma$)        |  0.33 |  0.34 |  0.35 |
 |:----------------------------:|:-----:|:-----:|:-----:|
 | $\gamma/\sigma^{-2}\epsilon$ | 0.363 | 0.357 | 0.348 |
+
+````{note}
+**Unit test**: The interfacial energy provided in the above table can be used as unit test.
+````
 
 To obtain the interfacial free energy, you now shall extrapolate the value of the interfacial free energy to the optimal well radius ($r_{w,0}=0.32\sigma$) using a linear fit. 
 According to the interfacial free energies as a function of the well radii provided in the table, the final estimate for the interfacial free energy is
