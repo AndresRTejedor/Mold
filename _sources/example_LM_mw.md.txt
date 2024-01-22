@@ -99,7 +99,7 @@ Also, there are some variables that might be interesting to know:
 
 
 5. Launch the simulation for each radius and well depth.
-We provide a bash file `/utils/LM/1.Integral/Run.sh` that creates the directory for each well depth and run the simulations, reading the file `/utils/LM/1.Integral/list` that contains all the well depths. 
+We provide a bash file `example/mw_mold/utils/LM/1.Integral/Run.sh` that creates the directory for each well depth and run the simulations, reading the file `example/mw_mold/utils/LM/1.Integral/list` that contains all the well depths. 
 The bash script contains the following variables:
 ```
 T='220'
@@ -118,7 +118,8 @@ path='../../'
 Also,  the bash file includes a submission command `sbatch LAMMPS.job`, but `LAMMPS.job` is not provided as it depends on the user machine. 
 
 ````{note}
-The basic line to run the simulation is `./lmp_serial -i mw_lattmold.in` where `lmp_serial` is the LAMMPS executable to run in serial. This line must be include in the submission file `LAMMPS.job` along with the appropiate commands that depend on the machine. This line also allows to run in the command line. Please  see the [LAMMPS documentation](https://docs.lammps.org/Run_basics.html) for further informarion in how to run LAMMPS.
+The basic line to run the simulation is `./lmp_serial -i mw_lattmold.in` where `lmp_serial` is the LAMMPS executable to run in serial. This line must be included in the submission file `LAMMPS.job` along with the appropiate commands that depend on the machine. This line also allows to run in the command line so can be directly added to `Run.sh` instead of sbatch `LAMMPS.job`. 
+Please  see the [LAMMPS documentation](https://docs.lammps.org/Run_basics.html) for further informarion in how to run LAMMPS.
 ````
 
 6. The `thermo_style` is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves. 
@@ -142,7 +143,7 @@ The two provided constants account for the conversion factor from $kcal$ to $J$ 
 
 Please note that the temperature must be recalculated to consider only the water molecules in the simulation box, since the LAMMPS `thermo` considers all the particles to evaluate the system temperature. The `compute mytemp` performs this calculation. This correction only applies when simulating systems in real units.
 
-In `/utils/LM/1.Integration/`, we provide the python program `PyIntegral.py` that can be run to get the well occupancy curve for each well depth. 
+In `example/mw_mold/utils/LM/1.Integration/`, we provide the python program `PyIntegral.py` that can be run to get the well occupancy curve for each well depth. 
 The script must be run in the directory where you run the `Run.sh` bash file. The program output is a file called `fill.txt` that contains the results for the well occupancy.
 
 
@@ -162,7 +163,7 @@ The final calculation of the free energy difference must include the rotational 
 $$\Delta G/k_B T=\Delta G^*/k_B T + \ln(\rho_f V_w)- \ln(8\pi^2),$$
 
 where $\rho_f$ is the fluid number density, and $V_w$ is the volume of a single well.
-This magnitude can be calculated with the program `utils/LM/1.Integral/post.py`, that reads the file `fill.txt` obtained by running the script `PyIntegral.py`. Only the value of $\rho_f$ must be adjusted for each system if any other conditions are considered.
+This magnitude can be calculated with the program `example/mw_mold/utils/LM/1.Integral/post.py`, that reads the file `fill.txt` obtained by running the script `PyIntegral.py`. Only the value of $\rho_f$ must be adjusted for each system if any other conditions are considered.
 The free energy difference is used to calculate the probability per unit volume of finding a crystal cluster of the size of the one induced by the mold as dictated by the following equation:
 
 $$P=\rho_f \exp(-\Delta G/(k_B T)) .$$
@@ -178,7 +179,7 @@ To estimate the average nucleation time, one must follow these steps:
 4. The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step and this particular system, the typical run must be of the order of $100 ns$ (with `dt=1fs`), controlled by the parameter `nts` which must be set to `nts=10000000`. 
 The well depth `nkT` must be set to 8. Importantly, for this step the `seed` variable must be changed for every independent run.
 5. Launch the simulation for each radius and independent velocity seed.
-We provide a bash file `/utils/LM/2.Induction_t/Run.sh` that creates the directory for each seed and run the simulations, reading the file `/utils/LM/2.Induction_t/list` that contains the number of independent velocity seeds. 
+We provide a bash file `example/mw_mold/utils/LM/2.Induction_t/Run.sh` that creates the directory for each seed and run the simulations, reading the file `example/mw_mold/utils/LM/2.Induction_t/list` that contains the number of independent velocity seeds. 
 The bash script contains the following variables:
 ```
 T='220'
@@ -205,7 +206,7 @@ The sharp decay in the curves indicate the nucleation time, that averaged provid
 
 ![Step-4](../figs/LatticeMold/Fig4.png "Time")
 
-The program `PyTime.py`, provided in `/utils/LM/2.Induction_t/`, can be used to calculate an estimation of the average induction time. Also, the program indicates if some of the seeds have not crystallized yet and they need more simulaiton time. 
+The program `PyTime.py`, provided in `example/mw_mold/utils/LM/2.Induction_t/`, can be used to calculate an estimation of the average induction time. Also, the program indicates if some of the seeds have not crystallized yet and they need more simulaiton time. 
 The script must be run in the directory where you run the `Run.sh` bash file. 
 
 

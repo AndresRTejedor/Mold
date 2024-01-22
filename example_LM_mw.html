@@ -257,7 +257,7 @@ Also, there are some variables that might be interesting to know:</p>
 </ul>
 <ol class="arabic simple" start="5">
 <li><p>Launch the simulation for each radius and well depth.
-We provide a bash file <code class="docutils literal notranslate"><span class="pre">/utils/LM/1.Integral/Run.sh</span></code> that creates the directory for each well depth and run the simulations, reading the file <code class="docutils literal notranslate"><span class="pre">/utils/LM/1.Integral/list</span></code> that contains all the well depths.
+We provide a bash file <code class="docutils literal notranslate"><span class="pre">example/mw_mold/utils/LM/1.Integral/Run.sh</span></code> that creates the directory for each well depth and run the simulations, reading the file <code class="docutils literal notranslate"><span class="pre">example/mw_mold/utils/LM/1.Integral/list</span></code> that contains all the well depths.
 The bash script contains the following variables:</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">T</span><span class="o">=</span><span class="s1">&#39;220&#39;</span>
@@ -279,7 +279,8 @@ Also,  the bash file includes a submission command <code class="docutils literal
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The basic line to run the simulation is <code class="docutils literal notranslate"><span class="pre">./lmp_serial</span> <span class="pre">-i</span> <span class="pre">mw_lattmold.in</span></code> where <code class="docutils literal notranslate"><span class="pre">lmp_serial</span></code> is the LAMMPS executable to run in serial. This line must be include in the submission file <code class="docutils literal notranslate"><span class="pre">LAMMPS.job</span></code> along with the appropiate commands that depend on the machine. This line also allows to run in the command line. Please  see the <a class="reference external" href="https://docs.lammps.org/Run_basics.html">LAMMPS documentation</a> for further informarion in how to run LAMMPS.</p>
+<p>The basic line to run the simulation is <code class="docutils literal notranslate"><span class="pre">./lmp_serial</span> <span class="pre">-i</span> <span class="pre">mw_lattmold.in</span></code> where <code class="docutils literal notranslate"><span class="pre">lmp_serial</span></code> is the LAMMPS executable to run in serial. This line must be included in the submission file <code class="docutils literal notranslate"><span class="pre">LAMMPS.job</span></code> along with the appropiate commands that depend on the machine. This line also allows to run in the command line so can be directly added to <code class="docutils literal notranslate"><span class="pre">Run.sh</span></code> instead of sbatch <code class="docutils literal notranslate"><span class="pre">LAMMPS.job</span></code>.
+Please  see the <a class="reference external" href="https://docs.lammps.org/Run_basics.html">LAMMPS documentation</a> for further informarion in how to run LAMMPS.</p>
 </div>
 <ol class="arabic simple" start="6">
 <li><p>The <code class="docutils literal notranslate"><span class="pre">thermo_style</span></code> is configured to show some magnitudes that are crucial for the calculation of the well occupancy curves.
@@ -299,7 +300,7 @@ thermo         ${thermoSteps}      # how often (in steps) will write the propert
 \[\langle Nw \rangle=4184\cdot c_1 /(nkT\cdot 8.314\cdot T)\]</div>
 <p>The two provided constants account for the conversion factor from <span class="math notranslate nohighlight">\(kcal\)</span> to <span class="math notranslate nohighlight">\(J\)</span> (<span class="math notranslate nohighlight">\(4184\)</span>), and the ideal gas constant in <span class="math notranslate nohighlight">\(R=8.314 J\cdot mol^{-1}\cdot K^{-1}\)</span>.</p>
 <p>Please note that the temperature must be recalculated to consider only the water molecules in the simulation box, since the LAMMPS <code class="docutils literal notranslate"><span class="pre">thermo</span></code> considers all the particles to evaluate the system temperature. The <code class="docutils literal notranslate"><span class="pre">compute</span> <span class="pre">mytemp</span></code> performs this calculation. This correction only applies when simulating systems in real units.</p>
-<p>In <code class="docutils literal notranslate"><span class="pre">/utils/LM/1.Integration/</span></code>, we provide the python program <code class="docutils literal notranslate"><span class="pre">PyIntegral.py</span></code> that can be run to get the well occupancy curve for each well depth.
+<p>In <code class="docutils literal notranslate"><span class="pre">example/mw_mold/utils/LM/1.Integration/</span></code>, we provide the python program <code class="docutils literal notranslate"><span class="pre">PyIntegral.py</span></code> that can be run to get the well occupancy curve for each well depth.
 The script must be run in the directory where you run the <code class="docutils literal notranslate"><span class="pre">Run.sh</span></code> bash file. The program output is a file called <code class="docutils literal notranslate"><span class="pre">fill.txt</span></code> that contains the results for the well occupancy.</p>
 <ol class="arabic simple" start="7">
 <li><p>Plot the different curves of mold occupancy as a function of the well depth for the different radii. The result should look similar to the figure below</p></li>
@@ -315,7 +316,7 @@ The final calculation of the free energy difference must include the rotational 
 <div class="math notranslate nohighlight">
 \[\Delta G/k_B T=\Delta G^*/k_B T + \ln(\rho_f V_w)- \ln(8\pi^2),\]</div>
 <p>where <span class="math notranslate nohighlight">\(\rho_f\)</span> is the fluid number density, and <span class="math notranslate nohighlight">\(V_w\)</span> is the volume of a single well.
-This magnitude can be calculated with the program <code class="docutils literal notranslate"><span class="pre">utils/LM/1.Integral/post.py</span></code>, that reads the file <code class="docutils literal notranslate"><span class="pre">fill.txt</span></code> obtained by running the script <code class="docutils literal notranslate"><span class="pre">PyIntegral.py</span></code>. Only the value of <span class="math notranslate nohighlight">\(\rho_f\)</span> must be adjusted for each system if any other conditions are considered.
+This magnitude can be calculated with the program <code class="docutils literal notranslate"><span class="pre">example/mw_mold/utils/LM/1.Integral/post.py</span></code>, that reads the file <code class="docutils literal notranslate"><span class="pre">fill.txt</span></code> obtained by running the script <code class="docutils literal notranslate"><span class="pre">PyIntegral.py</span></code>. Only the value of <span class="math notranslate nohighlight">\(\rho_f\)</span> must be adjusted for each system if any other conditions are considered.
 The free energy difference is used to calculate the probability per unit volume of finding a crystal cluster of the size of the one induced by the mold as dictated by the following equation:</p>
 <div class="math notranslate nohighlight">
 \[P=\rho_f \exp(-\Delta G/(k_B T)) .\]</div>
@@ -330,7 +331,7 @@ The free energy difference is used to calculate the probability per unit volume 
 <li><p>The variables of the LAMMPS script presented in previous section need to be changed slightly. For this step and this particular system, the typical run must be of the order of <span class="math notranslate nohighlight">\(100 ns\)</span> (with <code class="docutils literal notranslate"><span class="pre">dt=1fs</span></code>), controlled by the parameter <code class="docutils literal notranslate"><span class="pre">nts</span></code> which must be set to <code class="docutils literal notranslate"><span class="pre">nts=10000000</span></code>.
 The well depth <code class="docutils literal notranslate"><span class="pre">nkT</span></code> must be set to 8. Importantly, for this step the <code class="docutils literal notranslate"><span class="pre">seed</span></code> variable must be changed for every independent run.</p></li>
 <li><p>Launch the simulation for each radius and independent velocity seed.
-We provide a bash file <code class="docutils literal notranslate"><span class="pre">/utils/LM/2.Induction_t/Run.sh</span></code> that creates the directory for each seed and run the simulations, reading the file <code class="docutils literal notranslate"><span class="pre">/utils/LM/2.Induction_t/list</span></code> that contains the number of independent velocity seeds.
+We provide a bash file <code class="docutils literal notranslate"><span class="pre">example/mw_mold/utils/LM/2.Induction_t/Run.sh</span></code> that creates the directory for each seed and run the simulations, reading the file <code class="docutils literal notranslate"><span class="pre">example/mw_mold/utils/LM/2.Induction_t/list</span></code> that contains the number of independent velocity seeds.
 The bash script contains the following variables:</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">T</span><span class="o">=</span><span class="s1">&#39;220&#39;</span>
@@ -358,7 +359,7 @@ Plot the variable <code class="docutils literal notranslate"><span class="pre">p
 The sharp decay in the curves indicate the nucleation time, that averaged provides <span class="math notranslate nohighlight">\(\langle t\rangle\)</span>. The representation of this calculatin is shown in the figure below</p></li>
 </ol>
 <p><img alt="Step-4" src="_images/Fig4.png" /></p>
-<p>The program <code class="docutils literal notranslate"><span class="pre">PyTime.py</span></code>, provided in <code class="docutils literal notranslate"><span class="pre">/utils/LM/2.Induction_t/</span></code>, can be used to calculate an estimation of the average induction time. Also, the program indicates if some of the seeds have not crystallized yet and they need more simulaiton time.
+<p>The program <code class="docutils literal notranslate"><span class="pre">PyTime.py</span></code>, provided in <code class="docutils literal notranslate"><span class="pre">example/mw_mold/utils/LM/2.Induction_t/</span></code>, can be used to calculate an estimation of the average induction time. Also, the program indicates if some of the seeds have not crystallized yet and they need more simulaiton time.
 The script must be run in the directory where you run the <code class="docutils literal notranslate"><span class="pre">Run.sh</span></code> bash file.</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
