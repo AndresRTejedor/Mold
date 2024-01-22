@@ -204,8 +204,8 @@ In the following figure the curves of well occupancy vs. well depth for the diff
 
 ![Step-2\label{Occupancy}](../figs/Fig3.png)
 
-````{Unit test}
-The values of occupancy for these well widths can be used to 
+````{note}
+*Unit test*: The average occupancy for these well widths can be used as a unit test. The values of the integrals for each well radius are .
 ````
 
 
