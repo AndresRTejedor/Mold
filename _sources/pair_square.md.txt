@@ -41,6 +41,10 @@ If small values are needed (steep potential), the simulation timestep must be re
 In case $\epsilon$ is set to a negative value, the well potential would become fully repulsive.
 ````
 
+````{note}
+In the *cpp and *h files you may find the word "pocillo" with the meaning of “small well” in Spanish.
+````
+
 ## Restrictions
 
 This pair style can only be used if LAMMPS was built with the [Mold package](https://github.com/AndresRTejedor/Mold). See the Build package doc page for more info.
