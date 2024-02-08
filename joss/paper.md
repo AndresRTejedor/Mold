@@ -22,7 +22,7 @@ authors:
   - name: Felipe J. Blas
     orcid: 0000-0001-9030-040X
     affiliation: 4
-  - name: Ruslan Davidchack
+  - name: Ruslan L. Davidchack
     orcid: 0000-0001-9418-5322
     affiliation: 5
   - name: Nicodemo Di Pasquale
@@ -43,7 +43,7 @@ affiliations:
    index: 3
  - name: Laboratorio de Simulacion Molecular y Quimica Computacional, CIQSO-Centro de Investigacion en Quimica Sostenible and Departamento de Ciencias Integradas, Universidad de Huelva, Spain
    index: 4
- - name: Department of Mathematics, University of Leicester, United Kingdom
+ - name: School of Computing and Mathematical Sciences, University of Leicester, United Kingdom
    index: 5
  - name: Department of Chemical Engineering, Brunel University London, United Kingdom
    index: 6
