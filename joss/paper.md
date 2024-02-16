@@ -27,10 +27,10 @@ authors:
     affiliation: 5
   - name: Nicodemo Di Pasquale
     orcid:  0000-0001-5676-8527
-    affiliation: 6
+    affiliation: "6,7"
   - name: Jorge Ramirez^[Corresponding author]
     orcid: 0000-0002-8946-3786
-    affiliation: 7
+    affiliation: 8
   - name: Jorge R. Espinosa^[Corresponding author]
     orcid: 0000-0001-9530-2658
     affiliation: 2
@@ -47,8 +47,10 @@ affiliations:
    index: 5
  - name: Department of Chemical Engineering, Brunel University London, United Kingdom
    index: 6
- - name: Department of Chemical Engineering, Universidad Politécnica de Madrid, Spain
+ - name: Dipartimento di Chimica Industriale, Università di Bologna, Italy
    index: 7
+ - name: Department of Chemical Engineering, Universidad Politécnica de Madrid, Spain
+   index: 8
 date: 01 Sep 2023
 bibliography: paper.bib
 ---
@@ -66,7 +68,7 @@ Liquid-to-solid phase transitions are present in many physical and industrial pr
 The Mold Integration method was developed by Espinosa *et al.* [@espinosa2014mold] as a simple and effective approach to calculate the interfacial free energy of crystalline phases in coexistence with a liquid phase. This technique uses potential wells, that are arranged in the simulation box as a mold that replicates a given crystallographic plane of the solid of interest. The attractive wells are modeled through a square-like well potential that is characterized by the well radius $r_w$, the well depth $\varepsilon_w$ and the well slope $\alpha$. The Mold Integration method consists of the following steps:
 
 1. Preparation of the configuration, by introducing the mold into the liquid phase.
-2. Simulation of the liquid-mold system at constant well depth and different well radii to determine the optimal radius that keeps the liquid particles inside the wells.
+2. Simulation of the liquid-mold system at constant well depth and different well radii to determine the limit of well radius (optimal radius) which supplies the exact free energy to form a crystal slab within the liquid.
 3. Calculation of the reversible work required to form a crystal slab at different well radii above the optimal well radius.
 4. Linear extrapolation of the interfacial free energy to the optimal well radius.
 
@@ -94,12 +96,12 @@ MOLD is a LAMMPS package for the calculation of interfacial free energy and nucl
 
 The code presented here can be found on [Github](https://github.com/AndresRTejedor/Mold), and it provides a detailed manual with the instructions to compile and use the package as well as with step-by-step examples to implement both the Mold Integration and the Lattice Mold techniques using the explicit square well potential. The package uses the `pair_style square/well` with three parameters that control the radius, the depth and the slope of the interaction potential. Additionally, we provide two detailed worked examples to reproduce already published results. 
 
-The first example explores [the Mold Integration](https://andresrtejedor.github.io/Mold/example_MI_lj.html) technique for the (100) plane of the fcc crystal for the Lennard-Jones potential. This example reproduces the results of the works of [@davidchack2003direct] using the cleaving technique and [@espinosa2014mold] using the Mold Integration method, and uses the Broughton-Gilmer modified Lennard-Jones potential [@Broughton1983] that can be found in the CLEAVING package [here](https://github.com/demonico85/cleaving/tree/master). The second example shows step-by-step instructions to perform [Lattice Mold](https://andresrtejedor.github.io/Mold/example_LM_mw.html) calculations of mW Ice Ih nucleation rate at T=220K, reproducing the results of [@sanchez2022homogeneous] using the same method that is compatible with other methods ([@haji2018forward],[@li2011homogeneous],[@haji2014suppression]). Both examples include all the LAMMPS scripts, the configuration files and simple bash and Python scripts to run the simulations and analyze the results.
+The first example explores [the Mold Integration](https://andresrtejedor.github.io/Mold/example_MI_lj.html) technique for the (100) plane of the fcc crystal for the Lennard-Jones potential. This example reproduces the results of the works of [@davidchack2003direct] using the cleaving technique and [@espinosa2014mold] using the Mold Integration method, and uses the Broughton-Gilmer modified Lennard-Jones potential [@Broughton1983] that is included in this pacakge (please see the CLEAVING package [here](https://github.com/demonico85/cleaving/tree/master) for further details). The second example shows step-by-step instructions to perform [Lattice Mold](https://andresrtejedor.github.io/Mold/example_LM_mw.html) calculations of mW Ice Ih nucleation rate at T=220K, reproducing the results of [@sanchez2022homogeneous] using the same method which provides compatible results with other methods ([@haji2018forward],[@li2011homogeneous],[@haji2014suppression]). Both examples include all the LAMMPS scripts, the configuration files and simple bash and Python scripts to run the simulations and analyze the results.
 
-Overall, this simulation package aims to simplify the simulation process of the presented methods and allow the community to perform simulations of solid-to-liquid phase transitions in a more efficient way.
+Overall, this simulation package aims to simplify the simulation process of the presented methods and allow the community to perform simulations of liquid-to-solid phase transitions in a more efficient way.
 
 # Acknowledgements
 
-We kindly acknowledge Dr. Lorenzo Rovigatti for sharing a Github repository as a guide to build our documentation. This project was funded by projects PID2022-136919NA-C33, PID2022-136919NB-C31, and PID2022-136919NB-C32 and PID2022-136919NB-C33 of the MICINN, and the Oppenheimer Research Fellowship of the University of Cambridge. I.S.-B. acknowledges funding from the Oppenheimer Fellowship, Derek Brewer scholarship of Emmanuel College and EPSRC Doctoral Training Programme studentship, number EP/T517847/1. N. D. P. acknowledges support from the CECAM and CCP5 through the CECAM/CCP5 sandpit grant (2022) and the EP/V028537/1 grant. J. R. acknowledges funding from the Spanish Ministry of Economy and Competitivity (PID2019-105898GA-C22) and the Madrid Government (Comunidad de Madrid-Spain) under the Multiannual Agreement with Universidad Politécnica de Madrid in the line Excellence Programme for University Professors, in the context of the V PRICIT (Regional Programme of Research and Technological Innovation). J.R.E. also acknowledges funding from the Ramon y Cajal fellowship (RYC2021-030937-I). A.R.T. acknowledges funding from the European Research Council (ERC) under the European Union Horizon 2020 research and innovation programme (grant agreement 803326), and from the Ramon y Cajal fellowship. This work has been performed using resources provided by the Cambridge Tier-2 system operated by the University of Cambridge Research Computing Service (http://www.hpc.cam.ac.uk) funded by EPSRC Tier-2 capital grant EP/P020259/1.This project made use of time on HPC granted via the UK High–End Computing Consortium for Biomolecular Simulation, HECBioSim (http://hecbiosim.ac.uk), supported by EPSRC (grant no. EP/X035603/1). F. J. B. also acknowledges Ministerio de Ciencia e Innovación (Grant No. PID2021-125081NB-I00), Junta de Andalucía (P20-00363), and Universidad de Huelva (P.O. FEDER UHU-1255522 and FEDER-UHU-202034), all four cofinanced by EU FEDER funds.
+We kindly acknowledge Dr. Lorenzo Rovigatti for sharing a Github repository as a guide to build our documentation. This project was funded by projects PID2022-136919NA-C33, PID2022-136919NB-C31, and PID2022-136919NB-C32 and PID2022-136919NB-C33 of the MICINN, and the Oppenheimer Research Fellowship of the University of Cambridge. I.S.-B. acknowledges funding from the Oppenheimer Fellowship, Derek Brewer scholarship of Emmanuel College and EPSRC Doctoral Training Programme studentship, number EP/T517847/1. N. D. P. acknowledges support from the CECAM and CCP5 through the CECAM/CCP5 sandpit grant (2022) and the EP/V028537/1 grant. J. R. acknowledges funding from the Spanish Ministry of Economy and Competitivity (PID2019-105898GA-C22) and the Madrid Government (Comunidad de Madrid-Spain) under the Multiannual Agreement with Universidad Politécnica de Madrid in the line Excellence Programme for University Professors, in the context of the V PRICIT (Regional Programme of Research and Technological Innovation). J.R.E. also acknowledges funding from the Ramon y Cajal fellowship (RYC2021-030937-I). A.R.T. acknowledges funding from the European Research Council (ERC) under the European Union Horizon 2020 research and innovation programme (grant agreement 803326), and from the Ramon y Cajal fellowship. This work has been performed using resources provided by the Cambridge Tier-2 system operated by the University of Cambridge Research Computing Service (http://www.hpc.cam.ac.uk) funded by EPSRC Tier-2 capital grant EP/P020259/1 and by the Sulis High-Performance Computational Center under the grant EP/T022108/1.This project made use of time on HPC granted via the UK High–End Computing Consortium for Biomolecular Simulation, HECBioSim (http://hecbiosim.ac.uk), supported by EPSRC (grant no. EP/X035603/1). F. J. B. also acknowledges Ministerio de Ciencia e Innovación (Grant No. PID2021-125081NB-I00), Junta de Andalucía (P20-00363), and Universidad de Huelva (P.O. FEDER UHU-1255522 and FEDER-UHU-202034), all four cofinanced by EU FEDER funds.
 
 # References
